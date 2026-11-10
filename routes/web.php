@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Member\WalletController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +12,8 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::get('wallet', WalletController::class)->name('wallet');
 });
 
 // Design reference: every building block of the Wiifarm design system on one

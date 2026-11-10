@@ -14,6 +14,8 @@ export const auditActionNames: Record<string, string> = {
     'members.block_withdrawals': 'Withdrawals blocked',
     'members.unblock_withdrawals': 'Withdrawals opened',
     'members.change_sponsor': 'Sponsor changed',
+    'members.wallet_add': 'Added to a wallet',
+    'members.wallet_subtract': 'Subtracted from a wallet',
     'kyc.approve': 'KYC approved',
     'kyc.reject': 'KYC rejected',
     'settings.edit': 'Setting changed',

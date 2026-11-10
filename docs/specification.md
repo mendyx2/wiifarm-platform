@@ -517,3 +517,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **12. Dividend reversal:** may it take a member's balance below zero, or stop at zero?
 - [ ] **13. Loans:** when does a missed instalment make a loan "in default", and what happens then (fees, guarantors)?
 - [ ] **14. Sponsor changes:** when an admin changes a member's sponsor, should their place in the binary tree also move, and do bonuses already paid stay as they are? (Today only the sponsor changes, for the future.)
+- [ ] **15. Wallet corrections:** who may add to or subtract from a member's wallet? Today it is a permission any role can be given ("Add to or subtract from a member's wallet"). Should it be super-admin only, or need a second admin to approve above an amount?

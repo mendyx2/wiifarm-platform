@@ -11,6 +11,8 @@ import { DataTable } from '@/components/wf/data-table';
 import AdminLayout, { useAdminCan } from '@/layouts/admin-layout';
 import { auditActionName } from '@/lib/audit-actions';
 import { countries, countryName } from '@/lib/countries';
+import { coreWallets } from '@/lib/ledger';
+import { formatKobo } from '@/lib/money';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Ban, ShieldAlert } from 'lucide-react';
@@ -47,6 +49,8 @@ interface Member {
 
 interface ShowProps {
     member: Member;
+    wallets: Record<string, number>;
+    walletLabels: Record<string, string>;
     kyc: { id: number; status: string; submitted_at: string } | null;
     sponsorChanges: { id: number; from: string | null; to: string | null; reason: string; at: string }[];
     history: { id: number; action: string; admin: string | null; note: string | null; at: string }[];
@@ -214,7 +218,98 @@ function ChangeSponsorForm({ member }: { member: Member }) {
     );
 }
 
-export default function MemberShow({ member, kyc, sponsorChanges, history }: ShowProps) {
+function Wallets({ member, wallets, labels }: { member: Member; wallets: Record<string, number>; labels: Record<string, string> }) {
+    const shown = Object.keys(labels).filter((k) => coreWallets.includes(k) || wallets[k] !== 0);
+
+    return (
+        <dl className="divide-y text-sm">
+            {shown.map((k) => (
+                <div key={k} className="flex justify-between gap-2 px-4 py-2.5">
+                    <dt>
+                        <Link href={route('admin.members.wallet', [member.id, k])} className="underline-offset-4 hover:underline">
+                            {labels[k]}
+                        </Link>
+                    </dt>
+                    <dd className="font-medium tabular-nums">{formatKobo(wallets[k])}</dd>
+                </div>
+            ))}
+        </dl>
+    );
+}
+
+function AdjustWallet({ member, labels }: { member: Member; labels: Record<string, string> }) {
+    const newId = () => crypto.randomUUID();
+    const form = useForm({ wallet: 'main', direction: 'add', amount: '', reason: '', form_id: newId() });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        const verb = form.data.direction === 'add' ? 'Add' : 'Subtract';
+        if (
+            !window.confirm(
+                `${verb} ₦${form.data.amount} ${form.data.direction === 'add' ? 'to' : 'from'} ${labels[form.data.wallet]} of @${member.username}?`,
+            )
+        )
+            return;
+        // A new id after success, so the next adjustment is a new posting; the same id on a retry.
+        form.post(route('admin.members.wallet.adjust', member.id), {
+            preserveScroll: true,
+            onSuccess: () => form.setData({ wallet: form.data.wallet, direction: 'add', amount: '', reason: '', form_id: newId() }),
+        });
+    };
+
+    return (
+        <form onSubmit={submit} className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-1.5">
+                <Label htmlFor="adj-wallet">Wallet</Label>
+                <select
+                    id="adj-wallet"
+                    className="border-input bg-background h-10 rounded-md border px-3 text-sm"
+                    value={form.data.wallet}
+                    onChange={(e) => form.setData('wallet', e.target.value)}
+                >
+                    {Object.entries(labels).map(([k, l]) => (
+                        <option key={k} value={k}>
+                            {l}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="grid gap-1.5">
+                <Label htmlFor="adj-direction">Add or subtract</Label>
+                <select
+                    id="adj-direction"
+                    className="border-input bg-background h-10 rounded-md border px-3 text-sm"
+                    value={form.data.direction}
+                    onChange={(e) => form.setData('direction', e.target.value)}
+                >
+                    <option value="add">Add</option>
+                    <option value="subtract">Subtract</option>
+                </select>
+            </div>
+            <div className="grid gap-1.5 sm:col-span-2">
+                <Label htmlFor="adj-amount">Amount in naira</Label>
+                <Input
+                    id="adj-amount"
+                    inputMode="decimal"
+                    placeholder="e.g. 1500.00"
+                    value={form.data.amount}
+                    onChange={(e) => form.setData('amount', e.target.value)}
+                />
+                <InputError message={form.errors.amount} />
+            </div>
+            <div className="grid gap-1.5 sm:col-span-2">
+                <Label htmlFor="adj-reason">Reason (the member sees it on their statement)</Label>
+                <Textarea id="adj-reason" rows={2} value={form.data.reason} onChange={(e) => form.setData('reason', e.target.value)} />
+                <InputError message={form.errors.reason} />
+            </div>
+            <Button className="w-fit" variant="secondary" disabled={form.processing || !form.data.amount.trim() || !form.data.reason.trim()}>
+                {form.data.direction === 'add' ? 'Add to wallet' : 'Subtract from wallet'}
+            </Button>
+        </form>
+    );
+}
+
+export default function MemberShow({ member, wallets, walletLabels, kyc, sponsorChanges, history }: ShowProps) {
     const can = useAdminCan();
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/admin' },
@@ -363,6 +458,29 @@ export default function MemberShow({ member, kyc, sponsorChanges, history }: Sho
                             </Card>
                         )}
                     </div>
+                </div>
+
+                <div className="grid gap-6 lg:grid-cols-2">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-base">Wallets</CardTitle>
+                            <CardDescription>Balances are worked out from the ledger. Open a wallet to see its statement.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-0 pb-2">
+                            <Wallets member={member} wallets={wallets} labels={walletLabels} />
+                        </CardContent>
+                    </Card>
+                    {can('members.adjust_wallet') && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-base">Add to or subtract from a wallet</CardTitle>
+                                <CardDescription>Recorded in the ledger and the audit log. A wallet cannot go below zero.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <AdjustWallet member={member} labels={walletLabels} />
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
 
                 {can('members.edit') && (

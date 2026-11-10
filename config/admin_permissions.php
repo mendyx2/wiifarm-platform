@@ -16,6 +16,7 @@ return [
             'members.ban' => 'Ban and unban members',
             'members.block_withdrawals' => 'Block and unblock a member\'s withdrawals',
             'members.change_sponsor' => 'Change a member\'s sponsor',
+            'members.adjust_wallet' => 'Add to or subtract from a member\'s wallet',
         ],
         'KYC' => [
             'kyc.view' => 'See KYC submissions and documents',

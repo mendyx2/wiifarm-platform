@@ -370,3 +370,82 @@ with message templates).
 
 **Next:** the ledger (phase 2e): wallets and entries, where every naira and
 PV point is recorded and nothing is ever paid twice.
+
+## Step 9: The ledger and wallets (phase 2e)
+
+**What this is:** the record of every naira in the platform. Everything that
+pays or charges a member later (deposits, withdrawals, transfers, bonuses,
+shop orders, pools) will go through it, so it is built first and built
+strictly.
+
+- **How it works, simply:**
+    - money is never typed into a balance. Each movement is a
+      **transaction**, made of **entries**: money out of one account and the
+      same money into another. The entries of a transaction always add up to
+      zero, so money can only move, never appear or vanish;
+    - a wallet's balance is the sum of its entries, worked out each time it
+      is shown. There is no balance number anywhere that someone could edit;
+    - entries and transactions are written once and can never be changed or
+      deleted. A mistake is put right with a new, opposite transaction, which
+      leaves a visible trail.
+- **"Once only":** every transaction carries a key naming what caused it
+  (for example "registration 123, direct bonus"). If the same cause is
+  posted again, for instance because a job ran twice, nothing new is
+  written. If the same cause arrives with a different amount, it is refused
+  as a fault.
+- **All or nothing:** a payout touching several members either completes for
+  all of them or for none.
+- **A member's wallet never goes below zero.** The platform's own accounts
+  may: a pool line below zero is an overspend, and the specification says it
+  must be shown, never hidden.
+- **The accounts** (from specifications 6 and 7):
+    - each member: Main balance, VISA, Product, Autoship and Savings wallets,
+      and one wallet for each of the 13 bonuses. A wallet opens the first
+      time it is used;
+    - the platform: money coming in and going out, admin corrections, and
+      every budget line of the revenue split (company 30%, leadership 10%,
+      the four operations lines, and the 14 bonus lines of the Consumer
+      Rewards Pool, Commerce Pool and Strategic Reserve).
+- **Money arithmetic** is done in whole kobo, never with decimals that can
+  drift. A tested helper splits an amount by percentages so that the parts
+  add up to the amount exactly; it reproduces the specification's own
+  example (a ₦15,000 pack: company ₦4,500, leadership ₦1,500, operations
+  ₦750, members ₦8,250). It will be used when revenue starts flowing.
+- **A nightly check** (`wiifarm:ledger-check`, 2:15 every morning) confirms
+  that every transaction adds up to zero, the whole ledger adds up to zero,
+  and no member wallet is below zero. Any finding is logged for the team.
+  The test suite proves it catches a figure written behind the ledger's back.
+- **Screens:**
+    - **members:** a new Wallet page with every balance and a statement for
+      each wallet (date, what it was, amount in or out, and the balance
+      after). Bonus wallets appear once they hold something;
+    - **admins:** a member's page now shows their wallets, each opening its
+      full statement;
+    - **add to or subtract from a wallet:** choose the wallet, the amount
+      and a reason (the member sees it on their statement). It asks to
+      confirm, cannot take a wallet below zero, and is written to both the
+      ledger and the audit log. A double click or a resent form counts once.
+      It needs a new permission: "Add to or subtract from a member's wallet".
+- **Tests:** 145 pass (27 new), covering the rules above: double entry,
+  "once only", nothing below zero, all or nothing, nothing editable, and the
+  nightly check.
+- **Checked in a browser:** an admin added ₦25,000 to a member's wallet, was
+  refused when subtracting ₦30,000, then subtracted ₦5,000; the statement
+  showed both with the right balances. A member's Wallet page showed their
+  main balance, a bonus wallet and the statement.
+
+**For the board (added to the open decisions, number 15):** who may add to
+or subtract from a member's wallet? Today any role can be given that
+permission. It could be limited to super-admins, or need a second admin's
+approval above an amount.
+
+**Not in this step (they use the ledger, and come in phase 4):** deposits,
+withdrawals, transfers between members, bonus transfers and e-pins. PV
+accounts for the binary tree come in phase 3.
+
+**For the team:** the live site should run on MySQL or PostgreSQL, not the
+SQLite file used for development, so that the wallet locks hold when many
+members act at the same moment.
+
+**Phase 2 (the foundation) is complete.** Next: phase 3, the binary network
+and PV.

@@ -10,6 +10,7 @@ use App\Models\SponsorChange;
 use App\Models\User;
 use App\Services\Admin\Audit;
 use App\Services\Admin\MemberStanding;
+use App\Services\Ledger\Ledger;
 use App\Services\Members\ChangeSponsor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -78,7 +79,7 @@ class MemberController extends Controller
         ]);
     }
 
-    public function show(User $member): Response
+    public function show(User $member, Ledger $ledger): Response
     {
         $member->load('sponsor');
         $kyc = KycSubmission::where('user_id', $member->id)->latest('id')->first();
@@ -112,6 +113,8 @@ class MemberController extends Controller
                 'sponsor' => $member->sponsor ? ['id' => $member->sponsor->id, 'username' => $member->sponsor->username, 'name' => $member->sponsor->name] : null,
                 'referrals' => $member->referrals()->count(),
             ],
+            'wallets' => $ledger->balances($member),
+            'walletLabels' => config('ledger.member_wallets'),
             'kyc' => $kyc ? ['id' => $kyc->id, 'status' => $kyc->status, 'submitted_at' => $kyc->created_at->toDateTimeString()] : null,
             'sponsorChanges' => SponsorChange::with(['oldSponsor:id,username', 'newSponsor:id,username'])
                 ->where('user_id', $member->id)->latest('id')->limit(20)->get()

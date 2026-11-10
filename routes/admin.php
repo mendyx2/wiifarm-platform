@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KycReviewController;
 use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\MemberWalletController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('members/{member}/block-withdrawals', [MemberController::class, 'blockWithdrawals'])->middleware('admin.can:members.block_withdrawals')->name('members.block-withdrawals');
         Route::post('members/{member}/unblock-withdrawals', [MemberController::class, 'unblockWithdrawals'])->middleware('admin.can:members.block_withdrawals')->name('members.unblock-withdrawals');
         Route::post('members/{member}/sponsor', [MemberController::class, 'changeSponsor'])->middleware('admin.can:members.change_sponsor')->name('members.sponsor');
+        Route::get('members/{member}/wallets/{wallet}', [MemberWalletController::class, 'show'])->middleware('admin.can:members.view')->name('members.wallet');
+        Route::post('members/{member}/wallets', [MemberWalletController::class, 'adjust'])->middleware('admin.can:members.adjust_wallet')->name('members.wallet.adjust');
 
         // KYC review
         Route::get('kyc', [KycReviewController::class, 'index'])->middleware('admin.can:kyc.view')->name('kyc.index');

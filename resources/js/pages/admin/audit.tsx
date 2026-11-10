@@ -60,6 +60,8 @@ const fieldNames: Record<string, string> = {
     last_name: 'last name',
     dial_code: 'dialling code',
     is_active: 'active',
+    balance: 'balance (kobo)',
+    amount: 'amount (kobo)',
 };
 
 const show = (v: unknown) =>
