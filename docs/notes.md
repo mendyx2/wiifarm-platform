@@ -24,3 +24,27 @@ project's context. There is no application code yet.
 
 **Next:** phase 2, the foundation: a fresh project skeleton, Wiifarm's design
 system, accounts, admin roles and permissions, the audit log, and the ledger.
+
+## Step 2: The project skeleton (phase 2a)
+
+**What:** the empty application the platform is built on.
+
+- **Starting point:** Laravel's official React starter kit (`laravel/react-starter-kit`,
+  MIT licence): Laravel 12, Inertia 2, React 19, TypeScript, Tailwind CSS 4 and
+  accessible UI parts (Radix). It brings sign-in, registration, password reset,
+  email verification and profile/password settings, with 26 tests. Nothing in it
+  comes from the old system or the licensed script.
+- **Changes to the kit:**
+    - the welcome page is replaced by a plain Wiifarm page (the real public site
+      comes later, specification section 12);
+    - three form types fixed so TypeScript passes with the current Inertia version;
+    - a `typecheck` script added (`npm run typecheck`);
+    - the app name set to Wiifarm;
+    - the kit's PHP files tidied with Pint (formatting only).
+- **Dependency register:** `docs/dependencies.md` lists all 52 direct packages with
+  their licences. All are MIT, Apache-2.0 or ISC.
+- **Checks:** 26 tests pass; `tsc`, ESLint, Pint and the production build are clean.
+  The GitHub checks that came with the kit (tests and lint) run on every pull request
+  into `main`.
+
+**Next:** Wiifarm's design system (phase 2b).

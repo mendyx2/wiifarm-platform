@@ -14,6 +14,7 @@ open-source tools.
 | [`docs/specification.md`](docs/specification.md) | **What the platform must do.** Members, the binary tree, packages, every bonus, wallets, pools, shop, stockists, savings and loans, admin, schedules. The source of truth for every feature. Section 13 lists the decisions the board still has to make. |
 | [`docs/build-plan.md`](docs/build-plan.md) | **How it is built:** the clean-room rules, the modules, the data design, the seven phases and the gate at the end of each. The two diagrams are in the [online version](https://claude.ai/artifact/5JTPHtPX2RQxvh8ped5bLc). |
 | [`docs/frontend-file-list.md`](docs/frontend-file-list.md) | **Which front-end files from the old system may come across**, and how: reuse, restyle or rebuild. |
+| [`docs/dependencies.md`](docs/dependencies.md) | **Every outside package and its licence.** |
 | [`docs/provenance.md`](docs/provenance.md) | **Where things came from.** Every file brought over from the old system is recorded here, with who reviewed it. |
 
 ## Ground rules (short version; the full rules are in the build plan)
@@ -28,7 +29,19 @@ open-source tools.
 ## Status
 
 - Phase 1, the specification: **done**, waiting for the board's decisions (specification section 13).
-- Phase 2, the foundation (accounts, admin roles, the ledger, the design system): **next**.
+- Phase 2, the foundation: **in progress**. Done: the project skeleton. Next: the design system, member accounts, admin roles and audit log, the ledger.
+
+## Running it
+
+```bash
+composer install && npm ci
+cp .env.example .env && php artisan key:generate
+touch database/database.sqlite && php artisan migrate
+npm run build      # or: npm run dev
+php artisan serve
+php artisan test   # tests
+npm run typecheck  # TypeScript
+```
 
 ## Reference
 
