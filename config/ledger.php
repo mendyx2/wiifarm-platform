@@ -33,6 +33,27 @@ return [
     ],
 
     /*
+     * Each member's PV, per leg of the binary tree (section 3), in hundredths
+     * of a PV. Lifetime PV only grows (awards); pairing PV is used up by
+     * matches, and what is left carries forward.
+     */
+    'member_pv_accounts' => [
+        'pv.L.lifetime' => 'Left leg: lifetime PV',
+        'pv.L.pairing' => 'Left leg: pairing PV',
+        'pv.R.lifetime' => 'Right leg: lifetime PV',
+        'pv.R.pairing' => 'Right leg: pairing PV',
+    ],
+
+    /*
+     * The platform's PV accounts: where PV comes from when a member gains it,
+     * and where pairing PV goes when it is used by a match.
+     */
+    'system_pv_accounts' => [
+        'pv.issued' => 'PV issued (registrations, upgrades, purchases, stores)',
+        'pv.matched' => 'Pairing PV used by matches',
+    ],
+
+    /*
      * The platform's own accounts. These may go below zero: "external" is the
      * other side of money coming in and going out, "adjustments" the other side
      * of admin corrections, and a pool budget line below zero is an overrun,

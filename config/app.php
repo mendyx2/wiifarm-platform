@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // A demo site may build sample data (wiifarm:demo-network) even in production mode.
+    'demo' => (bool) env('APP_DEMO', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

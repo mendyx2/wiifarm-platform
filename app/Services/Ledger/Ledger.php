@@ -108,14 +108,51 @@ class Ledger
         return $this->open('member:'.$member->id, $member->id, $kind, self::NGN);
     }
 
-    /** One of the platform's own accounts. */
-    public function systemAccount(string $kind): Account
+    /** A member's PV account for one leg: $type is "lifetime" or "pairing". */
+    public function pvAccount(User $member, string $leg, string $type): Account
     {
-        if (! array_key_exists($kind, config('ledger.system_accounts'))) {
-            throw new LedgerException("Unknown platform account [{$kind}].");
+        $kind = "pv.{$leg}.{$type}";
+        if (! array_key_exists($kind, config('ledger.member_pv_accounts'))) {
+            throw new LedgerException("Unknown PV account [{$kind}].");
         }
 
-        return $this->open(Account::SYSTEM, null, $kind, self::NGN);
+        return $this->open('member:'.$member->id, $member->id, $kind, self::PV);
+    }
+
+    /** One of the platform's own accounts (naira or PV). */
+    public function systemAccount(string $kind): Account
+    {
+        if (array_key_exists($kind, config('ledger.system_accounts'))) {
+            return $this->open(Account::SYSTEM, null, $kind, self::NGN);
+        }
+        if (array_key_exists($kind, config('ledger.system_pv_accounts'))) {
+            return $this->open(Account::SYSTEM, null, $kind, self::PV);
+        }
+
+        throw new LedgerException("Unknown platform account [{$kind}].");
+    }
+
+    /**
+     * A member's PV on each leg, in hundredths of a PV.
+     *
+     * @return array{L: array{lifetime: int, pairing: int}, R: array{lifetime: int, pairing: int}}
+     */
+    public function pvBalances(User $member): array
+    {
+        $sums = Entry::query()
+            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
+            ->where('ledger_accounts.holder', 'member:'.$member->id)
+            ->where('ledger_accounts.currency', self::PV)
+            ->groupBy('ledger_accounts.kind')
+            ->selectRaw('ledger_accounts.kind as kind, SUM(ledger_entries.amount) as total')
+            ->pluck('total', 'kind');
+
+        $get = fn (string $kind) => (int) ($sums[$kind] ?? 0);
+
+        return [
+            'L' => ['lifetime' => $get('pv.L.lifetime'), 'pairing' => $get('pv.L.pairing')],
+            'R' => ['lifetime' => $get('pv.R.lifetime'), 'pairing' => $get('pv.R.pairing')],
+        ];
     }
 
     /** The sum of an account's entries. */
@@ -135,6 +172,7 @@ class Ledger
         $sums = Entry::query()
             ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
             ->where('ledger_accounts.holder', 'member:'.$member->id)
+            ->where('ledger_accounts.currency', self::NGN)
             ->groupBy('ledger_accounts.kind')
             ->selectRaw('ledger_accounts.kind as kind, SUM(ledger_entries.amount) as total')
             ->pluck('total', 'kind');
@@ -145,8 +183,8 @@ class Ledger
     public function label(Account $account): string
     {
         return $account->isSystem()
-            ? config('ledger.system_accounts')[$account->kind] ?? $account->kind
-            : config('ledger.member_wallets')[$account->kind] ?? $account->kind;
+            ? config('ledger.system_accounts')[$account->kind] ?? config('ledger.system_pv_accounts')[$account->kind] ?? $account->kind
+            : config('ledger.member_wallets')[$account->kind] ?? config('ledger.member_pv_accounts')[$account->kind] ?? $account->kind;
     }
 
     /** @param  list<array{0: Account, 1: int}>  $lines */

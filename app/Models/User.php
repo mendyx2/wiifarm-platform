@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -20,6 +21,9 @@ use Illuminate\Support\Carbon;
  * @property string $last_name
  * @property string $email
  * @property ?int $sponsor_id
+ * @property ?int $package_id
+ * @property ?int $requested_parent_id
+ * @property ?string $requested_leg
  * @property string $status
  * @property ?string $ban_reason
  * @property bool $withdrawals_blocked
@@ -115,6 +119,18 @@ class User extends Authenticatable
     public function referrals(): HasMany
     {
         return $this->hasMany(User::class, 'sponsor_id');
+    }
+
+    /** @return BelongsTo<Package, $this> */
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class);
+    }
+
+    /** The member's place in the binary tree; none until their package is paid. @return HasOne<TreePosition, $this> */
+    public function position(): HasOne
+    {
+        return $this->hasOne(TreePosition::class);
     }
 
     public function isBanned(): bool

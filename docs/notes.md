@@ -449,3 +449,70 @@ members act at the same moment.
 
 **Phase 2 (the foundation) is complete.** Next: phase 3, the binary network
 and PV.
+
+## Step 10: The binary network, part 1: packages, placement and PV (phase 3)
+
+**What this is:** the engine of the network. Nothing here pays a bonus yet
+(that is the next phase); it decides where each member sits and makes sure
+every point of volume (PV) reaches the right people.
+
+- **The seven packages** (specification section 4) are in the database with
+  their price, PV, product packs, direct bonus share, pay per match, daily
+  cap and unilevel depth, exactly as in the table. A package can be marked
+  "no upgrades" or taken off offer. Prices follow the table (₦1,000 per PV);
+  bonuses will be worked out on ₦600 per PV.
+- **Joining:** a person becomes a member when their package is paid. In one
+  step, all or nothing, they are placed in the tree, given the package, and
+  the package's PV climbs the tree. A payment can activate once only: the
+  same payment again changes nothing, and a second payment for an
+  already-paid member is refused. (The payments themselves, Paystack and
+  e-pins, come in the payments phase; they will call this step.)
+- **Placement** (specification section 3):
+    - the company account is the top of the tree;
+    - with no choice, the member goes in the first free place below their
+      sponsor, level by level, left before right;
+    - a member may ask for a parent and a leg. The parent must be inside
+      the sponsor's own tree, or the placement is refused. If the leg asked
+      for is taken, the member goes to the next free place down that same
+      leg;
+    - a place is claimed in one step that only succeeds if it is still
+      free; the database itself refuses a second member in the same place.
+      A member who loses that race is placed again by the same rules (a
+      test forces the race to prove it);
+    - placement never fails silently: if it cannot be done, nothing happens,
+      nothing is paid, and the reason is given;
+    - a place, once given, can never be changed.
+- **PV climbing:**
+    - when a member gains PV, every upline up to the top receives it on the
+      leg the member sits under, twice: as **lifetime PV** (for awards, only
+      ever grows) and as **pairing PV** (for matching, used up by matches,
+      the rest carried forward);
+    - PV from a stockist store counts for awards only, so it is added to
+      lifetime PV and never to pairing PV;
+    - PV is kept in the same ledger as money, in its own unit, so it follows
+      the same rules: every credit is recorded with the member it came from,
+      the leg, the amount and the source; the same source can never climb
+      twice; and the nightly check proves the PV books balance too;
+    - the old system could disagree with itself about which leg a member was
+      on. Here a member's leg is stored in one place only, so that cannot
+      happen. A loop in the tree is impossible for the same reason, but the
+      climb still checks for one, stops, and records it for an admin.
+- **Upgrades:** a member can move to a higher package by paying the
+  difference in price. The PV difference climbs the tree and the new
+  package applies from then on. No downgrades; no upgrade from a package
+  marked "no upgrades". One payment upgrades once only.
+- **A sample network** for trying the screens: `php artisan
+  wiifarm:demo-network` adds ten members with different packages under
+  different sponsors. It refuses to run on the live site.
+- **Tests:** 163 pass (18 new): placement level by level and left first,
+  a taken leg, a parent outside the sponsor's tree, the race for a slot, PV
+  on the right legs all the way up, store PV for awards only, once-only
+  joining and upgrades, and no downgrades.
+
+**For the board (added to the open decisions, number 16):** what happens
+when someone signs up with the referral of a person who has not paid yet,
+and so has no place in the tree? Today the new member's placement is
+refused with a clear message, and nothing is paid.
+
+**Next:** the network screens: the member's team tree and PV log, and the
+admin's view of a member's place and PV.

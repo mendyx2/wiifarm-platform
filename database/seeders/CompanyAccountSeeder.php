@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TreePosition;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -15,7 +16,9 @@ class CompanyAccountSeeder extends Seeder
 {
     public function run(): void
     {
-        if (User::company()) {
+        if ($existing = User::company()) {
+            $this->placeAtTheTop($existing);
+
             return;
         }
 
@@ -32,5 +35,15 @@ class CompanyAccountSeeder extends Seeder
         $company->activated_at = now();
         $company->email_verified_at = now();
         $company->save();
+
+        $this->placeAtTheTop($company);
+    }
+
+    /** The company account is the top of the binary tree (section 3). */
+    private function placeAtTheTop(User $company): void
+    {
+        if (! TreePosition::whereNull('parent_id')->exists()) {
+            TreePosition::create(['user_id' => $company->id, 'parent_id' => null, 'leg' => null, 'depth' => 0]);
+        }
     }
 }
