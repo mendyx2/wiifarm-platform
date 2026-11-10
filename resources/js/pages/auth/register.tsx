@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { countries } from '@/lib/countries';
 
 type RegisterForm = {
     first_name: string;
@@ -28,18 +29,6 @@ interface RegisterProps {
     defaults: { dial_code: string; country: string };
     sponsor: string | null;
 }
-
-/** Countries offered at sign-up. Nigeria first; more can be added here. */
-const countries: [string, string, string][] = [
-    ['NG', 'Nigeria', '234'],
-    ['GH', 'Ghana', '233'],
-    ['BJ', 'Benin', '229'],
-    ['CM', 'Cameroon', '237'],
-    ['KE', 'Kenya', '254'],
-    ['ZA', 'South Africa', '27'],
-    ['GB', 'United Kingdom', '44'],
-    ['US', 'United States', '1'],
-];
 
 function Field({ id, label, error, hint, children }: { id: string; label: string; error?: string; hint?: string; children: ReactNode }) {
     return (

@@ -247,3 +247,67 @@ and a password reset by email code for admins.
 
 **Next:** the admin screens for members (search, details, ban, block
 withdrawals, change sponsor), KYC review and the verification settings.
+
+## Step 7: The admin panel, part 2: members, KYC review and settings (phase 2d)
+
+**What this is:** the first screens admins use every day. Each screen and
+each button checks the admin's role first; an admin without the permission
+does not see the button, and the server refuses the action anyway.
+
+- **Members list:**
+    - search by username, name ("Amaka Okafor" works), email or phone
+      number (with or without the leading 0);
+    - filter by active or banned, KYC state, and paid or free. Each row shows
+      the member's state at a glance;
+    - 25 per page. ("With a balance" joins when wallets are built.)
+- **A member's page:**
+    - their details, with whether the email and phone are confirmed, their
+      sponsor, how many members they referred, whether the package is paid,
+      two-factor, and their latest KYC submission;
+    - **ban / lift a ban:** needs a reason. The member is signed out at once
+      and sees the reason when they try to sign in. The company account
+      cannot be banned;
+    - **block / open withdrawals:** needs a reason, which the member will see
+      when they try to withdraw (withdrawals come with the ledger);
+    - **change the sponsor:** type the new sponsor's username and a reason.
+      The rules from Step 4 apply (no loops, no banned sponsor, and so on).
+      The people this member referred stay with them;
+    - **edit details:** name, email, phone, country and address, with a
+      reason. The username never changes. A new email or phone number has to
+      be confirmed again by the member. Only the fields that changed are
+      recorded;
+    - the page lists every sponsor change and every admin action on this
+      member: when, what, by whom, and why.
+- **KYC review:**
+    - the waiting list shows the oldest first, so members are served in turn;
+      approved, rejected and all can be viewed too;
+    - a submission shows the answers and the photos, which open in full. The
+      files are only reachable by signed-in admins with the KYC permission;
+    - **approve** makes the member verified. **Reject** needs a reason, which
+      the member sees, and they can submit again. Earlier submissions are
+      listed beside it;
+    - a submission can be decided once only; a second decision is refused.
+- **Settings:** the two verification switches (email and phone confirmation).
+  Admins with "See the settings" can look; only a super-admin can change
+  them. Each change is in the audit log with the old and new value.
+- **Every action above is written to the audit log** in the same step as the
+  change itself, so a change can never happen without its log entry.
+- **Tests:** 102 pass (18 new), including: an admin who may only view cannot
+  ban, edit or change a sponsor; a banned member is signed out on their next
+  click; a KYC file cannot be opened by a member through the admin address.
+- **Checked in a browser:** search, a member's page, blocking and opening
+  withdrawals (both shown in the member's history), the KYC waiting list and
+  a submission with its photos, and the settings page.
+
+**For the board (added to the open decisions):** when a member's sponsor is
+changed, should anything else follow? For example, should their place in the
+binary tree move, and should bonuses already paid stay as they are? Today it
+changes the sponsor only, for the future. This matters once bonuses exist
+(phase 3).
+
+**Still to come later:** a member's wallets and tree, adding or subtracting
+from a wallet, signing in as the member to help them, and sending a member a
+notification. Each needs a part that is not built yet.
+
+**Next:** managing admins and roles, and a screen to read the audit log
+(phase 2d, part 3).

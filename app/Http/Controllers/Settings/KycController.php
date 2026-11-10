@@ -57,7 +57,7 @@ class KycController extends Controller
     }
 
     /**
-     * A KYC file, shown only to its owner (admins get their own route in phase 2d).
+     * A KYC file, shown only to its owner (admins use admin.kyc.file).
      */
     public function file(Request $request, KycSubmission $submission, string $field): StreamedResponse
     {

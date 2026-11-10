@@ -36,6 +36,7 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     admin: AdminData | null;
+    flash: { status: string | null };
     [key: string]: unknown;
 }
 

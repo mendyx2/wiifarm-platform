@@ -15,13 +15,21 @@ import {
 } from '@/components/ui/sidebar';
 import { type AdminData, type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, LogOut, type LucideIcon } from 'lucide-react';
+import { CheckCircle2, FileCheck2, LayoutGrid, LogOut, Settings, Users, type LucideIcon } from 'lucide-react';
 
 type AdminNavItem = { title: string; url: string; icon: LucideIcon; permission?: string };
 
-// Later parts add Members, KYC, Settings, Admins and the audit log, each shown
-// only to admins whose role allows it.
-const navItems: AdminNavItem[] = [{ title: 'Dashboard', url: '/admin', icon: LayoutGrid }];
+// Each item shows only to admins whose role allows it. Admins, roles and the
+// audit log join in the next part.
+const navItems: AdminNavItem[] = [
+    { title: 'Dashboard', url: '/admin', icon: LayoutGrid },
+    { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
+    { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
+    { title: 'Settings', url: '/admin/settings', icon: Settings, permission: 'settings.view' },
+];
+
+const isCurrent = (url: string, current: string) =>
+    url === '/admin' ? current === '/admin' : current === url || current.startsWith(url + '/') || current.startsWith(url + '?');
 
 /** May the signed-in admin use this permission? Super-admins may use all. */
 export function useAdminCan() {
@@ -56,7 +64,7 @@ function AdminSidebar() {
                             .filter((item) => !item.permission || can(item.permission))
                             .map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild isActive={item.url === page.url}>
+                                    <SidebarMenuButton asChild isActive={isCurrent(item.url, page.url)}>
                                         <Link href={item.url} prefetch>
                                             <item.icon />
                                             <span>{item.title}</span>
@@ -90,12 +98,26 @@ function AdminSidebar() {
     );
 }
 
+/** The one-line message after an action, e.g. "Member banned and signed out." */
+function FlashMessage() {
+    const { flash } = usePage<SharedData>().props;
+    if (!flash?.status) return null;
+
+    return (
+        <div role="status" className="bg-success-soft text-success mx-4 mt-4 flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium">
+            <CheckCircle2 className="size-4" aria-hidden />
+            {flash.status}
+        </div>
+    );
+}
+
 export default function AdminLayout({ children, breadcrumbs = [] }: { children: React.ReactNode; breadcrumbs?: BreadcrumbItem[] }) {
     return (
         <AppShell variant="sidebar">
             <AdminSidebar />
             <AppContent variant="sidebar">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
+                <FlashMessage />
                 {children}
             </AppContent>
         </AppShell>

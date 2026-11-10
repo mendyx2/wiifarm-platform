@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KycReviewController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
  * The admin panel (specification section 11), under /admin. Admins sign in
- * with the "admin" guard, separately from members.
+ * with the "admin" guard, separately from members. Every page and action
+ * names the permission it needs (config/admin_permissions.php).
  */
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
@@ -17,5 +21,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth:admin', 'admin.active'])->group(function () {
         Route::post('logout', [AdminSessionController::class, 'destroy'])->name('logout');
         Route::get('/', DashboardController::class)->name('dashboard');
+
+        // Members
+        Route::get('members', [MemberController::class, 'index'])->middleware('admin.can:members.view')->name('members.index');
+        Route::get('members/{member}', [MemberController::class, 'show'])->middleware('admin.can:members.view')->name('members.show');
+        Route::patch('members/{member}', [MemberController::class, 'update'])->middleware('admin.can:members.edit')->name('members.update');
+        Route::post('members/{member}/ban', [MemberController::class, 'ban'])->middleware('admin.can:members.ban')->name('members.ban');
+        Route::post('members/{member}/unban', [MemberController::class, 'unban'])->middleware('admin.can:members.ban')->name('members.unban');
+        Route::post('members/{member}/block-withdrawals', [MemberController::class, 'blockWithdrawals'])->middleware('admin.can:members.block_withdrawals')->name('members.block-withdrawals');
+        Route::post('members/{member}/unblock-withdrawals', [MemberController::class, 'unblockWithdrawals'])->middleware('admin.can:members.block_withdrawals')->name('members.unblock-withdrawals');
+        Route::post('members/{member}/sponsor', [MemberController::class, 'changeSponsor'])->middleware('admin.can:members.change_sponsor')->name('members.sponsor');
+
+        // KYC review
+        Route::get('kyc', [KycReviewController::class, 'index'])->middleware('admin.can:kyc.view')->name('kyc.index');
+        Route::get('kyc/{submission}', [KycReviewController::class, 'show'])->middleware('admin.can:kyc.view')->name('kyc.show');
+        Route::get('kyc/{submission}/files/{field}', [KycReviewController::class, 'file'])->middleware('admin.can:kyc.view')->name('kyc.file');
+        Route::post('kyc/{submission}/approve', [KycReviewController::class, 'approve'])->middleware('admin.can:kyc.review')->name('kyc.approve');
+        Route::post('kyc/{submission}/reject', [KycReviewController::class, 'reject'])->middleware('admin.can:kyc.review')->name('kyc.reject');
+
+        // Settings
+        Route::get('settings', [SettingsController::class, 'edit'])->middleware('admin.can:settings.view')->name('settings.edit');
+        Route::put('settings', [SettingsController::class, 'update'])->middleware('admin.can:settings.edit')->name('settings.update');
     });
 });
