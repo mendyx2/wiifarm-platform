@@ -28,8 +28,11 @@ class ProfileUpdateTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->patch('/settings/profile', [
-                'name' => 'Test User',
+                'first_name' => 'Test',
+                'last_name' => 'User',
                 'email' => 'test@example.com',
+                'dial_code' => '234',
+                'mobile' => '8099998888',
             ]);
 
         $response
@@ -39,6 +42,7 @@ class ProfileUpdateTest extends TestCase
         $user->refresh();
 
         $this->assertSame('Test User', $user->name);
+        $this->assertSame('8099998888', $user->mobile);
         $this->assertSame('test@example.com', $user->email);
         $this->assertNull($user->email_verified_at);
     }
@@ -50,8 +54,11 @@ class ProfileUpdateTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->patch('/settings/profile', [
-                'name' => 'Test User',
+                'first_name' => 'Test',
+                'last_name' => 'User',
                 'email' => $user->email,
+                'dial_code' => $user->dial_code,
+                'mobile' => $user->mobile,
             ]);
 
         $response
@@ -61,38 +68,23 @@ class ProfileUpdateTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
-    public function test_user_can_delete_their_account()
+    public function test_the_username_cannot_be_changed()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['username' => 'original_name']);
 
-        $response = $this
-            ->actingAs($user)
-            ->delete('/settings/profile', [
-                'password' => 'password',
-            ]);
+        $this->actingAs($user)->patch('/settings/profile', [
+            'first_name' => 'Test', 'last_name' => 'User', 'email' => $user->email,
+            'dial_code' => '234', 'mobile' => '8099998888', 'username' => 'new_name_here',
+        ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
-
-        $this->assertGuest();
-        $this->assertNull($user->fresh());
+        $this->assertSame('original_name', $user->refresh()->username);
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account()
+    public function test_members_cannot_delete_their_own_account()
     {
         $user = User::factory()->create();
 
-        $response = $this
-            ->actingAs($user)
-            ->from('/settings/profile')
-            ->delete('/settings/profile', [
-                'password' => 'wrong-password',
-            ]);
-
-        $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect('/settings/profile');
+        $this->actingAs($user)->delete('/settings/profile', ['password' => 'password'])->assertStatus(405);
 
         $this->assertNotNull($user->fresh());
     }

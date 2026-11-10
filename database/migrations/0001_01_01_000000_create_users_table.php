@@ -12,13 +12,33 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+            // Members (specification section 2). Admins are a separate table.
             $table->id();
-            $table->string('name');
+            $table->string('username', 40)->unique();
+            $table->string('first_name', 80);
+            $table->string('last_name', 80);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('dial_code', 6);
+            $table->string('mobile', 20);
+            $table->timestamp('mobile_verified_at')->nullable();
+            $table->string('country', 2);
+            $table->string('state', 80)->nullable();
+            $table->string('city', 80)->nullable();
+            $table->string('address')->nullable();
+            // The member who referred them. Only the company account (member #1) has none.
+            $table->foreignId('sponsor_id')->nullable()->constrained('users')->restrictOnDelete();
+            $table->string('status', 10)->default('active'); // active | banned
+            $table->string('ban_reason')->nullable();
+            $table->boolean('withdrawals_blocked')->default(false);
+            $table->string('withdrawals_block_reason')->nullable();
+            // Set when the package is paid: until then the account is pending and earns nothing.
+            $table->timestamp('activated_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index(['sponsor_id', 'status']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -3,7 +3,6 @@ import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -22,9 +21,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
+    const user = auth.user;
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: auth.user.name,
-        email: auth.user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        dial_code: user.dial_code,
+        mobile: user.mobile,
+        state: user.state ?? '',
+        city: user.city ?? '',
+        address: user.address ?? '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -39,23 +45,79 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your name and email address" />
+                    <HeadingSmall title="Profile information" description={`Your username is ${user.username}. It cannot be changed.`} />
 
                     <form onSubmit={submit} className="space-y-6">
+                        <div className="grid gap-6 sm:grid-cols-2">
+                            <div className="grid gap-2">
+                                <Label htmlFor="first_name">First name</Label>
+                                <Input
+                                    id="first_name"
+                                    value={data.first_name}
+                                    onChange={(e) => setData('first_name', e.target.value)}
+                                    required
+                                    autoComplete="given-name"
+                                />
+                                <InputError message={errors.first_name} />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="last_name">Last name</Label>
+                                <Input
+                                    id="last_name"
+                                    value={data.last_name}
+                                    onChange={(e) => setData('last_name', e.target.value)}
+                                    required
+                                    autoComplete="family-name"
+                                />
+                                <InputError message={errors.last_name} />
+                            </div>
+                        </div>
+
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="mobile">Mobile number</Label>
+                            <div className="flex gap-2">
+                                <span className="border-input bg-muted text-muted-foreground flex h-9 items-center rounded-md border px-3 text-sm">
+                                    +{data.dial_code}
+                                </span>
+                                <Input
+                                    id="mobile"
+                                    inputMode="numeric"
+                                    value={data.mobile}
+                                    onChange={(e) => setData('mobile', e.target.value.replace(/\D/g, ''))}
+                                    required
+                                    autoComplete="tel-national"
+                                />
+                            </div>
+                            <InputError message={errors.mobile ?? errors.dial_code} />
+                        </div>
 
+                        <div className="grid gap-6 sm:grid-cols-2">
+                            <div className="grid gap-2">
+                                <Label htmlFor="state">State</Label>
+                                <Input
+                                    id="state"
+                                    value={data.state}
+                                    onChange={(e) => setData('state', e.target.value)}
+                                    autoComplete="address-level1"
+                                />
+                                <InputError message={errors.state} />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="city">City</Label>
+                                <Input id="city" value={data.city} onChange={(e) => setData('city', e.target.value)} autoComplete="address-level2" />
+                                <InputError message={errors.city} />
+                            </div>
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="address">Address</Label>
                             <Input
-                                id="name"
-                                className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                required
-                                autoComplete="name"
-                                placeholder="Full name"
+                                id="address"
+                                value={data.address}
+                                onChange={(e) => setData('address', e.target.value)}
+                                autoComplete="street-address"
                             />
-
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError message={errors.address} />
                         </div>
 
                         <div className="grid gap-2">
@@ -75,7 +137,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className="mt-2" message={errors.email} />
                         </div>
 
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
+                        {mustVerifyEmail && user.email_verified_at === null && (
                             <div>
                                 <p className="mt-2 text-sm text-neutral-800">
                                     Your email address is unverified.
@@ -112,8 +174,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
                     </form>
                 </div>
-
-                <DeleteUser />
             </SettingsLayout>
         </AppLayout>
     );

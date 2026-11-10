@@ -25,12 +25,29 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'username' => fake()->unique()->regexify('[a-z]{6}[0-9]{3}'),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
+            'dial_code' => '234',
+            'mobile' => fake()->numerify('80########'),
+            'country' => 'NG',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /** A member whose package has been paid. */
+    public function activated(): static
+    {
+        return $this->state(fn (array $attributes) => ['activated_at' => now()]);
+    }
+
+    /** A banned member. */
+    public function banned(string $reason = 'Breach of the member terms'): static
+    {
+        return $this->state(fn (array $attributes) => ['status' => 'banned', 'ban_reason' => $reason]);
     }
 
     /**

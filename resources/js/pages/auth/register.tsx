@@ -1,27 +1,70 @@
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, type ReactNode } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
 type RegisterForm = {
-    name: string;
+    first_name: string;
+    last_name: string;
+    username: string;
     email: string;
+    dial_code: string;
+    mobile: string;
+    country: string;
+    sponsor: string;
     password: string;
     password_confirmation: string;
+    terms: boolean;
 };
 
-export default function Register() {
+interface RegisterProps {
+    defaults: { dial_code: string; country: string };
+    sponsor: string | null;
+}
+
+/** Countries offered at sign-up. Nigeria first; more can be added here. */
+const countries: [string, string, string][] = [
+    ['NG', 'Nigeria', '234'],
+    ['GH', 'Ghana', '233'],
+    ['BJ', 'Benin', '229'],
+    ['CM', 'Cameroon', '237'],
+    ['KE', 'Kenya', '254'],
+    ['ZA', 'South Africa', '27'],
+    ['GB', 'United Kingdom', '44'],
+    ['US', 'United States', '1'],
+];
+
+function Field({ id, label, error, hint, children }: { id: string; label: string; error?: string; hint?: string; children: ReactNode }) {
+    return (
+        <div className="grid gap-2">
+            <Label htmlFor={id}>{label}</Label>
+            {children}
+            {hint && !error && <p className="text-muted-foreground text-xs">{hint}</p>}
+            <InputError message={error} />
+        </div>
+    );
+}
+
+export default function Register({ defaults, sponsor }: RegisterProps) {
     const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({
-        name: '',
+        first_name: '',
+        last_name: '',
+        username: '',
         email: '',
+        dial_code: defaults.dial_code,
+        mobile: '',
+        country: defaults.country,
+        sponsor: sponsor ?? '',
         password: '',
         password_confirmation: '',
+        terms: false,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -31,87 +74,155 @@ export default function Register() {
         });
     };
 
+    const pickCountry = (code: string) => {
+        const match = countries.find(([c]) => c === code);
+        setData((d) => ({ ...d, country: code, dial_code: match ? match[2] : d.dial_code }));
+    };
+
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
-            <Head title="Register" />
+        <AuthLayout title="Join Wiifarm" description="Create your account. You become a member when your package is paid.">
+            <Head title="Join Wiifarm" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="name"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            disabled={processing}
-                            placeholder="Full name"
-                        />
-                        <InputError message={errors.name} className="mt-2" />
+                <div className="grid gap-5">
+                    <div className="grid gap-5 sm:grid-cols-2">
+                        <Field id="first_name" label="First name" error={errors.first_name}>
+                            <Input
+                                id="first_name"
+                                required
+                                autoFocus
+                                autoComplete="given-name"
+                                value={data.first_name}
+                                onChange={(e) => setData('first_name', e.target.value)}
+                                disabled={processing}
+                            />
+                        </Field>
+                        <Field id="last_name" label="Last name" error={errors.last_name}>
+                            <Input
+                                id="last_name"
+                                required
+                                autoComplete="family-name"
+                                value={data.last_name}
+                                onChange={(e) => setData('last_name', e.target.value)}
+                                disabled={processing}
+                            />
+                        </Field>
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                    <Field
+                        id="username"
+                        label="Username"
+                        error={errors.username}
+                        hint="6 to 40 letters, numbers or underscores. It cannot be changed later."
+                    >
+                        <Input
+                            id="username"
+                            required
+                            autoComplete="username"
+                            value={data.username}
+                            onChange={(e) => setData('username', e.target.value)}
+                            disabled={processing}
+                        />
+                    </Field>
+
+                    <Field id="email" label="Email address" error={errors.email}>
                         <Input
                             id="email"
                             type="email"
                             required
-                            tabIndex={2}
                             autoComplete="email"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             disabled={processing}
-                            placeholder="email@example.com"
+                            placeholder="you@example.com"
                         />
-                        <InputError message={errors.email} />
+                    </Field>
+
+                    <Field id="country" label="Country" error={errors.country}>
+                        <select
+                            id="country"
+                            className="border-input bg-background focus-visible:ring-ring h-9 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
+                            value={data.country}
+                            onChange={(e) => pickCountry(e.target.value)}
+                            disabled={processing}
+                        >
+                            {countries.map(([code, name]) => (
+                                <option key={code} value={code}>
+                                    {name}
+                                </option>
+                            ))}
+                        </select>
+                    </Field>
+
+                    <Field id="mobile" label="Mobile number" error={errors.mobile ?? errors.dial_code} hint="Digits only, without the country code.">
+                        <div className="flex gap-2">
+                            <span className="border-input bg-muted text-muted-foreground flex h-9 items-center rounded-md border px-3 text-sm">
+                                +{data.dial_code}
+                            </span>
+                            <Input
+                                id="mobile"
+                                required
+                                inputMode="numeric"
+                                autoComplete="tel-national"
+                                value={data.mobile}
+                                onChange={(e) => setData('mobile', e.target.value.replace(/\D/g, ''))}
+                                disabled={processing}
+                                placeholder="8012345678"
+                            />
+                        </div>
+                    </Field>
+
+                    <Field
+                        id="sponsor"
+                        label="Sponsor's username (optional)"
+                        error={errors.sponsor}
+                        hint="The member who invited you. Leave it blank if nobody did."
+                    >
+                        <Input id="sponsor" value={data.sponsor} onChange={(e) => setData('sponsor', e.target.value)} disabled={processing} />
+                    </Field>
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                        <Field id="password" label="Password" error={errors.password}>
+                            <Input
+                                id="password"
+                                type="password"
+                                required
+                                autoComplete="new-password"
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                disabled={processing}
+                            />
+                        </Field>
+                        <Field id="password_confirmation" label="Type it again" error={errors.password_confirmation}>
+                            <Input
+                                id="password_confirmation"
+                                type="password"
+                                required
+                                autoComplete="new-password"
+                                value={data.password_confirmation}
+                                onChange={(e) => setData('password_confirmation', e.target.value)}
+                                disabled={processing}
+                            />
+                        </Field>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={3}
-                            autoComplete="new-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            disabled={processing}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
+                        <div className="flex items-start gap-3">
+                            <Checkbox id="terms" checked={data.terms} onCheckedChange={(v) => setData('terms', v === true)} disabled={processing} />
+                            <Label htmlFor="terms" className="leading-snug font-normal">
+                                I accept the Wiifarm member terms.
+                            </Label>
+                        </div>
+                        <InputError message={errors.terms} />
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
-                            id="password_confirmation"
-                            type="password"
-                            required
-                            tabIndex={4}
-                            autoComplete="new-password"
-                            value={data.password_confirmation}
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
-                            disabled={processing}
-                            placeholder="Confirm password"
-                        />
-                        <InputError message={errors.password_confirmation} />
-                    </div>
-
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                    <Button type="submit" className="mt-1 w-full" disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
+                        Create my account
                     </Button>
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
-                        Log in
-                    </TextLink>
+                    Already a member? <TextLink href={route('login')}>Sign in</TextLink>
                 </div>
             </form>
         </AuthLayout>

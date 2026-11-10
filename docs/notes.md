@@ -78,3 +78,58 @@ system, accounts, admin roles and permissions, the audit log, and the ledger.
   mode and at phone width (no sideways scrolling).
 
 **Next:** member accounts (phase 2c).
+
+## Step 4: Member accounts, part 1 (phase 2c)
+
+**What:** the member record and sign-up, sign-in and profile rules from
+specification section 2.
+
+- **The member record** (`users` table, `App\Models\User`):
+    - username, first and last name, email, dialling code and mobile, country,
+      state, city, address;
+    - the sponsor;
+    - status (active or banned, with a reason);
+    - a separate block on withdrawals (with a reason);
+    - `activated_at`, set when the package is paid. Until then the account is
+      pending.
+
+  Sponsor, status, bans and activation can never be set from a form.
+- **The company account** (`CompanyAccountSeeder`): member #1, username
+  `wiifarm` (a setting), with no sponsor, activated. It is created once, by
+  `php artisan db:seed`. Its password is random; set a real one with "forgot
+  password" before using it.
+- **Sign-up:**
+    - the specification's fields, with clear messages;
+    - usernames are 6 to 40 letters, digits or underscores, and unique;
+    - the mobile is digits only, and a local leading zero is dropped
+      (0801... with +234 is stored as 801...);
+    - the terms must be ticked;
+    - the sponsor is optional. Blank means the company account; an unknown or
+      banned sponsor is refused. A referral link (`/register?ref=username`)
+      fills it in.
+
+  Placement in the network and the package come later (phases 3 and 4).
+- **Sign-in:** by username or email. A banned member cannot sign in and is told
+  why. A member banned while signed in is signed out on their next page
+  (`SignOutBannedMembers`).
+- **Profile settings:** first and last name, email, mobile, state, city,
+  address. The username cannot be changed. Changing the email or mobile
+  clears its verification.
+- **Removed:** the kit's "delete my account" button and route. A cooperative
+  that holds members' money and ledger records should not let accounts vanish,
+  and the specification has no such feature. Closing an account can become an
+  admin action if the board wants one.
+- **Sponsor changes** (`App\Services\Members\ChangeSponsor`):
+    - every change is logged in `sponsor_changes` with the old sponsor, the new
+      sponsor, the admin and a reason;
+    - refused: no reason, a member sponsoring themselves, the same sponsor, a
+      banned sponsor, the company account, and any change that would make a
+      loop (the new sponsor sitting in the member's own downline).
+
+  The admin screen for it comes with phase 2d.
+- **Tests:** 46 pass (19 new or rewritten), including every refusal above.
+  Checked in a browser: a real sign-up with mistakes first, then success,
+  landing on the dashboard as a pending account under the company account.
+
+**Still to come in accounts (part 2):** KYC (the form, private uploads, admin
+review), two-factor sign-in, and the email and phone verification switches.

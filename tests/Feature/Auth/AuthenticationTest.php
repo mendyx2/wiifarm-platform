@@ -12,33 +12,55 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered()
     {
-        $response = $this->get('/login');
-
-        $response->assertStatus(200);
+        $this->get('/login')->assertStatus(200);
     }
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    public function test_members_can_sign_in_with_their_email()
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
+        $response = $this->post('/login', ['login' => $user->email, 'password' => 'password']);
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_members_can_sign_in_with_their_username()
+    {
+        $user = User::factory()->create(['username' => 'amaka_okafor']);
+
+        $this->post('/login', ['login' => 'amaka_okafor', 'password' => 'password']);
+
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
         $user = User::factory()->create();
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
-        ]);
+        $this->post('/login', ['login' => $user->email, 'password' => 'wrong-password']);
 
+        $this->assertGuest();
+    }
+
+    public function test_banned_members_cannot_sign_in_and_see_why()
+    {
+        $user = User::factory()->banned('Fake documents')->create();
+
+        $this->post('/login', ['login' => $user->username, 'password' => 'password'])
+            ->assertSessionHasErrors(['login' => 'This account has been banned: Fake documents Contact Wiifarm support if you think this is a mistake.']);
+
+        $this->assertGuest();
+    }
+
+    public function test_a_member_banned_while_signed_in_is_signed_out()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->get('/dashboard')->assertOk();
+
+        $user->forceFill(['status' => User::STATUS_BANNED, 'ban_reason' => 'Fraud'])->save();
+
+        $this->get('/dashboard')->assertRedirect(route('login'));
         $this->assertGuest();
     }
 

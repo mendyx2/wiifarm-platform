@@ -17,7 +17,14 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            // The username is permanent; everything else here the member may change.
+            'first_name' => ['required', 'string', 'max:80'],
+            'last_name' => ['required', 'string', 'max:80'],
+            'dial_code' => ['required', 'string', 'regex:/^[0-9]{1,4}$/'],
+            'mobile' => ['required', 'string', 'regex:/^[0-9]{6,15}$/'],
+            'state' => ['nullable', 'string', 'max:80'],
+            'city' => ['nullable', 'string', 'max:80'],
+            'address' => ['nullable', 'string', 'max:255'],
 
             'email' => [
                 'required',
