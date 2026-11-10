@@ -13,19 +13,21 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { type AdminData, type BreadcrumbItem, type SharedData } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CheckCircle2, FileCheck2, LayoutGrid, LogOut, Settings, Users, type LucideIcon } from 'lucide-react';
+import { CheckCircle2, FileCheck2, KeyRound, LayoutGrid, LogOut, ScrollText, Settings, ShieldCheck, Users, type LucideIcon } from 'lucide-react';
 
 type AdminNavItem = { title: string; url: string; icon: LucideIcon; permission?: string };
 
-// Each item shows only to admins whose role allows it. Admins, roles and the
-// audit log join in the next part.
+// Each item shows only to admins whose role allows it.
 const navItems: AdminNavItem[] = [
     { title: 'Dashboard', url: '/admin', icon: LayoutGrid },
     { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
     { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
     { title: 'Settings', url: '/admin/settings', icon: Settings, permission: 'settings.view' },
+    { title: 'Admins', url: '/admin/admins', icon: ShieldCheck, permission: 'admins.manage' },
+    { title: 'Roles', url: '/admin/roles', icon: KeyRound, permission: 'roles.manage' },
+    { title: 'Audit log', url: '/admin/audit', icon: ScrollText, permission: 'audit.view' },
 ];
 
 const isCurrent = (url: string, current: string) =>
@@ -33,13 +35,13 @@ const isCurrent = (url: string, current: string) =>
 
 /** May the signed-in admin use this permission? Super-admins may use all. */
 export function useAdminCan() {
-    const admin = usePage<SharedData>().props.admin as AdminData | null;
+    const admin = usePage<SharedData>().props.signedInAdmin;
     return (permission: string) => !!admin && (admin.isSuper || admin.permissions.includes(permission));
 }
 
 function AdminSidebar() {
     const page = usePage<SharedData>();
-    const admin = page.props.admin as AdminData | null;
+    const admin = page.props.signedInAdmin;
     const can = useAdminCan();
 
     return (

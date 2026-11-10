@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KycReviewController;
 use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,5 +45,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Settings
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('admin.can:settings.view')->name('settings.edit');
         Route::put('settings', [SettingsController::class, 'update'])->middleware('admin.can:settings.edit')->name('settings.update');
+
+        // Admins and roles (super-admin only)
+        Route::middleware('admin.can:admins.manage')->group(function () {
+            Route::get('admins', [AdminController::class, 'index'])->name('admins.index');
+            Route::get('admins/create', [AdminController::class, 'create'])->name('admins.create');
+            Route::post('admins', [AdminController::class, 'store'])->name('admins.store');
+            Route::get('admins/{admin}', [AdminController::class, 'edit'])->name('admins.edit');
+            Route::put('admins/{admin}', [AdminController::class, 'update'])->name('admins.update');
+            Route::post('admins/{admin}/deactivate', [AdminController::class, 'deactivate'])->name('admins.deactivate');
+            Route::post('admins/{admin}/activate', [AdminController::class, 'activate'])->name('admins.activate');
+        });
+        Route::middleware('admin.can:roles.manage')->group(function () {
+            Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+            Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+            Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+            Route::get('roles/{role}', [RoleController::class, 'edit'])->name('roles.edit');
+            Route::put('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+            Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+        });
+
+        // The audit log (read only)
+        Route::get('audit', AuditLogController::class)->middleware('admin.can:audit.view')->name('audit');
     });
 });

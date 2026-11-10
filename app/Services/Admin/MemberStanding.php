@@ -75,7 +75,7 @@ class MemberStanding
     {
         DB::transaction(function () use ($admin, $member, $action, $new, $note) {
             $locked = User::lockForUpdate()->findOrFail($member->id);
-            $old = array_intersect_key($locked->getAttributes(), $new);
+            $old = $locked->only(array_keys($new)); // with casts applied, e.g. true/false rather than 1/0
 
             $locked->forceFill($new)->save();
             $this->audit->record($admin, $action, $locked, $old, $new, $note);

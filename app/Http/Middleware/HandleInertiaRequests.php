@@ -51,7 +51,8 @@ class HandleInertiaRequests extends Middleware
             ],
             // On admin pages: the signed-in admin and what their roles allow,
             // so the panel only shows what they may use.
-            'admin' => fn () => $this->admin($request),
+            // Named so no page's own "admin" prop (e.g. the admin being edited) can hide it.
+            'signedInAdmin' => fn () => $this->admin($request),
             // A one-line message after an action, e.g. "Details saved."
             'flash' => ['status' => fn () => $request->session()->get('status')],
         ]);

@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { DataTable } from '@/components/wf/data-table';
 import AdminLayout, { useAdminCan } from '@/layouts/admin-layout';
+import { auditActionName } from '@/lib/audit-actions';
 import { countries, countryName } from '@/lib/countries';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -50,16 +51,6 @@ interface ShowProps {
     sponsorChanges: { id: number; from: string | null; to: string | null; reason: string; at: string }[];
     history: { id: number; action: string; admin: string | null; note: string | null; at: string }[];
 }
-
-/** Plain-English names for audit-log actions on a member. */
-const actionNames: Record<string, string> = {
-    'members.edit': 'Details edited',
-    'members.ban': 'Banned',
-    'members.unban': 'Ban lifted',
-    'members.block_withdrawals': 'Withdrawals blocked',
-    'members.unblock_withdrawals': 'Withdrawals opened',
-    'members.change_sponsor': 'Sponsor changed',
-};
 
 function Detail({ label, children }: { label: string; children: ReactNode }) {
     return (
@@ -410,7 +401,7 @@ export default function MemberShow({ member, kyc, sponsorChanges, history }: Sho
                         emptyTitle="No admin actions yet"
                         columns={[
                             { key: 'at', header: 'When', cell: (h) => h.at, className: 'whitespace-nowrap' },
-                            { key: 'action', header: 'Action', cell: (h) => actionNames[h.action] ?? h.action },
+                            { key: 'action', header: 'Action', cell: (h) => auditActionName(h.action) },
                             { key: 'admin', header: 'By', cell: (h) => (h.admin ? `@${h.admin}` : 'System') },
                             { key: 'note', header: 'Reason', cell: (h) => h.note ?? '—' },
                         ]}

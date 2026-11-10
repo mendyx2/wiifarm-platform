@@ -311,3 +311,62 @@ notification. Each needs a part that is not built yet.
 
 **Next:** managing admins and roles, and a screen to read the audit log
 (phase 2d, part 3).
+
+## Step 8: The admin panel, part 3: admins, roles and the audit log (phase 2d)
+
+**What this is:** the screens a super-admin uses to decide who can run the
+platform and what each person may do, and the screen for reading the audit
+log. Only super-admins see Admins and Roles.
+
+- **Admins:**
+    - the list shows each admin, their roles, whether they are active, and
+      when they last signed in;
+    - **add an admin:** name, username (permanent), email, a password of at
+      least 12 characters, and one or more roles. The password is never
+      written to the audit log, and the screen reminds you to hand it over in
+      person, not by email;
+    - **change an admin:** name, email, roles, or a new password;
+    - **deactivate or reactivate** with a reason. A deactivated admin is
+      signed out on their next click. Admins are never deleted, so the log
+      always knows who did what.
+- **Two safety rules:**
+    - there is always at least one active super-admin. The last one cannot be
+      deactivated or lose the super-admin role, so the panel can never be
+      locked with nobody able to manage it. (A deactivated super-admin does
+      not count.)
+    - nobody can deactivate their own account.
+- **Roles:**
+    - create a role, name it, say what it is for, and tick its permissions,
+      grouped as Members, KYC, Settings, Audit and Admins;
+    - the super-admin-only permissions are shown but cannot be ticked;
+    - the super-admin role itself always has everything and cannot be
+      changed or deleted;
+    - a role can be deleted only when no admin has it;
+    - a changed role takes effect from each admin's next click.
+- **The audit log screen:**
+    - every entry: when, which admin, what they did, which record (with a
+      link to it, if the viewer may open it), what changed (old value struck
+      through, new value in green), the reason, and the IP address;
+    - filter by admin, action, kind of record, record number and dates;
+    - read only. There is no button or address that changes or deletes an
+      entry; a test checks that.
+- **A fault found and fixed while checking in the browser:** the page for
+  editing an admin hid the signed-in admin's own details, because both were
+  called "admin" behind the scenes. They now have different names, and a test
+  guards it.
+- **Also tidied:** "before" values in the log now read "yes/no" instead of
+  "1/0".
+- **Tests:** 118 pass (16 new), including: an admin with every ordinary
+  permission still cannot manage admins or roles; the last super-admin is
+  protected; a role cannot be given super-admin-only permissions.
+- **Checked in a browser:** creating a "Support desk" role, adding an admin
+  with it, the audit log showing both, and that admin signing in to see only
+  Members, KYC review and Audit log (Admins is refused).
+
+**Phase 2d is complete** apart from two items the specification asks for
+that are best done together later: two-factor sign-in for admins and an
+admin password reset by email code (both need email sending, which comes
+with message templates).
+
+**Next:** the ledger (phase 2e): wallets and entries, where every naira and
+PV point is recorded and nothing is ever paid twice.

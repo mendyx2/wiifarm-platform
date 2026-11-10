@@ -117,6 +117,7 @@ class MemberAdminTest extends TestCase
         $this->post("/admin/members/{$member->id}/unblock-withdrawals", ['reason' => 'Cleared'])->assertSessionHasNoErrors();
         $this->assertFalse($member->fresh()->withdrawals_blocked);
         $this->assertSame(2, AuditLog::whereIn('action', ['members.block_withdrawals', 'members.unblock_withdrawals'])->count());
+        $this->assertSame(['withdrawals_blocked' => false, 'withdrawals_block_reason' => null], AuditLog::where('action', 'members.block_withdrawals')->sole()->old_values);
     }
 
     public function test_editing_details_records_only_what_changed_and_asks_for_new_contacts_to_be_confirmed()

@@ -130,8 +130,8 @@ class AdminAccessTest extends TestCase
         $this->actingAs($admin, 'admin')->get('/admin')
             ->assertInertia(fn ($page) => $page
                 ->component('admin/dashboard')
-                ->where('admin.isSuper', false)
-                ->where('admin.permissions', ['members.view', 'kyc.view']));
+                ->where('signedInAdmin.isSuper', false)
+                ->where('signedInAdmin.permissions', ['members.view', 'kyc.view']));
     }
 
     public function test_a_super_admin_has_every_permission()

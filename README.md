@@ -29,7 +29,7 @@ open-source tools.
 ## Status
 
 - Phase 1, the specification: **done**, waiting for the board's decisions (specification section 13).
-- Phase 2, the foundation: **in progress**. Done: the project skeleton, the design system, member accounts, the base of the admin panel (sign-in, roles, audit log), and the admin screens for members, KYC review and settings. Next: managing admins and roles, the audit log viewer, the ledger.
+- Phase 2, the foundation: **in progress**. Done: the project skeleton, the design system, member accounts, the base of the admin panel (sign-in, roles, audit log), the admin screens for members, KYC review and settings, and managing admins, roles and the audit log. Next: the ledger.
 
 ## Running it
 
