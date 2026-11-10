@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -43,8 +45,36 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                // Always the member (the web guard). On admin pages the admin
+                // guard is the default, and an admin is never shared as a member.
+                'user' => $request->is('admin', 'admin/*') ? null : Auth::guard('web')->user(),
             ],
+            // On admin pages: the signed-in admin and what their roles allow,
+            // so the panel only shows what they may use.
+            'admin' => fn () => $this->admin($request),
         ]);
+    }
+
+    /** @return array<string, mixed>|null */
+    private function admin(Request $request): ?array
+    {
+        if (! $request->is('admin', 'admin/*')) {
+            return null;
+        }
+
+        $admin = Auth::guard('admin')->user();
+
+        if (! $admin instanceof Admin) {
+            return null;
+        }
+
+        return [
+            'id' => $admin->id,
+            'name' => $admin->name,
+            'username' => $admin->username,
+            'email' => $admin->email,
+            'isSuper' => $admin->isSuper(),
+            'permissions' => $admin->permissions(),
+        ];
     }
 }

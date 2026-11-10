@@ -195,3 +195,55 @@ KYC and two-factor sign-in, plus a store for admin settings.
 
 **Next:** admins, roles and permissions, and the audit log (phase 2d). The
 admin screens for KYC review, sponsor changes and settings come with it.
+
+## Step 6: The admin panel, part 1: sign-in, roles and the audit log (phase 2d)
+
+**What this is:** the base that every admin screen will stand on. Admins are
+the staff who run Wiifarm. This step decides who they are, how they sign in,
+what each one is allowed to do, and how every change they make is recorded.
+
+- **Admins are separate from members:**
+    - their own accounts, their own sign-in page at `/admin/login`, and their
+      own session. A member's password never opens the admin panel, and an
+      admin is never signed in as a member;
+    - admins sign in with a username and password. Five wrong passwords lock
+      that username, from that computer, for a minute;
+    - each sign-in is recorded (time, and the audit log below).
+- **There is no default admin and no default password.** The first
+  super-admin is made on the server with `php artisan wiifarm:create-admin`,
+  which asks for the name, username, email and a password of at least 12
+  characters. Nobody can sign in with a guessed starting password.
+- **Roles and permissions** (specification section 11):
+    - every admin action has a named permission, such as "Ban and unban
+      members" or "Approve or reject KYC submissions". The full list, in plain
+      English, is in `config/admin_permissions.php`; later parts add theirs;
+    - a role is a set of permissions, and an admin can have more than one
+      role;
+    - the super-admin role has every permission. Three are super-admin only
+      and cannot be put in any other role: managing admins, managing roles,
+      and changing system settings. The database refuses any attempt;
+    - every admin page and action checks the permission on the server. The
+      menu also hides what an admin may not use, but the server check is the
+      real lock.
+- **Deactivating an admin:** a deactivated admin cannot sign in, and one who
+  is already signed in is signed out on their next click.
+- **The audit log:**
+    - every admin action that changes data records who did it, what they did,
+      which record, the values before and after, the time, the IP address and
+      the browser;
+    - entries can only be added. The software refuses to change or delete
+      one, so the log cannot be edited from the panel or by any code in it.
+- **The admin dashboard:** for now, members, paid members, banned members and
+  KYC waiting for review. Money, orders, stockists, pins and the pools join as
+  those parts are built.
+- **Tests:** 84 pass (18 new), including: a member cannot use the admin
+  panel; a deactivated admin is signed out; a support role cannot be given
+  super-admin powers; the audit log cannot be changed or deleted.
+- **Checked in a browser:** a wrong password refused, signing in, the
+  dashboard, the member area still closed to the admin, and signing out.
+
+**Still to come for admins** (specification section 11): two-factor sign-in
+and a password reset by email code for admins.
+
+**Next:** the admin screens for members (search, details, ban, block
+withdrawals, change sponsor), KYC review and the verification settings.

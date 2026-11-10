@@ -29,7 +29,7 @@ open-source tools.
 ## Status
 
 - Phase 1, the specification: **done**, waiting for the board's decisions (specification section 13).
-- Phase 2, the foundation: **in progress**. Done: the project skeleton. Next: the design system, member accounts, admin roles and audit log, the ledger.
+- Phase 2, the foundation: **in progress**. Done: the project skeleton, the design system, member accounts, and the base of the admin panel (sign-in, roles, audit log). Next: the admin screens for members, KYC and settings; managing admins and roles; the ledger.
 
 ## Running it
 
@@ -38,6 +38,7 @@ composer install && npm ci
 cp .env.example .env && php artisan key:generate
 touch database/database.sqlite && php artisan migrate
 npm run build      # or: npm run dev
+php artisan wiifarm:create-admin   # the first super-admin (asks for the details)
 php artisan serve
 php artisan test   # tests
 npm run typecheck  # TypeScript

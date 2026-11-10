@@ -21,10 +21,21 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+/** The signed-in admin, shared on admin pages only. */
+export interface AdminData {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    isSuper: boolean;
+    permissions: string[];
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    admin: AdminData | null;
     [key: string]: unknown;
 }
 
