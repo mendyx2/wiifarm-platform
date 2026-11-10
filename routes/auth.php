@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\MobileVerificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -35,6 +36,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Phone verification (specification section 2)
+    Route::get('verify-mobile', [MobileVerificationController::class, 'show'])->name('mobile.verify');
+    Route::post('verify-mobile/send', [MobileVerificationController::class, 'send'])
+        ->middleware('throttle:3,1')
+        ->name('mobile.verify.send');
+    Route::post('verify-mobile', [MobileVerificationController::class, 'verify'])
+        ->middleware('throttle:10,1')
+        ->name('mobile.verify.check');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
