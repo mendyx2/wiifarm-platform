@@ -12,6 +12,7 @@ use App\Services\Admin\Audit;
 use App\Services\Admin\MemberStanding;
 use App\Services\Ledger\Ledger;
 use App\Services\Members\ChangeSponsor;
+use App\Services\Network\Genealogy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -79,7 +80,7 @@ class MemberController extends Controller
         ]);
     }
 
-    public function show(User $member, Ledger $ledger): Response
+    public function show(User $member, Ledger $ledger, Genealogy $genealogy): Response
     {
         $member->load('sponsor');
         $kyc = KycSubmission::where('user_id', $member->id)->latest('id')->first();
@@ -113,6 +114,7 @@ class MemberController extends Controller
                 'sponsor' => $member->sponsor ? ['id' => $member->sponsor->id, 'username' => $member->sponsor->username, 'name' => $member->sponsor->name] : null,
                 'referrals' => $member->referrals()->count(),
             ],
+            'network' => $this->network($member, $genealogy),
             'wallets' => $ledger->balances($member),
             'walletLabels' => config('ledger.member_wallets'),
             'kyc' => $kyc ? ['id' => $kyc->id, 'status' => $kyc->status, 'submitted_at' => $kyc->created_at->toDateTimeString()] : null,
@@ -224,6 +226,22 @@ class MemberController extends Controller
                 $audit->record($admin, 'members.change_sponsor', $member, ['sponsor_id' => $oldSponsorId], ['sponsor_id' => $newSponsor->id], $change->reason);
             });
         }, 'sponsor', 'Sponsor changed.');
+    }
+
+    /** @return array<string, mixed> */
+    private function network(User $member, Genealogy $genealogy): array
+    {
+        $member->load(['package:id,name', 'position.parent:id,username']);
+        $position = $member->position;
+
+        return [
+            'package' => $member->package?->name,
+            'placed' => $position !== null,
+            'parent' => $position?->parent ? ['id' => $position->parent->id, 'username' => $position->parent->username] : null,
+            'leg' => $position?->leg,
+            'depth' => $position?->depth,
+            'pv' => $genealogy->pvFor([$member->id])[$member->id] ?? null,
+        ];
     }
 
     private function admin(Request $request): Admin

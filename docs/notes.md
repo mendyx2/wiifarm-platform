@@ -516,3 +516,51 @@ refused with a clear message, and nothing is paid.
 
 **Next:** the network screens: the member's team tree and PV log, and the
 admin's view of a member's place and PV.
+
+## Step 11: The binary network, part 2: the screens (phase 3)
+
+**What this is:** the pages where members and admins see the network built in
+Step 10.
+
+- **For members, "My team":**
+    - the PV on each leg: what is waiting to be matched, and the lifetime
+      total;
+    - the tree below them, four levels at a time: each member's username,
+      name, package, and the PV waiting on their left and right legs. Free
+      places are shown. Clicking a member shows the team below them, with
+      "One level up" and "Back to me";
+    - a member can only look down their own team, never above themselves or
+      into someone else's (the server refuses);
+    - a member whose package is not paid yet is told they will get their place
+      as soon as it is;
+    - **PV log:** every PV credit, newest first: who it came from, why
+      (joined, upgraded, product purchase, stockist store), which leg, and how
+      much pairing and lifetime PV it added.
+- **For admins:**
+    - a member's page has a new **Network** card: their package, where they
+      sit (parent, leg, how many levels below the top), their PV on both
+      legs, and links to their tree, their PV log and their parent;
+    - the tree and PV log of any member, moving up or down freely;
+    - a **Packages** page: the seven packages with price, PV, PV value, packs,
+      direct bonus, pay per match, daily cap, unilevel depth and how many
+      members hold each. For now it can be read, not changed; changing a
+      package is a plan setting and will be logged like every setting.
+- **At sign-up:** a new "Choose your place in the team (optional)" section:
+  a parent's username and a side. The parent must be in the sponsor's team,
+  and the side must be free at that moment; otherwise the form says why. If
+  the side is taken by the time the package is paid, the member goes down that
+  same side, as the specification says.
+- **Tests:** 171 pass (8 new), including that a member cannot see above
+  themselves or into another team.
+- **Checked in a browser** with the sample network: a Mega member's team
+  showed left 120 PV and right 615 PV, which match the packages below her
+  (60 + 30 + 30, and 105 + 60 + 450). A member who asked for a taken left
+  side was placed further down the left. The admin tree of the company showed
+  1,185 PV left and 420 PV right, and the packages page matched the plan's
+  table. Looking above oneself was refused.
+- **Fixed while checking:** on the admin tree, cards in the fourth row
+  overlapped on a laptop screen; they now shrink to fit.
+
+**Phase 3 is complete.** Next: the bonuses (direct, indirect, key-in,
+upgrade, matching with daily caps and carry-forward, and the rest of
+specification section 5), paid through the ledger, each once only.

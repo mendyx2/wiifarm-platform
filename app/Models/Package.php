@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Support\Money;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * A package a member holds (specification section 4). Its price is in kobo;
@@ -31,6 +33,21 @@ class Package extends Model
     protected function casts(): array
     {
         return ['price' => 'integer', 'pv' => 'integer', 'upgradable' => 'boolean', 'is_active' => 'boolean'];
+    }
+
+    /** @return HasMany<User, $this> */
+    public function members(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
+    /** One match is 50 PV on each leg; its value is 50 × ₦600 = ₦30,000 (section 4). */
+    public const MATCH_PV = 50;
+
+    /** What one match pays this package, in kobo: its match percentage of one match's value. */
+    public function perMatch(): int
+    {
+        return Money::share(self::MATCH_PV * self::PV_VALUE_KOBO, $this->match_percent);
     }
 
     /** The package's PV value in kobo: what its bonuses are worked out on. */

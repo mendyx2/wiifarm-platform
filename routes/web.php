@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Member\TeamController;
 use App\Http\Controllers\Member\WalletController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,6 +15,8 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('wallet', WalletController::class)->name('wallet');
+    Route::get('team', [TeamController::class, 'tree'])->name('team');
+    Route::get('team/pv', [TeamController::class, 'pv'])->name('team.pv');
 });
 
 // Design reference: every building block of the Wiifarm design system on one

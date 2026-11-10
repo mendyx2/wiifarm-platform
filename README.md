@@ -30,7 +30,8 @@ open-source tools.
 
 - Phase 1, the specification: **done**, waiting for the board's decisions (specification section 13).
 - Phase 2, the foundation: **done**. The project skeleton, the design system, member accounts, the admin panel (sign-in, roles, audit log, members, KYC review, settings, admins and roles) and the ledger with wallets.
-- Next: phase 3, the binary network and PV.
+- Phase 3, the binary network and PV: **done**. Packages, placement in the tree, PV climbing on the right legs, joining and upgrades (once per payment), the team tree and PV log for members, and the admin's network views.
+- Next: the bonuses (compensation), then payments.
 
 ## Running it
 
@@ -40,6 +41,7 @@ cp .env.example .env && php artisan key:generate
 touch database/database.sqlite && php artisan migrate
 npm run build      # or: npm run dev
 php artisan wiifarm:create-admin   # the first super-admin (asks for the details)
+php artisan wiifarm:demo-network   # optional: ten sample members (password123); never on the live site
 php artisan serve
 php artisan test   # tests
 npm run typecheck  # TypeScript

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KycReviewController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberWalletController;
+use App\Http\Controllers\Admin\NetworkController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('members/{member}/unblock-withdrawals', [MemberController::class, 'unblockWithdrawals'])->middleware('admin.can:members.block_withdrawals')->name('members.unblock-withdrawals');
         Route::post('members/{member}/sponsor', [MemberController::class, 'changeSponsor'])->middleware('admin.can:members.change_sponsor')->name('members.sponsor');
         Route::get('members/{member}/wallets/{wallet}', [MemberWalletController::class, 'show'])->middleware('admin.can:members.view')->name('members.wallet');
+        Route::get('members/{member}/tree', [NetworkController::class, 'tree'])->middleware('admin.can:members.view')->name('members.tree');
+        Route::get('members/{member}/pv', [NetworkController::class, 'pv'])->middleware('admin.can:members.view')->name('members.pv');
         Route::post('members/{member}/wallets', [MemberWalletController::class, 'adjust'])->middleware('admin.can:members.adjust_wallet')->name('members.wallet.adjust');
 
         // KYC review
@@ -44,6 +47,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('kyc/{submission}/files/{field}', [KycReviewController::class, 'file'])->middleware('admin.can:kyc.view')->name('kyc.file');
         Route::post('kyc/{submission}/approve', [KycReviewController::class, 'approve'])->middleware('admin.can:kyc.review')->name('kyc.approve');
         Route::post('kyc/{submission}/reject', [KycReviewController::class, 'reject'])->middleware('admin.can:kyc.review')->name('kyc.reject');
+
+        // Packages (read only for now; changing a package is a plan setting)
+        Route::get('packages', [NetworkController::class, 'packages'])->middleware('admin.can:settings.view')->name('packages');
 
         // Settings
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('admin.can:settings.view')->name('settings.edit');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\Network\Tree;
 use App\Support\Settings;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -44,6 +45,8 @@ class RegisteredUserController extends Controller
         $request->merge([
             'username' => trim((string) $request->input('username')),
             'sponsor' => trim((string) $request->input('sponsor')) ?: null,
+            'parent' => trim((string) $request->input('parent')) ?: null,
+            'leg' => $request->input('leg') ?: null,
         ]);
 
         $request->validate([
@@ -55,6 +58,8 @@ class RegisteredUserController extends Controller
             'mobile' => ['required', 'string', 'regex:/^[0-9]{6,15}$/'],
             'country' => ['required', 'string', 'size:2', 'alpha'],
             'sponsor' => ['nullable', 'string', 'max:40'],
+            'parent' => ['nullable', 'string', 'max:40'],
+            'leg' => ['nullable', 'in:L,R'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'terms' => ['accepted'],
         ], [
@@ -64,10 +69,14 @@ class RegisteredUserController extends Controller
         ]);
 
         $sponsor = $this->sponsorFor($request->input('sponsor'));
+        $parent = $this->parentFor($request->input('parent'), $request->input('leg'), $sponsor);
 
         $user = new User($request->only('first_name', 'last_name', 'username', 'email', 'dial_code', 'mobile', 'password'));
         $user->country = strtoupper($request->input('country'));
         $user->sponsor_id = $sponsor->id;
+        // The place asked for is used when the package is paid (specification section 3).
+        $user->requested_parent_id = $parent?->id;
+        $user->requested_leg = $request->input('leg');
         $user->save();
 
         event(new Registered($user));
@@ -106,5 +115,38 @@ class RegisteredUserController extends Controller
         }
 
         return $sponsor;
+    }
+
+    /**
+     * The parent asked for, if any: a member with a place in the sponsor's own
+     * tree. A leg asked for must be free now; if it is taken by the time the
+     * package is paid, the member goes down that same leg.
+     *
+     * @throws ValidationException
+     */
+    private function parentFor(?string $username, ?string $leg, User $sponsor): ?User
+    {
+        $tree = app(Tree::class);
+        $parent = $username === null ? null : User::where('username', $username)->first();
+
+        if ($username !== null && $parent === null) {
+            throw ValidationException::withMessages(['parent' => 'There is no member with that username.']);
+        }
+
+        $under = $parent ?? $sponsor;
+        if (! $under->position()->exists()) {
+            if ($parent === null && $leg === null) {
+                return null; // no choice made: nothing to check now
+            }
+            throw ValidationException::withMessages([$parent ? 'parent' : 'leg' => "@{$under->username} has no place in the team yet, so you cannot choose a place under them. Leave this blank."]);
+        }
+        if ($parent !== null && ! $tree->isInTreeOf($parent->id, $sponsor->id)) {
+            throw ValidationException::withMessages(['parent' => "@{$parent->username} is not in your sponsor's team. Choose someone in it, or leave this blank."]);
+        }
+        if ($leg !== null && isset($tree->children([$under->id])[$under->id][$leg])) {
+            throw ValidationException::withMessages(['leg' => 'That place is already taken. Choose the other side, or leave it as "No preference".']);
+        }
+
+        return $parent;
     }
 }

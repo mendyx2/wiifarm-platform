@@ -13,6 +13,7 @@ import { auditActionName } from '@/lib/audit-actions';
 import { countries, countryName } from '@/lib/countries';
 import { coreWallets } from '@/lib/ledger';
 import { formatKobo } from '@/lib/money';
+import { emptyPv, pv, type PvTotals } from '@/lib/network';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Ban, ShieldAlert } from 'lucide-react';
@@ -47,8 +48,18 @@ interface Member {
     referrals: number;
 }
 
+interface Network {
+    package: string | null;
+    placed: boolean;
+    parent: { id: number; username: string } | null;
+    leg: 'L' | 'R' | null;
+    depth: number | null;
+    pv: PvTotals | null;
+}
+
 interface ShowProps {
     member: Member;
+    network: Network;
     wallets: Record<string, number>;
     walletLabels: Record<string, string>;
     kyc: { id: number; status: string; submitted_at: string } | null;
@@ -309,7 +320,65 @@ function AdjustWallet({ member, labels }: { member: Member; labels: Record<strin
     );
 }
 
-export default function MemberShow({ member, wallets, walletLabels, kyc, sponsorChanges, history }: ShowProps) {
+function NetworkCard({ member, network }: { member: Member; network: Network }) {
+    const t = network.pv ?? emptyPv;
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-base">Network</CardTitle>
+                <CardDescription>
+                    {network.placed
+                        ? network.parent
+                            ? `Placed under @${network.parent.username} on the ${network.leg === 'L' ? 'left' : 'right'}, ${network.depth} levels below the top.`
+                            : 'The top of the tree.'
+                        : 'No place in the tree yet: the package is not paid.'}
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-5">
+                    <div>
+                        <dt className="text-muted-foreground">Package</dt>
+                        <dd className="font-medium">{network.package ?? '—'}</dd>
+                    </div>
+                    <div>
+                        <dt className="text-muted-foreground">Left, to match</dt>
+                        <dd className="font-medium tabular-nums">{pv(t.L.pairing)} PV</dd>
+                    </div>
+                    <div>
+                        <dt className="text-muted-foreground">Right, to match</dt>
+                        <dd className="font-medium tabular-nums">{pv(t.R.pairing)} PV</dd>
+                    </div>
+                    <div>
+                        <dt className="text-muted-foreground">Left, lifetime</dt>
+                        <dd className="font-medium tabular-nums">{pv(t.L.lifetime)} PV</dd>
+                    </div>
+                    <div>
+                        <dt className="text-muted-foreground">Right, lifetime</dt>
+                        <dd className="font-medium tabular-nums">{pv(t.R.lifetime)} PV</dd>
+                    </div>
+                </dl>
+                {network.placed && (
+                    <div className="flex flex-wrap gap-2">
+                        <Button asChild variant="secondary" size="sm">
+                            <Link href={route('admin.members.tree', member.id)}>See the tree below</Link>
+                        </Button>
+                        <Button asChild variant="ghost" size="sm">
+                            <Link href={route('admin.members.pv', member.id)}>PV log</Link>
+                        </Button>
+                        {network.parent && (
+                            <Button asChild variant="ghost" size="sm">
+                                <Link href={route('admin.members.show', network.parent.id)}>Parent: @{network.parent.username}</Link>
+                            </Button>
+                        )}
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+    );
+}
+
+export default function MemberShow({ member, network, wallets, walletLabels, kyc, sponsorChanges, history }: ShowProps) {
     const can = useAdminCan();
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/admin' },
@@ -459,6 +528,8 @@ export default function MemberShow({ member, wallets, walletLabels, kyc, sponsor
                         )}
                     </div>
                 </div>
+
+                <NetworkCard member={member} network={network} />
 
                 <div className="grid gap-6 lg:grid-cols-2">
                     <Card>

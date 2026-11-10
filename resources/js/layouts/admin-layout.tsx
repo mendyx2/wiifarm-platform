@@ -15,7 +15,19 @@ import {
 } from '@/components/ui/sidebar';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CheckCircle2, FileCheck2, KeyRound, LayoutGrid, LogOut, ScrollText, Settings, ShieldCheck, Users, type LucideIcon } from 'lucide-react';
+import {
+    Boxes,
+    CheckCircle2,
+    FileCheck2,
+    KeyRound,
+    LayoutGrid,
+    LogOut,
+    ScrollText,
+    Settings,
+    ShieldCheck,
+    Users,
+    type LucideIcon,
+} from 'lucide-react';
 
 type AdminNavItem = { title: string; url: string; icon: LucideIcon; permission?: string };
 
@@ -24,6 +36,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Dashboard', url: '/admin', icon: LayoutGrid },
     { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
     { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
+    { title: 'Packages', url: '/admin/packages', icon: Boxes, permission: 'settings.view' },
     { title: 'Settings', url: '/admin/settings', icon: Settings, permission: 'settings.view' },
     { title: 'Admins', url: '/admin/admins', icon: ShieldCheck, permission: 'admins.manage' },
     { title: 'Roles', url: '/admin/roles', icon: KeyRound, permission: 'roles.manage' },

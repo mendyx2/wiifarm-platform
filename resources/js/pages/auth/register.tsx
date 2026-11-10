@@ -20,6 +20,8 @@ type RegisterForm = {
     mobile: string;
     country: string;
     sponsor: string;
+    parent: string;
+    leg: '' | 'L' | 'R';
     password: string;
     password_confirmation: string;
     terms: boolean;
@@ -51,6 +53,8 @@ export default function Register({ defaults, sponsor }: RegisterProps) {
         mobile: '',
         country: defaults.country,
         sponsor: sponsor ?? '',
+        parent: '',
+        leg: '',
         password: '',
         password_confirmation: '',
         terms: false,
@@ -168,6 +172,32 @@ export default function Register({ defaults, sponsor }: RegisterProps) {
                     >
                         <Input id="sponsor" value={data.sponsor} onChange={(e) => setData('sponsor', e.target.value)} disabled={processing} />
                     </Field>
+
+                    <details className="rounded-md border px-3 py-2 text-sm" open={!!(data.parent || data.leg || errors.parent || errors.leg)}>
+                        <summary className="cursor-pointer font-medium">Choose your place in the team (optional)</summary>
+                        <p className="text-muted-foreground mt-2 text-xs">
+                            Leave this alone unless your sponsor told you where to go. Without a choice you get the first free place below your
+                            sponsor.
+                        </p>
+                        <div className="mt-3 grid gap-5 sm:grid-cols-2">
+                            <Field id="parent" label="Place me under (username)" error={errors.parent} hint="Must be in your sponsor's team.">
+                                <Input id="parent" value={data.parent} onChange={(e) => setData('parent', e.target.value)} disabled={processing} />
+                            </Field>
+                            <Field id="leg" label="On their" error={errors.leg}>
+                                <select
+                                    id="leg"
+                                    className="border-input bg-background h-10 rounded-md border px-3 text-sm"
+                                    value={data.leg}
+                                    onChange={(e) => setData('leg', e.target.value as RegisterForm['leg'])}
+                                    disabled={processing}
+                                >
+                                    <option value="">No preference</option>
+                                    <option value="L">Left</option>
+                                    <option value="R">Right</option>
+                                </select>
+                            </Field>
+                        </div>
+                    </details>
 
                     <div className="grid gap-5 sm:grid-cols-2">
                         <Field id="password" label="Password" error={errors.password}>
