@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\KycController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
     Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::get('settings/kyc', [KycController::class, 'edit'])->name('kyc.edit');
+    Route::post('settings/kyc', [KycController::class, 'store'])->middleware('throttle:5,1')->name('kyc.store');
+    Route::get('settings/kyc/{submission}/{field}', [KycController::class, 'file'])->name('kyc.file');
 
     Route::get('settings/appearance', function () {
         return Inertia::render('settings/appearance');

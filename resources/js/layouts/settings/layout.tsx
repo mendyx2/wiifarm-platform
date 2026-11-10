@@ -12,6 +12,11 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
+        title: 'Identity (KYC)',
+        url: '/settings/kyc',
+        icon: null,
+    },
+    {
         title: 'Password',
         url: '/settings/password',
         icon: null,
