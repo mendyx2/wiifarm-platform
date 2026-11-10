@@ -13,5 +13,11 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 });
 
+// Design reference: every building block of the Wiifarm design system on one
+// page, for reviewers. Only on a developer's machine, never on the live site.
+if (app()->environment('local', 'testing')) {
+    Route::get('design', fn () => Inertia::render('design'))->name('design');
+}
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

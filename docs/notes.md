@@ -48,3 +48,33 @@ system, accounts, admin roles and permissions, the audit log, and the ledger.
   into `main`.
 
 **Next:** Wiifarm's design system (phase 2b).
+
+## Step 3: Wiifarm's design system (phase 2b)
+
+**What:** Wiifarm's own look, set in one place so every screen shares it.
+
+- **Colours** (`resources/css/app.css`): a primary green, a harvest-gold accent,
+  warm neutral greys, and named colours for status: success, warning, info and
+  danger, each with a soft background. Light and dark versions of everything.
+- **Type:** the free Inter typeface, from Bunny Fonts.
+- **Logo:** a sprout mark drawn for this project, with the name "Wiifarm
+  Cooperative" (`app-logo.tsx`, `app-logo-icon.tsx`).
+- **Building blocks:**
+    - status badges: paid, pending, rejected, under review and package
+      (`ui/badge.tsx`);
+    - coloured messages (`ui/alert.tsx`);
+    - `wf/stat-card.tsx`: one headline figure with its label;
+    - `wf/data-table.tsx`: plain tables with numbers aligned right, scrolling
+      sideways on phones;
+    - `wf/empty-state.tsx`: what an empty list shows;
+    - `lib/money.ts`: shows kobo as naira, and PV.
+- **Design reference page** (`/design`): every building block on one page for
+  reviewers. It exists only on a developer's machine; on the live site the
+  address does not exist (checked).
+- **Removed:** the kit's links to Laravel's own website from the sidebar and
+  header.
+- **Checks:** 27 tests pass (one new, for the design page). TypeScript, ESLint,
+  Prettier and the build are clean. Checked in a browser in light mode, dark
+  mode and at phone width (no sideways scrolling).
+
+**Next:** member accounts (phase 2c).
