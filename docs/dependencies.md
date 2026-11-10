@@ -8,9 +8,11 @@ that adds a package. Regenerate the versions with the commands at the bottom.
 
 | Package | Version | Licence | Used for |
 | --- | --- | --- | --- |
+| `bacon/bacon-qr-code` | 3.1.1 | BSD-2-Clause | Draws the QR code for two-factor setup |
 | `inertiajs/inertia-laravel` | v2.0.28 | MIT | Serves React pages from Laravel |
 | `laravel/framework` | v12.71.0 | MIT | The application framework |
 | `laravel/tinker` | v2.11.1 | MIT | Command-line console |
+| `pragmarx/google2fa` | 9.1.0 | MIT | Checks authenticator-app codes (two-factor sign-in) |
 | `tightenco/ziggy` | v2.6.5 | MIT | Laravel route names in the front end |
 | `fakerphp/faker` (development only) | v1.24.1 | MIT | Development tooling |
 | `laravel/pail` (development only) | v1.2.7 | MIT | Development tooling |

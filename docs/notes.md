@@ -133,3 +133,65 @@ specification section 2.
 
 **Still to come in accounts (part 2):** KYC (the form, private uploads, admin
 review), two-factor sign-in, and the email and phone verification switches.
+
+## Step 5: Member accounts, part 2 (phase 2c)
+
+**What:** the rest of specification section 2: the verification switches,
+KYC and two-factor sign-in, plus a store for admin settings.
+
+- **Admin settings** (`settings` table, `App\Support\Settings`):
+    - every setting an admin may change, with its default in
+      `config/wiifarm.php`;
+    - a setting nobody has changed uses its default, so every setting has a
+      known value from day one;
+    - the screen to change them comes with the admin panel (phase 2d).
+- **Email and phone verification switches** (both off by default):
+    - when a switch is on, a member who has not confirmed is sent to confirm
+      before using the member area (`RequireVerification`). Profile settings
+      stay open, so a wrong email or number can be corrected;
+    - the email confirmation link is sent at sign-up when the switch is on;
+    - phone codes are 6 digits, sent by SMS, and only their hash is stored;
+    - a code lasts 10 minutes, and 5 wrong tries void it. A changed number
+      voids the code, and changing the number clears its verification;
+    - SMS sending sits behind one interface (`SmsSender`). Until Wiifarm picks
+      a provider, messages are written to the log.
+- **KYC:**
+    - the form's fields are a setting (`kyc.fields`). By default: NIN
+      (11 digits), ID document type, a photo of the ID, and a photo of the
+      member's face;
+    - files (JPG, PNG or PDF, up to 5 MB) are stored outside the public
+      folder and only shown to their owner (admins get access in phase 2d);
+    - states are unverified, pending and verified;
+    - the review service (`App\Services\Members\Kyc`): approve, or reject
+      with a reason. After a rejection the member sees the reason and submits
+      again, and earlier submissions stay as a record;
+    - each submission keeps a copy of the form as it stood, so a later change
+      to the form cannot change its meaning;
+    - the "already under review" check is made on a locked database row, so
+      two submissions at the same moment cannot both pass; a refused
+      submission leaves no files behind.
+- **Two-factor sign-in** (optional per member):
+    - works with any authenticator app (Google Authenticator, Microsoft
+      Authenticator, Authy);
+    - to turn it on: type the password, scan the QR code (or type the key),
+      then type one code from the app;
+    - eight backup codes are shown once. Each works one time only, and new
+      ones can be made (the old ones then stop working);
+    - with it on, a correct password alone does not sign in: the next step
+      asks for a code from the app, or a backup code;
+    - the secret is stored encrypted; the backup codes are encrypted and
+      hashed. Neither is ever sent to the browser except the setup key, once;
+    - turning it on or off and making new codes each need the password;
+    - every step is rate-limited.
+- **New libraries:** `pragmarx/google2fa` (MIT) and `bacon/bacon-qr-code`
+  (BSD-2-Clause), both added to `docs/dependencies.md`.
+- **Tests:** 66 pass (20 new).
+- **Checked in a browser:**
+    - a KYC submission with real files, shown as "under review", with the
+      member's own files opening;
+    - turning two-factor on (with a code computed the way an authenticator
+      app does), the backup codes shown, then signing out and back in through
+      the code step.
+
+**Next:** admins, roles and permissions, and the audit log (phase 2d). The
+admin screens for KYC review, sponsor changes and settings come with it.

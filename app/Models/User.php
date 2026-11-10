@@ -66,6 +66,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -82,6 +84,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'mobile_verified_at' => 'datetime',
             'activated_at' => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
             'withdrawals_blocked' => 'boolean',
             'password' => 'hashed',
         ];
