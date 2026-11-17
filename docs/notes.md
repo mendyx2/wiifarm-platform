@@ -564,3 +564,18 @@ Step 10.
 **Phase 3 is complete.** Next: the bonuses (direct, indirect, key-in,
 upgrade, matching with daily caps and carry-forward, and the rest of
 specification section 5), paid through the ledger, each once only.
+
+## Step 12: Checking the board's Allocation Blueprint V2 (no code)
+
+The board sent its final decisions on bonuses and allocations: the
+Allocation Blueprint V2 and its Baseline Rules. Before building anything,
+they were checked against the arithmetic and simulated on growing networks.
+The full review, the questions for the board and the build plan are in
+`docs/blueprint-v2-review.md`.
+
+In short: the registration and upgrade bonuses, the key-in bonus and the
+stockist activation bonus now fit their pools exactly. Binary matching,
+unilevel, rank awards and repurchase awards would pay more than their pools
+take in as the network grows, so the board needs to say what happens when a
+pool is short. Fourteen questions are listed, and specification sections 5
+and 7 will be updated to match V2 once they are answered.
