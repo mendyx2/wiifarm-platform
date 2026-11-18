@@ -26,6 +26,7 @@ type Props = {
     team?: { direct: number; waiting: number; size: { L: number; R: number } };
     lastMatch?: { day: string; matches: number; amount: number; capped: boolean; status: string } | null;
     autoship?: { bought: number; needed: number } | null;
+    leadership?: { pv: number; needed: number; last: { month: string; amount: number; status: string } | null };
     toCollect?: number;
     recent?: { id: number; at: string; amount: number; wallet: string; memo: string | null }[];
 };
@@ -64,7 +65,7 @@ function ReferralLink({ link }: { link: string }) {
     );
 }
 
-export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch, autoship, toCollect = 0, recent = [] }: Props) {
+export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch, autoship, leadership, toCollect = 0, recent = [] }: Props) {
     if (!member || !money || !team) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -203,6 +204,51 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                         </CardContent>
                     </Card>
                 </div>
+
+                {leadership && (
+                    <Card className="py-0">
+                        <CardContent className="space-y-3 p-5">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                <h2 className="font-medium">Leadership bonus</h2>
+                                {leadership.pv >= leadership.needed && <Badge variant="gold">You qualify</Badge>}
+                            </div>
+                            <p className="text-muted-foreground text-sm">
+                                Leaders earn 5% of what their team earns from matching each month. You qualify at {pv(leadership.needed)} PV of
+                                repurchases.
+                            </p>
+                            <div>
+                                <div className="flex justify-between text-sm">
+                                    <span>Your repurchase PV</span>
+                                    <span className="tabular-nums">
+                                        {pv(leadership.pv)} / {pv(leadership.needed)} PV
+                                    </span>
+                                </div>
+                                <div
+                                    className="bg-muted mt-1 h-2 overflow-hidden rounded-full"
+                                    role="progressbar"
+                                    aria-label="Repurchase PV towards the leadership bonus"
+                                    aria-valuemin={0}
+                                    aria-valuemax={leadership.needed}
+                                    aria-valuenow={Math.min(leadership.pv, leadership.needed)}
+                                >
+                                    <div
+                                        className="bg-primary h-full"
+                                        style={{ width: `${Math.min(100, (leadership.pv / leadership.needed) * 100)}%` }}
+                                    />
+                                </div>
+                            </div>
+                            {leadership.last && (
+                                <p className="text-sm">
+                                    {leadership.last.month}:{' '}
+                                    {leadership.last.amount > 0
+                                        ? formatKobo(leadership.last.amount)
+                                        : 'nothing this time (your team earned no matching)'}{' '}
+                                    {leadership.last.status === 'held' && <Badge variant="warning">Held until the pool refills</Badge>}
+                                </p>
+                            )}
+                        </CardContent>
+                    </Card>
+                )}
 
                 <section className="space-y-2">
                     <div className="flex items-center justify-between">

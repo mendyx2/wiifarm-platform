@@ -180,6 +180,11 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 - **Paid:** monthly, for the month just ended. Each month is paid once.
 - **Open:** whether "team" means the whole downline or a set number of levels (section 13).
 - **Replaced:** the current system pays 4% to anyone with 1,000 PV on each leg, up to 5 levels above each matching payout. That is replaced by the plan's rule.
+- **How it is run** (built November 2026):
+  - On the first of each month (02:30 Lagos time), every member with 480,000 PV on their repurchase PV log by the end of the month just ended earns 5% of what their team earned from matching on days in that month. A missed month is caught up by the next run, and a month is never paid twice.
+  - Until the board decides (decision 3), who the "team" is, is an admin setting: everyone below the leader in the binary tree (the default), or everyone down their sponsor chain, to a set number of levels or generations, or with no limit. Each month's run records the rule it used.
+  - A leader inside another leader's team still counts in that team, so both leaders earn on the same matching.
+  - When the leadership line and Pool A's contingency fund are short, the payout is held until they refill (section 7).
 
 ### 5.8 Binary awards (recognition ranks)
 
@@ -532,7 +537,7 @@ The specification can be signed off once the board settles the points below.
 
 - [x] **1. Plan versus budget.** Settled for the direct, indirect, key-in, upgrade and stockist lines by Blueprint V3 (section 7): each line now holds what the plan pays. Still open for matching, unilevel and awards (17 and 18 below). *Earlier question:* Several plan payouts are larger than their blueprint budget lines. Direct is 25% of package value against a 6% line, and unilevel can reach 49% across 15 generations against 9%. When a payout would overrun its line, should it be paid in full and reported, capped at the line, or should the plan or the budget be revised?
 - [x] **2. Funding between engines.** Settled by Blueprint V3: each kind of purchase funds its own ledger (section 7). *Earlier question:* Does revenue from registrations fund only the Consumer Rewards Pool and commerce revenue only the Commerce Pool? Or is every payment split across all three pools in the 22 / 24.75 / 8.25 ratio?
-- [ ] **3. Leadership bonus team.** Does "5% of what your team members earn from matching" cover the whole downline, or a set number of levels or generations? Is it counted through the tree or the referral chain?
+- [ ] **3. Leadership bonus team.** Does "5% of what your team members earn from matching" cover the whole downline, or a set number of levels or generations? Is it counted through the tree or the referral chain? *Built as an admin setting, starting with the whole binary-tree downline (5.7). Also: when one leader is in another leader's team, should both earn on the same matching (as built), or should the upper leader skip the lower leader's team?*
 - [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus?
 - [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
 - [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).

@@ -5,7 +5,6 @@ namespace Tests\Feature\Members;
 use App\Models\User;
 use App\Support\Settings;
 use Illuminate\Support\Str;
-use Illuminate\Support\Str;
 use Tests\Feature\Network\NetworkTestCase;
 
 /** The member dashboard: money, PV, team and what needs doing. */

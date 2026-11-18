@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compensation\LeadershipPayout;
 use App\Models\Compensation\MemberMatch;
 use App\Models\Ledger\Entry;
 use App\Models\Shop\Order;
@@ -63,6 +64,12 @@ class DashboardController extends Controller
                 'bought' => $this->boughtThisMonth($ledger, $member),
                 'needed' => (int) config('compensation.matching.autoship_month_pv'),
             ] : null,
+            'leadership' => [
+                'pv' => $ledger->balance($ledger->repurchasePvAccount($member)),
+                'needed' => (int) config('compensation.leadership.qualifying_pv'),
+                'last' => ($l = LeadershipPayout::with('run:id,month')->where('user_id', $member->id)->latest('id')->first())
+                    ? ['month' => $l->run->month, 'amount' => $l->amount, 'status' => $l->currentStatus()] : null,
+            ],
             'toCollect' => Order::where('user_id', $member->id)->where('status', Order::PAID)->count(),
             'recent' => Entry::with('transaction:id,memo,created_at', 'account:id,kind')
                 ->whereIn('account_id', $bonusAccounts)->where('amount', '>', 0)->latest('id')->limit(6)->get()

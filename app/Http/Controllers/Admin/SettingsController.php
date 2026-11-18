@@ -35,7 +35,29 @@ class SettingsController extends Controller
                 'help' => $help,
                 'value' => (bool) Settings::get($key),
             ])->values(),
+            'leadership' => ['team' => Settings::get('leadership.team'), 'levels' => (int) Settings::get('leadership.levels')],
         ]);
+    }
+
+    /** Who counts as a leader's team for the leadership bonus (open decision 3). */
+    public function updateLeadership(Request $request, Audit $audit): RedirectResponse
+    {
+        $data = $request->validate(['team' => ['required', 'in:tree,sponsor'], 'levels' => ['required', 'integer', 'min:0', 'max:100']]);
+        /** @var Admin $admin */
+        $admin = $request->user('admin');
+
+        DB::transaction(function () use ($data, $admin, $audit) {
+            $old = ['leadership.team' => Settings::get('leadership.team'), 'leadership.levels' => (int) Settings::get('leadership.levels')];
+            $new = ['leadership.team' => $data['team'], 'leadership.levels' => (int) $data['levels']];
+            if ($old !== $new) {
+                foreach ($new as $key => $value) {
+                    Settings::set($key, $value, $admin->id);
+                }
+                $audit->record($admin, 'settings.edit', null, $old, $new, 'Leadership bonus team');
+            }
+        });
+
+        return back()->with('status', 'Leadership team saved. It applies from the next monthly run.');
     }
 
     public function update(Request $request, Audit $audit): RedirectResponse

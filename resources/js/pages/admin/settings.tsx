@@ -2,7 +2,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { FormField, selectClass } from '@/components/wf/form-field';
 import AdminLayout, { useAdminCan } from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
@@ -26,7 +28,56 @@ const titles: Record<string, string> = {
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */
 const field = (key: string) => key.replace(/\./g, '_');
 
-export default function AdminSettings({ switches }: { switches: Switch[] }) {
+function LeadershipTeam({ value, editable }: { value: { team: string; levels: number }; editable: boolean }) {
+    const form = useForm({ team: value.team, levels: value.levels });
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        form.put(route('admin.settings.leadership'), { preserveScroll: true, onSuccess: () => form.setDefaults() });
+    };
+    const unit = form.data.team === 'sponsor' ? 'generations' : 'levels';
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-base">Leadership bonus: who is the team</CardTitle>
+                <CardDescription>
+                    A leader earns 5% of what their team earns from matching each month. The board has not yet said who the team is (open decision 3),
+                    so it is set here. A change applies from the next monthly run, and each run records the rule it used.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={submit} className="grid gap-4 sm:grid-cols-[2fr_1fr_auto] sm:items-end">
+                    <FormField id="l-team" label="Count the team through" error={form.errors.team}>
+                        <select
+                            id="l-team"
+                            className={selectClass}
+                            disabled={!editable}
+                            value={form.data.team}
+                            onChange={(e) => form.setData('team', e.target.value)}
+                        >
+                            <option value="tree">The binary tree: everyone below the leader</option>
+                            <option value="sponsor">The sponsor chain: everyone the leader brought in, and theirs</option>
+                        </select>
+                    </FormField>
+                    <FormField id="l-levels" label={`How many ${unit}`} error={form.errors.levels} hint="0 means no limit.">
+                        <Input
+                            id="l-levels"
+                            type="number"
+                            min={0}
+                            max={100}
+                            disabled={!editable}
+                            value={form.data.levels}
+                            onChange={(e) => form.setData('levels', Number(e.target.value))}
+                        />
+                    </FormField>
+                    {editable && <Button disabled={form.processing || !form.isDirty}>Save</Button>}
+                </form>
+            </CardContent>
+        </Card>
+    );
+}
+
+export default function AdminSettings({ switches, leadership }: { switches: Switch[]; leadership: { team: string; levels: number } }) {
     const can = useAdminCan();
     const editable = can('settings.edit');
     const form = useForm<Record<string, boolean>>(Object.fromEntries(switches.map((s) => [field(s.key), s.value])));
@@ -74,6 +125,7 @@ export default function AdminSettings({ switches }: { switches: Switch[] }) {
                         </form>
                     </CardContent>
                 </Card>
+                <LeadershipTeam value={leadership} editable={editable} />
             </div>
         </AdminLayout>
     );

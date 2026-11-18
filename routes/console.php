@@ -22,3 +22,6 @@ Schedule::command('wiifarm:check-payments')->everyFiveMinutes()->withoutOverlapp
 
 // Every night: cancel public orders not paid in time (specification section 8).
 Schedule::command('wiifarm:expire-public-orders')->dailyAt('03:30')->timezone('Africa/Lagos');
+
+// Every day: the leadership bonus for the month just ended, once (specification section 5.7).
+Schedule::command('wiifarm:leadership')->dailyAt('02:30')->timezone('Africa/Lagos')->withoutOverlapping();

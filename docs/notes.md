@@ -1411,3 +1411,67 @@ it was an empty placeholder; it now shows their position at a glance.
 
 **Next:** the leadership bonus and the monthly runs (decisions 3 and 6
 affect who qualifies and who counts as the team).
+
+## Step 29: The leadership bonus (phase 5, part 5)
+
+**What this is:** the monthly leadership bonus (specification 5.7).
+
+- **Who qualifies:** a member with 480,000 PV on their repurchase PV log by
+  the end of the month (Blueprint V3). Banned members, members whose
+  package is not paid and the company account are not paid.
+- **How much:** 5% of what the leader's team earned from the matching bonus
+  in the month just ended, from Pool A's leadership line. If the line and
+  Pool A's contingency fund are short, the payout is held until money
+  arrives, as for every bonus.
+- **Who the "team" is (decision 3, not yet decided):** an admin setting,
+  under Settings, "Leadership bonus: who is the team":
+    - **the binary tree:** everyone below the leader (the default, as you
+      asked), or
+    - **the sponsor chain:** everyone the leader brought in, and the people
+      they brought in;
+    - to a set number of levels or generations, or with no limit (0).
+
+  Changing it is recorded in the audit log and applies from the next run.
+  Each month's run records the rule it used, so past months stay
+  explainable.
+- **When:** early on the first of each month (02:30 Lagos time), for the
+  month just ended. A missed month is caught up by the next run; a month is
+  never paid twice.
+- **A leader inside another leader's team** still counts there, so both
+  earn on the same matching. The plan does not say otherwise; this is added
+  to decision 3 for the board.
+- **What people see:**
+    - admins: a new Leadership page with each month's run, the rule it
+      used, what was earned and what is still held, and every leader's
+      line (repurchase PV, team size, team matching, 5%);
+    - members: a "Leadership bonus" card on their dashboard with their
+      repurchase PV against the 480,000 PV needed, and last month's
+      result.
+- **Tests:** 270 pass (6 new). They cover:
+    - 5% of the whole tree team's matching, paid once, with other months
+      and outsiders left out;
+    - the setting: a level limit, and the sponsor chain instead of the
+      tree;
+    - who qualifies (479,999 PV does not, banned leaders do not, a team
+      with no matching pays nothing);
+    - a payout too big for the line being held;
+    - the monthly command;
+    - admin permissions and the settings form, and the member's dashboard
+      card.
+
+  One fault from the last step was found here: a doubled line in the
+  dashboard test stopped the test suite from starting. It is fixed.
+- **Checked in a browser:**
+    - the settings card, the admin run page and the member's dashboard card,
+      with a demo member given 480,000 repurchase PV;
+    - the demo team had no matching in November, so the page showed
+      "Nothing to pay". The dashboard now says why ("your team earned no
+      matching"), not just ₦0.00.
+
+**For the board (decision 3):**
+
+- Who is the team (tree or sponsor chain, how deep)?
+- When one leader is in another's team, should both earn on the same
+  matching?
+
+**Next:** the unilevel bonus (10 generations, from the repurchase pool).

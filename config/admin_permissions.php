@@ -43,7 +43,7 @@ return [
         ],
         'Pools' => [
             'pools.view' => 'See the pool ledgers, contingency funds and held payouts',
-            'matching.view' => 'See the nightly matching runs and what each member earned',
+            'matching.view' => 'See the nightly matching runs and monthly leadership runs, and what each member earned',
         ],
         'Settings' => [
             'settings.view' => 'See the settings',

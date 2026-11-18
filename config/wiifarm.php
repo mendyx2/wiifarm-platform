@@ -30,6 +30,13 @@ return [
         // open decision 7 asks whether this hold stays).
         'matching.autoship_hold' => true,
 
+        // Who counts as a leader's "team" for the leadership bonus (section
+        // 5.7; open decision 3): "tree" (everyone below them in the binary
+        // tree) or "sponsor" (everyone down their sponsor chain), to this many
+        // levels or generations; 0 means no limit.
+        'leadership.team' => 'tree',
+        'leadership.levels' => 0,
+
         // The fields of the KYC form (specification section 2). Types: text,
         // select (with options) and file (an image or PDF, stored privately).
         'kyc.fields' => [

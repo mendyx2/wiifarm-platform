@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EPinController;
 use App\Http\Controllers\Admin\KycReviewController;
+use App\Http\Controllers\Admin\LeadershipController;
 use App\Http\Controllers\Admin\MatchingController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberWalletController;
@@ -102,6 +103,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('payments/{payment}/check', [OnlinePaymentController::class, 'check'])->middleware('throttle:30,1')->name('payments.check');
         });
         Route::middleware('admin.can:matching.view')->group(function () {
+            Route::get('leadership', [LeadershipController::class, 'index'])->name('leadership.index');
+            Route::get('leadership/{run}', [LeadershipController::class, 'show'])->name('leadership.show');
             Route::get('matching', [MatchingController::class, 'index'])->name('matching.index');
             Route::get('matching/{run}', [MatchingController::class, 'show'])->name('matching.show');
         });
@@ -112,6 +115,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Settings
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('admin.can:settings.view')->name('settings.edit');
         Route::put('settings', [SettingsController::class, 'update'])->middleware('admin.can:settings.edit')->name('settings.update');
+        Route::put('settings/leadership', [SettingsController::class, 'updateLeadership'])->middleware('admin.can:settings.edit')->name('settings.leadership');
 
         // Admins and roles (super-admin only)
         Route::middleware('admin.can:admins.manage')->group(function () {

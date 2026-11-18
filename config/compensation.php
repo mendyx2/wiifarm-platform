@@ -12,5 +12,8 @@ return [
     // Matching (5.5 and 5.6): the share held in the autoship wallet until the
     // member buys this much PV of products in the month (hundredths of a PV).
     'matching' => ['autoship_share' => '20.00', 'autoship_month_pv' => 1_000],
+    // Leadership (5.7): a leader has this much repurchase PV (hundredths:
+    // 480,000 PV), and earns this share of what their team earns from matching.
+    'leadership' => ['qualifying_pv' => 48_000_000, 'share' => '5.00'],
     'upgrade' => ['25.00', '2.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00'],
 ];
