@@ -30,6 +30,10 @@ return [
         // open decision 7 asks whether this hold stays).
         'matching.autoship_hold' => true,
 
+        // A member earns the unilevel bonus for a month only if they bought
+        // 10 PV of products themselves that month (section 4; open decision 4).
+        'unilevel.activity_required' => true,
+
         // Who counts as a leader's "team" for the leadership bonus (section
         // 5.7; open decision 3): "tree" (everyone below them in the binary
         // tree) or "sponsor" (everyone down their sponsor chain), to this many

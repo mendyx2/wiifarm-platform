@@ -230,6 +230,11 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 - **Funded by:** the repurchase ledger's unilevel line (₦367.50 a unit, section 7). A unit can pay up to ₦387 when all 10 uplines qualify; the difference comes from the repurchase ledger's own contingency fund (section 7).
 
 - **Example:** one 1st-generation member's 10 PV authorship (₦6,000) pays ₦600.
+- **How it is run** (built November 2026):
+  - On the first of each month (02:20 Lagos time), for every member who bought products in the month just ended, the 10 generations above them share in the PV value of what they bought. Each member's shares for the month are paid together, once. A missed month is caught up by the next run.
+  - A share is not paid to a banned member, a member whose package is not paid, the company account, a member whose package does not reach that generation or, while the admin switch is on (decision 4), a member who did not buy 10 PV of products themselves that month. Such a share is not passed on, and the generation still counts.
+  - What is left in the unilevel line after paying goes to the repurchase ledger's contingency fund. The line receives 49% of the cooperative's half of the price, which is a little less than 43% of the PV value, so when all 10 generations are paid the contingency fund covers the gap.
+  - When the line and the contingency fund are short, a payout is held until they refill (section 7).
 - **Replaced:** the current system uses different rates (6%, 5%, 4%, 3%, 2%, then 1% and 0.5%) and different package depths. Both are replaced by the plan's.
 
 ### 5.11 Repurchase awards
@@ -516,6 +521,8 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Hourly | Pay any ACB and leadership bonuses still due; qualify new leaders |
 | Daily 00:00 | Savings contributions and loan repayments due today |
 | Daily 01:30 | Matching bonus run (5.5) |
+| Daily 02:20, acts once a month | Unilevel bonus for the month just ended (5.10) |
+| Daily 02:30, acts once a month | Leadership bonus for the month just ended (5.7) |
 | Daily 02:00 | Check members for new binary awards |
 | Daily 03:00 | Full database backup, kept 30 days |
 | Daily | Expire unpaid or uncollected public orders (8). This is not scheduled in the current system, and should be |
@@ -538,7 +545,7 @@ The specification can be signed off once the board settles the points below.
 - [x] **1. Plan versus budget.** Settled for the direct, indirect, key-in, upgrade and stockist lines by Blueprint V3 (section 7): each line now holds what the plan pays. Still open for matching, unilevel and awards (17 and 18 below). *Earlier question:* Several plan payouts are larger than their blueprint budget lines. Direct is 25% of package value against a 6% line, and unilevel can reach 49% across 15 generations against 9%. When a payout would overrun its line, should it be paid in full and reported, capped at the line, or should the plan or the budget be revised?
 - [x] **2. Funding between engines.** Settled by Blueprint V3: each kind of purchase funds its own ledger (section 7). *Earlier question:* Does revenue from registrations fund only the Consumer Rewards Pool and commerce revenue only the Commerce Pool? Or is every payment split across all three pools in the 22 / 24.75 / 8.25 ratio?
 - [ ] **3. Leadership bonus team.** Does "5% of what your team members earn from matching" cover the whole downline, or a set number of levels or generations? Is it counted through the tree or the referral chain? *Built as an admin setting, starting with the whole binary-tree downline (5.7). Also: when one leader is in another leader's team, should both earn on the same matching (as built), or should the upper leader skip the lower leader's team?*
-- [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus?
+- [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus? *Built as an admin switch, on by default (section 4 says the 10 PV purchase keeps a member active for unilevel).*
 - [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
 - [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).
 - [ ] **7. Autoship hold.** The plan mentions the 10 PV authorship but not the 20% hold on matching bonuses (5.6). Should the hold stay? *Built as an admin switch, on by default as section 5.5 says, so the answer needs no new code.*

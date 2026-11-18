@@ -25,6 +25,7 @@ class SettingsController extends Controller
         'verification.mobile_required' => 'Members must confirm their phone number with an SMS code before they can use their dashboard.',
         'withdrawals.kyc_required' => 'Members must have their identity verified (KYC) before they can withdraw.',
         'matching.autoship_hold' => 'Until a member buys 10 PV of products in the month, 20% of each matching bonus goes to their autoship wallet.',
+        'unilevel.activity_required' => 'A member earns the month\'s unilevel bonus only if they bought 10 PV of products themselves that month (open decision 4).',
     ];
 
     public function edit(): Response

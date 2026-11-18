@@ -1475,3 +1475,70 @@ affect who qualifies and who counts as the team).
   matching?
 
 **Next:** the unilevel bonus (10 generations, from the repurchase pool).
+
+## Step 30: The unilevel bonus (phase 5, part 6)
+
+**What this is:** the monthly unilevel bonus (specification 5.10), paid on
+what members buy after joining.
+
+- **How it works:** for every member who bought products in the month, the
+  10 generations above them in the referral chain share in the PV value
+  (PV × ₦600) of what they bought: 10%, 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%
+  and 2%, or 43% in all. For example, a member's 10.5 PV purchase (₦6,300
+  of PV value) pays their sponsor ₦630.
+- **Who is not paid a share:**
+    - a member whose package does not reach that generation (Pre Starter 4,
+      Starter 6, Builder 8, Booster and up 10);
+    - banned members, members whose package is not paid, and the company
+      account;
+    - while the new switch is on, a member who did not buy 10 PV of
+      products themselves that month (decision 4). The switch is on by
+      default, because section 4 says the 10 PV purchase keeps a member
+      active for unilevel.
+
+  Such a share is not passed on, and the generation still counts.
+- **The money:** each member's shares for the month are paid together, from
+  the repurchase ledger's (Pool C's) unilevel line, into their unilevel
+  wallet. What is left in the line afterwards goes to Pool C's contingency
+  fund. If the line and the fund are short, the payout is held until they
+  refill.
+- **A point worth knowing:**
+    - the unilevel line receives 49% of the cooperative's half of the
+      price, which is a little less than 43% of the PV value. On 7 packs,
+      for example, the line receives ₦2,572.50, while paying all 10
+      generations costs ₦2,709;
+    - so when every generation is paid, the contingency fund covers the
+      difference, as the specification says. A test caught my first
+      version assuming the opposite;
+    - the run records what actually moved to the contingency fund, not the
+      value of the unpaid shares.
+- **When:** early on the first of each month (02:20 Lagos time), for the
+  month just ended. A missed month is caught up; a month is never paid
+  twice.
+- **What people see:**
+    - admins: a new Unilevel page with each month's repurchase PV, members
+      paid, earnings, what went to the contingency fund and what is held,
+      and each member's earnings by generation;
+    - members: the dashboard's 10 PV reminder now also says that without it
+      they do not earn the month's unilevel bonus.
+- **Tests:** 276 pass (6 new), using real member purchases. They cover:
+    - all 10 shares and nothing for an 11th generation, paid once;
+    - a package that does not reach a generation, with the next generation
+      still paid its own rate;
+    - the 10 PV rule;
+    - banned and company uplines;
+    - a payout held when the line is empty;
+    - the monthly command and the admin pages.
+- **Checked in a browser:** the admin Unilevel page, the new switch on the
+  Settings page, and the dashboard reminder. The local demo month shows a
+  very large "to contingency" figure because of PV I had put in by hand for
+  the last step's demo, not through a purchase. That is local test data
+  only, and is also why the run now records what actually moved.
+
+**For the board (decision 4):** must a member buy 10 PV themselves in a
+month to earn that month's unilevel bonus? It is a switch, so either answer
+is a click.
+
+**Next:** the awards (specification 5.8, 5.9 and 5.11): the binary rank
+awards, the Upline Celebrated Bonus, and the repurchase awards. Decision 21
+(the repurchase award schedule) is still open.

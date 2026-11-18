@@ -60,9 +60,12 @@ class DashboardController extends Controller
                 'day' => $lastMatch->run->day, 'matches' => $lastMatch->matches, 'amount' => $lastMatch->amount,
                 'capped' => $lastMatch->capped, 'status' => $lastMatch->currentStatus(),
             ] : null,
-            'autoship' => Settings::get('matching.autoship_hold') ? [
+            // This month's 10 PV of products: it lifts the autoship hold and keeps the unilevel bonus (when those rules are on).
+            'autoship' => Settings::get('matching.autoship_hold') || Settings::get('unilevel.activity_required') ? [
                 'bought' => $this->boughtThisMonth($ledger, $member),
                 'needed' => (int) config('compensation.matching.autoship_month_pv'),
+                'hold' => (bool) Settings::get('matching.autoship_hold'),
+                'unilevel' => (bool) Settings::get('unilevel.activity_required'),
             ] : null,
             'leadership' => [
                 'pv' => $ledger->balance($ledger->repurchasePvAccount($member)),

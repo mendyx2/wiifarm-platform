@@ -25,3 +25,6 @@ Schedule::command('wiifarm:expire-public-orders')->dailyAt('03:30')->timezone('A
 
 // Every day: the leadership bonus for the month just ended, once (specification section 5.7).
 Schedule::command('wiifarm:leadership')->dailyAt('02:30')->timezone('Africa/Lagos')->withoutOverlapping();
+
+// Every day: the unilevel bonus for the month just ended, once (specification section 5.10).
+Schedule::command('wiifarm:unilevel')->dailyAt('02:20')->timezone('Africa/Lagos')->withoutOverlapping();

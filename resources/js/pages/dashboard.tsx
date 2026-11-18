@@ -25,7 +25,7 @@ type Props = {
     pv?: PvTotals | null;
     team?: { direct: number; waiting: number; size: { L: number; R: number } };
     lastMatch?: { day: string; matches: number; amount: number; capped: boolean; status: string } | null;
-    autoship?: { bought: number; needed: number } | null;
+    autoship?: { bought: number; needed: number; hold: boolean; unilevel: boolean } | null;
     leadership?: { pv: number; needed: number; last: { month: string; amount: number; status: string } | null };
     toCollect?: number;
     recent?: { id: number; at: string; amount: number; wallet: string; memo: string | null }[];
@@ -114,7 +114,14 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                     {autoshipShort && (
                         <Notice href={route('shop')} action="Shop">
                             You have bought {pv(autoship.bought)} of {pv(autoship.needed)} PV of products this month. Until you reach{' '}
-                            {pv(autoship.needed)} PV, 20% of your matching bonus goes to your autoship wallet.
+                            {pv(autoship.needed)} PV,{' '}
+                            {[
+                                autoship.hold && '20% of your matching bonus goes to your autoship wallet',
+                                autoship.unilevel && 'you do not earn this month’s unilevel bonus',
+                            ]
+                                .filter(Boolean)
+                                .join(', and ')}
+                            .
                         </Notice>
                     )}
                 </div>

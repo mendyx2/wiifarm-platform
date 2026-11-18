@@ -23,6 +23,7 @@ const titles: Record<string, string> = {
     'verification.mobile_required': 'Phone confirmation required',
     'withdrawals.kyc_required': 'Identity check (KYC) before withdrawing',
     'matching.autoship_hold': 'Autoship hold on matching bonuses',
+    'unilevel.activity_required': '10 PV a month to earn the unilevel bonus',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */
@@ -99,9 +100,9 @@ export default function AdminSettings({ switches, leadership }: { switches: Swit
                 )}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-base">Verification and withdrawals</CardTitle>
+                        <CardTitle className="text-base">Switches</CardTitle>
                         <CardDescription>
-                            What a member must confirm before they can use their dashboard. Changes are saved in the audit log.
+                            What members must confirm, and the rules that are switches until the board decides. Changes are saved in the audit log.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
