@@ -22,6 +22,11 @@ return [
             'kyc.view' => 'See KYC submissions and documents',
             'kyc.review' => 'Approve or reject KYC submissions',
         ],
+        'Money' => [
+            'withdrawals.view' => 'See withdrawal requests',
+            'withdrawals.decide' => 'Approve and reject withdrawals',
+            'withdrawals.methods' => 'Set up withdrawal methods, limits and charges',
+        ],
         'Shop' => [
             'orders.view' => 'See orders',
             'products.manage' => 'Add and change products, prices and PV',

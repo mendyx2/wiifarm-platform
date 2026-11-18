@@ -11,6 +11,9 @@ const typeNames: Record<string, string> = {
     'payout.keyin': 'Key-in bonus',
     'payout.upgrade': 'Upgrade bonus',
     'payout.affiliate': 'Affiliate commission',
+    'bonus.transfer': 'Bonus transfer',
+    'withdrawal.request': 'Withdrawal',
+    'withdrawal.refund': 'Withdrawal refused: money back',
 };
 
 export const transactionName = (type: string) => typeNames[type] ?? type;

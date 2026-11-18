@@ -22,6 +22,9 @@ return [
         'verification.email_required' => false,
         'verification.mobile_required' => false,
 
+        // Members must have their identity verified (KYC) before they can withdraw.
+        'withdrawals.kyc_required' => true,
+
         // The fields of the KYC form (specification section 2). Types: text,
         // select (with options) and file (an image or PDF, stored privately).
         'kyc.fields' => [

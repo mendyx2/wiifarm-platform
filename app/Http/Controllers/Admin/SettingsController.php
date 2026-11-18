@@ -23,6 +23,7 @@ class SettingsController extends Controller
     private const SWITCHES = [
         'verification.email_required' => 'Members must confirm their email address before they can use their dashboard.',
         'verification.mobile_required' => 'Members must confirm their phone number with an SMS code before they can use their dashboard.',
+        'withdrawals.kyc_required' => 'Members must have their identity verified (KYC) before they can withdraw.',
     ];
 
     public function edit(): Response

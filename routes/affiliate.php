@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Affiliate\AffiliateAuthController;
 use App\Http\Controllers\Affiliate\AffiliateDashboardController;
+use App\Http\Controllers\Affiliate\AffiliateWithdrawController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,5 +22,7 @@ Route::prefix('affiliate')->name('affiliate.')->group(function () {
     Route::middleware('auth:affiliate')->group(function () {
         Route::get('/', AffiliateDashboardController::class)->name('dashboard');
         Route::post('logout', [AffiliateAuthController::class, 'logout'])->name('logout');
+        Route::get('withdraw', [AffiliateWithdrawController::class, 'index'])->name('withdraw');
+        Route::post('withdraw', [AffiliateWithdrawController::class, 'store'])->middleware('throttle:6,1')->name('withdraw.store');
     });
 });

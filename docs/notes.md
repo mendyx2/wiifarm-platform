@@ -1016,3 +1016,61 @@ messages. The public storefront comes with online payment.
 
 **Next:** withdrawals, from the main balance, stockist wallets and affiliate
 wallets, and moving bonuses to the main balance (bonus transfer).
+
+## Step 23: Withdrawals and bonus transfer (phase 4, part 6)
+
+**What this is:** how people take money out. Members, stockists and affiliates
+can now withdraw what they have earned.
+
+- **Bonus transfer:** on the Wallet page, a member moves money from any bonus
+  wallet to their main balance ("All of it" fills in the full amount).
+  Bonuses are withdrawn from the main balance.
+- **Withdrawal methods:**
+    - each has a minimum, a maximum, a fixed charge, a percentage charge and
+      the details to ask for;
+    - "Bank transfer" is set up from ₦1,000 to ₦5,000,000 with no charge, for
+      an admin to change (decision 29). Its form asks for the bank name,
+      account number and account name;
+    - admins add and change methods on a new page (permission "Set up
+      withdrawal methods, limits and charges"), and every change is audited.
+- **Requesting:**
+    - members withdraw from their main balance, stockists from their stockist
+      wallet (on the same page), and affiliates from their affiliate wallet
+      (on their own pages);
+    - the form shows the charge and what the person will receive before they
+      send it;
+    - the amount leaves the wallet at once and waits in a holding account; a
+      short wallet changes nothing; a resent form counts once.
+- **Who may not withdraw:** a member whose withdrawals are blocked (they see
+  the reason), and, while the new switch "Identity check (KYC) before
+  withdrawing" is on (it is by default), a member whose identity is not
+  verified.
+- **The admin's decision:**
+    - **mark as paid** after sending the money, with the payment reference.
+      The person receives the amount less the charge, and the charge goes to
+      the cooperative's own "withdrawal charges" account;
+    - **refuse** with a reason the person sees. The full amount, charge
+      included, goes back to the wallet;
+    - a request can be decided once only; everything is audited;
+    - a new Withdrawals page lists what is waiting (oldest first), paid and
+      refused (permissions: see withdrawals; approve and reject them).
+- **Tests:** 231 pass (8 new):
+    - a request leaving the wallet and being paid less its charge;
+    - a refusal returning everything;
+    - blocks and KYC;
+    - limits, details and balance, and a resent form;
+    - stockist and affiliate withdrawals;
+    - admin permissions and methods;
+    - bonus transfer.
+
+  One test caught a fault before it shipped: the withdraw page failed to open.
+- **Checked in a browser:** a member asked for ₦5,000 by bank transfer and saw
+  she would receive ₦4,850 (₦100 + 1% charge). The admin saw her bank details
+  and "To send ₦4,850", marked it paid with a reference, and the ledger
+  check passed.
+
+**For the board (decision 29):** what each withdrawal method should charge,
+whether charges go to the cooperative, and the KYC rule for withdrawals.
+
+**Next:** daily binary matching with caps, then payments (Paystack and
+e-pins), which bring real money in.

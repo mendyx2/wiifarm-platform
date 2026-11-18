@@ -7,7 +7,7 @@ import { StatementTable } from '@/components/wf/statement-table';
 import AffiliateLayout from '@/layouts/affiliate-layout';
 import { type StatementRow } from '@/lib/ledger';
 import { formatKobo } from '@/lib/money';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Copy } from 'lucide-react';
 import { useState } from 'react';
 
@@ -53,6 +53,9 @@ export default function AffiliateDashboard({ affiliate, wallet, statement, order
                             <p className="text-muted-foreground text-sm">Affiliate wallet</p>
                             <p className="text-3xl font-semibold tabular-nums">{formatKobo(wallet)}</p>
                             <p className="text-muted-foreground text-xs">{formatKobo(waiting)} more waiting for buyers to collect</p>
+                            <Button asChild size="sm" variant="secondary" className="mt-2 w-fit">
+                                <Link href={route('affiliate.withdraw')}>Withdraw</Link>
+                            </Button>
                         </CardContent>
                     </Card>
                 </div>

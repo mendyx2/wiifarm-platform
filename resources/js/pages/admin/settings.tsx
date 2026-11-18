@@ -19,6 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const titles: Record<string, string> = {
     'verification.email_required': 'Email confirmation required',
     'verification.mobile_required': 'Phone confirmation required',
+    'withdrawals.kyc_required': 'Identity check (KYC) before withdrawing',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */
@@ -46,7 +47,7 @@ export default function AdminSettings({ switches }: { switches: Switch[] }) {
                 )}
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-base">Verification</CardTitle>
+                        <CardTitle className="text-base">Verification and withdrawals</CardTitle>
                         <CardDescription>
                             What a member must confirm before they can use their dashboard. Changes are saved in the audit log.
                         </CardDescription>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\StoreController;
 use App\Http\Controllers\Member\TeamController;
 use App\Http\Controllers\Member\WalletController;
+use App\Http\Controllers\Member\WithdrawController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,6 +18,9 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('wallet', WalletController::class)->name('wallet');
+    Route::post('wallet/transfer', [WithdrawController::class, 'bonusTransfer'])->name('wallet.transfer');
+    Route::get('withdraw', [WithdrawController::class, 'index'])->name('withdraw');
+    Route::post('withdraw', [WithdrawController::class, 'store'])->middleware('throttle:6,1')->name('withdraw.store');
     Route::get('shop', [ShopController::class, 'index'])->name('shop');
     Route::post('shop', [ShopController::class, 'store'])->middleware('throttle:10,1')->name('shop.store');
     Route::get('orders', [ShopController::class, 'orders'])->name('orders.index');

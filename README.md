@@ -31,7 +31,7 @@ open-source tools.
 - Phase 1, the specification: **done**, waiting for the board's decisions (specification section 13).
 - Phase 2, the foundation: **done**. The project skeleton, the design system, member accounts, the admin panel (sign-in, roles, audit log, members, KYC review, settings, admins and roles) and the ledger with wallets.
 - Phase 3, the binary network and PV: **done**. Packages, placement in the tree, PV climbing on the right legs, joining and upgrades (once per payment), the team tree and PV log for members, and the admin's network views.
-- Phase 4, compensation: **in progress**. Done: the pool ledgers (Allocation Blueprint V3), the split of every payment between the manufacturing company and the cooperative, contingency funds, held payouts, products, orders and pickup codes, and stockists (stores, stock, handover by code, rebates). Next: the bonuses.
+- Phase 4, compensation: **in progress**. Done: the pool ledgers (Allocation Blueprint V3), the split of every payment between the manufacturing company and the cooperative, contingency funds, held payouts, products, orders and pickup codes, stockists (stores, stock, handover by code, rebates), the direct, indirect, key-in and upgrade bonuses, affiliate accounts, withdrawals and bonus transfer. Next: daily matching, then payments (Paystack, e-pins).
 
 ## Running it
 

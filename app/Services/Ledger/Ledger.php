@@ -150,6 +150,16 @@ class Ledger
         return $this->open('member:'.$member->id, $member->id, $kind, self::PV);
     }
 
+    /** One of the cooperative's own accounts outside its pools, such as withdrawal charges. */
+    public function cooperativeAccount(string $kind): Account
+    {
+        if (! array_key_exists($kind, config('ledger.cooperative_accounts'))) {
+            throw new LedgerException("Unknown cooperative account [{$kind}].");
+        }
+
+        return $this->open('cooperative', null, $kind, self::NGN);
+    }
+
     /** An affiliate's wallet: their commissions on public-shop sales (section 8). */
     public function affiliateWallet(Affiliate $affiliate): Account
     {

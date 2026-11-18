@@ -64,5 +64,14 @@ return [
     'system_accounts' => [
         'external' => 'Money in and out of the platform',
         'adjustments' => 'Admin corrections',
+        'withdrawals.pending' => 'Withdrawals waiting for an admin',
+    ],
+
+    /*
+     * The cooperative's own accounts, outside its bonus pools: what it earns
+     * from charges (section 6).
+     */
+    'cooperative_accounts' => [
+        'withdrawal_charges' => 'Withdrawal charges',
     ],
 ];

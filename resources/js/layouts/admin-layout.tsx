@@ -17,6 +17,7 @@ import {
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
+    Banknote,
     Boxes,
     FileCheck2,
     KeyRound,
@@ -41,6 +42,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Dashboard', url: '/admin', icon: LayoutGrid },
     { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
     { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
+    { title: 'Withdrawals', url: '/admin/withdrawals', icon: Banknote, permission: 'withdrawals.view' },
     { title: 'Orders', url: '/admin/orders', icon: ShoppingBag, permission: 'orders.view' },
     { title: 'Affiliates', url: '/admin/affiliates', icon: Megaphone, permission: 'affiliates.view' },
     { title: 'Stockists', url: '/admin/stockists', icon: Store, permission: 'stockists.view' },

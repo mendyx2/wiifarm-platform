@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockistController;
+use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('products/{product}', [ProductController::class, 'edit'])->name('products.edit');
             Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
         });
+
+        // Withdrawals
+        Route::get('withdrawals', [WithdrawalController::class, 'index'])->middleware('admin.can:withdrawals.view')->name('withdrawals.index');
+        Route::get('withdrawals/methods', [WithdrawalController::class, 'methods'])->middleware('admin.can:withdrawals.methods')->name('withdrawals.methods');
+        Route::post('withdrawals/methods', [WithdrawalController::class, 'saveMethod'])->middleware('admin.can:withdrawals.methods')->name('withdrawals.methods.store');
+        Route::put('withdrawals/methods/{method}', [WithdrawalController::class, 'saveMethod'])->middleware('admin.can:withdrawals.methods')->name('withdrawals.methods.update');
+        Route::get('withdrawals/{withdrawal}', [WithdrawalController::class, 'show'])->middleware('admin.can:withdrawals.view')->name('withdrawals.show');
+        Route::post('withdrawals/{withdrawal}/approve', [WithdrawalController::class, 'approve'])->middleware('admin.can:withdrawals.decide')->name('withdrawals.approve');
+        Route::post('withdrawals/{withdrawal}/reject', [WithdrawalController::class, 'reject'])->middleware('admin.can:withdrawals.decide')->name('withdrawals.reject');
 
         // Affiliates
         Route::get('affiliates', [AffiliateController::class, 'index'])->middleware('admin.can:affiliates.view')->name('affiliates.index');
