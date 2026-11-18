@@ -43,6 +43,9 @@ return Application::configure(basePath: dirname(__DIR__))
             default => route('dashboard'),
         });
 
+        // Paystack cannot send our CSRF token; its messages are signed instead.
+        $middleware->validateCsrfTokens(except: ['webhooks/paystack']);
+
         $middleware->web(append: [
             SignOutBannedMembers::class,
             HandleInertiaRequests::class,

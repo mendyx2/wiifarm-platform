@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\StoreController;
 use App\Http\Controllers\Member\TeamController;
 use App\Http\Controllers\Member\WalletController;
 use App\Http\Controllers\Member\WithdrawController;
+use App\Http\Controllers\PaystackWebhookController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,12 +14,20 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+// Paystack's signed message that a payment succeeded (no session, no CSRF token).
+Route::post('webhooks/paystack', PaystackWebhookController::class)->middleware('throttle:120,1')->name('webhooks.paystack');
+
 Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
     Route::get('wallet', WalletController::class)->name('wallet');
+    Route::get('package', [PaymentController::class, 'package'])->name('package');
+    Route::post('package', [PaymentController::class, 'payPackage'])->middleware('throttle:10,1')->name('package.pay');
+    Route::get('deposit', [PaymentController::class, 'deposit'])->name('deposit');
+    Route::post('deposit', [PaymentController::class, 'payDeposit'])->middleware('throttle:10,1')->name('deposit.pay');
+    Route::get('payments/return', [PaymentController::class, 'return'])->name('payments.return');
     Route::post('wallet/transfer', [WithdrawController::class, 'bonusTransfer'])->name('wallet.transfer');
     Route::get('withdraw', [WithdrawController::class, 'index'])->name('withdraw');
     Route::post('withdraw', [WithdrawController::class, 'store'])->middleware('throttle:6,1')->name('withdraw.store');

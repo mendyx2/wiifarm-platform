@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    // Online payments (specification section 6). The secret key signs the
+    // webhook too. Without it, online payment is switched off.
+    'paystack' => [
+        'secret_key' => env('PAYSTACK_SECRET_KEY'),
+        'base_url' => env('PAYSTACK_BASE_URL', 'https://api.paystack.co'),
+    ],
+
 ];

@@ -116,7 +116,10 @@ export default function Wallet({ balances, labels, wallet, entries }: WalletProp
                     ))}
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-2">
+                    <Button asChild>
+                        <Link href={route('deposit')}>Deposit</Link>
+                    </Button>
                     <Button asChild variant="secondary">
                         <Link href={route('withdraw')}>Withdraw</Link>
                     </Button>

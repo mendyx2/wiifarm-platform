@@ -1144,3 +1144,92 @@ night.
   pool, but members would wait. It should be measured on the live network.
 
 **Next:** payments (Paystack and e-pins), which bring real money in.
+
+## Step 25: Paying online with Paystack (phase 5, part 1)
+
+**What this is:** the first real money coming in. Until now nobody could
+pay for a package: the demo network was built by a command. Members can now
+pay online through Paystack.
+
+- **What can be paid:**
+    - **a package:** a person who has signed up chooses a package on the new
+      "My package" page and pays its price. When Paystack confirms, they
+      become a member: their place in the tree, their packs' pickup code,
+      the payment split, the joining bonuses, and the PV climbing the tree,
+      all at once. The dashboard shows "One step left" until then;
+    - **an upgrade:** a member picks a higher package on the same page and
+      pays the difference in price;
+    - **a deposit:** "Deposit" on the Wallet page adds ₦1,000 to ₦5,000,000
+      to the main balance.
+- **How a payment is confirmed:**
+    - the member pays on Paystack's own page, so card details never touch
+      our site;
+    - nothing happens until Paystack itself confirms, by either:
+        - its signed message to us (a "webhook"; an unsigned or forged one
+          is refused), or
+        - our server asking Paystack when the member comes back, and every
+          five minutes for anything still waiting, for 48 hours.
+
+      A browser saying "I paid" is never believed on its own;
+    - only exactly the amount asked for, in naira, is credited. A different
+      amount is marked "Wrong amount" and left for an admin;
+    - the same payment is never credited twice, however many messages
+      arrive.
+- **Money never gets lost:** if what was paid for can no longer happen, the
+  money goes to the member's main balance and the payment says why. That
+  covers two cases:
+    - the person became a member some other way;
+    - the package changed before an upgrade payment was confirmed.
+
+  Someone whose sponsor has not paid yet is stopped before paying, not
+  after (decision 16).
+- **Admins:** a new "Online payments" page lists every payment by status,
+  searchable by reference or username (permission "See online payments").
+  "Ask Paystack" checks a waiting payment now, and is recorded in the audit
+  log. Admins cannot mark a payment paid themselves: only Paystack's answer
+  counts.
+- **Paystack's key:** it stays in the server's settings (`PAYSTACK_SECRET_KEY`),
+  not on an admin screen, so it never passes through the admin panel. Without
+  it, the pages say online payment is not set up yet.
+- **A correction to the specification:** it said every deposit is split
+  across the pools. Under Blueprint V3 each purchase funds its own ledger, so
+  a deposit is the member's own money until it is spent. The text now says
+  so, and the board is asked to confirm (decision 31).
+- **Tests:** 248 pass (10 new). Paystack's replies are imitated, so the tests
+  never touch real money. They cover:
+    - paying a package and becoming a member;
+    - a returning browser not being trusted, and a forged message being
+      refused;
+    - the wrong amount;
+    - a deposit credited once;
+    - an upgrade, and an out-of-date upgrade going to the main balance;
+    - a sponsor who has not paid;
+    - the five-minute check, and giving up after 48 hours;
+    - Paystack refusing;
+    - no key set;
+    - the admin page.
+- **Checked in a browser:**
+    - the package and upgrade pages, the deposit page, the dashboard
+      reminder on a phone, and the admin page;
+    - this machine cannot reach Paystack, which showed two faults, now fixed:
+        - Paystack refusing a payment crashed the page instead of showing a
+          message;
+        - the unfinished payment was left as "waiting";
+    - "Ask Paystack" is now shown only for payments Paystack has seen.
+
+**For the board (decision 31):**
+
+- Members pay exactly the price, and Paystack's fee comes out of what it
+  sends on. Should members pay the fee on top instead?
+- Are deposits of ₦1,000 to ₦5,000,000 right?
+- Is a deposit not split until it is spent?
+
+**Still open (decision 25):** whether each company has its own Paystack
+account. For now one account collects, and the ledger shows each company's
+share.
+
+**To go live:** put the live secret key in the server's settings, and in
+Paystack's dashboard set the webhook address to `https://<site>/webhooks/paystack`.
+
+**Next:** e-pins and keying in a new member from the VISA wallet ("Add
+Distributor").

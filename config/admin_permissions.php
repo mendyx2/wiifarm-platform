@@ -23,6 +23,7 @@ return [
             'kyc.review' => 'Approve or reject KYC submissions',
         ],
         'Money' => [
+            'payments.view' => 'See online payments (Paystack) and ask Paystack about one',
             'withdrawals.view' => 'See withdrawal requests',
             'withdrawals.decide' => 'Approve and reject withdrawals',
             'withdrawals.methods' => 'Set up withdrawal methods, limits and charges',

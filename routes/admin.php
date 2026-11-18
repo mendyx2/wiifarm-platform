@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MatchingController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberWalletController;
 use App\Http\Controllers\Admin\NetworkController;
+use App\Http\Controllers\Admin\OnlinePaymentController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PoolsController;
 use App\Http\Controllers\Admin\ProductController;
@@ -90,6 +91,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Pool ledgers, contingency funds and held payouts
         Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');
+        Route::middleware('admin.can:payments.view')->group(function () {
+            Route::get('payments', [OnlinePaymentController::class, 'index'])->name('payments.index');
+            Route::post('payments/{payment}/check', [OnlinePaymentController::class, 'check'])->middleware('throttle:30,1')->name('payments.check');
+        });
         Route::middleware('admin.can:matching.view')->group(function () {
             Route::get('matching', [MatchingController::class, 'index'])->name('matching.index');
             Route::get('matching/{run}', [MatchingController::class, 'show'])->name('matching.show');

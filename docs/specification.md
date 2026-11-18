@@ -262,9 +262,13 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
 **Deposits:**
 
 - **Paystack:** the member pays online, and the deposit is credited only when Paystack confirms it. The confirmation comes server-to-server and is checked; a returning browser is never trusted on its own.
+  - Paystack pays for three things: a new member's package, an upgrade (the difference in price) and a deposit to the main balance (₦1,000 to ₦5,000,000).
+  - Paystack's signed message (its webhook) confirms a payment; so does our server asking Paystack, when the member comes back and every five minutes for payments still waiting, for 48 hours. Only exactly the amount asked for, in naira, is credited; anything else is held for an admin.
+  - If what was paid for can no longer happen (the member was activated some other way, or their package changed before the upgrade was confirmed), the money goes to their main balance and the payment says why.
+  - The Paystack secret key is kept in the server's settings, not on an admin screen, so it never passes through the admin panel.
 - **USDT (TRC20):** Wiifarm uses one wallet address. The member sends the money and enters the transaction ID. The system checks it on the Tron network (amount, address, confirmations) and credits once. A scheduled scan also finds transfers that nobody reported. A transaction ID can never be credited twice.
 - **Manual methods** (for example a bank transfer): the member fills in the method's form and uploads proof. An admin approves or rejects with a reason. Proof files are private.
-- Every confirmed deposit is split across the four pools (section 7).
+- A deposit is not a sale: it goes to the main balance and is split only when it is spent on a package, an upgrade or products, by the ledger of that purchase (section 7).
 
 **Withdrawals:**
 
@@ -549,3 +553,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **28. Recording a Sub store's collection.** The system has the Mega stockist record what each of their Sub stores collects, moving the units from the Mega's stock to the Sub's. Should the manufacturing company record it instead, or should the Sub store confirm it too?
 - [ ] **29. Withdrawal charges and limits.** The system sets up "Bank transfer" from ₦1,000 to ₦5,000,000 with no charge, for an admin to change. What should each method's charge be (fixed and percentage), and is it right that charges go to the cooperative? Member withdrawals also need verified KYC (an admin switch, on by default); stockist withdrawals follow the stockist's own member account; affiliates have no KYC. Is that right?
 - [ ] **30. Unused autoship money.** At month end an autoship balance not spent goes to the cooperative (5.6). It comes from the registration ledger's matching line: should it go back to that ledger's (Pool A's) contingency fund? And what may it buy: any product in the shop, paid from the autoship wallet? Neither the spending nor the month-end sweep is built yet.
+- [ ] **31. Paystack's fee and deposit limits.** Members pay exactly the price; Paystack takes its fee from what it sends on, so the company receiving the money bears it. Should members pay the fee on top instead (for deposits, packages, or both)? Deposits are set at ₦1,000 to ₦5,000,000: right? And a deposit is treated as the member's own money, not a sale, so nothing is split until it is spent (section 6): please confirm.
