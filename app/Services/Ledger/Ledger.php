@@ -5,6 +5,7 @@ namespace App\Services\Ledger;
 use App\Models\Ledger\Account;
 use App\Models\Ledger\Entry;
 use App\Models\Ledger\Transaction;
+use App\Models\Pools\Manufacturer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -33,6 +34,9 @@ class Ledger
     public const NGN = 'NGN';
 
     public const PV = 'PV';
+
+    /** The name of every pool's contingency fund account. */
+    public const CONTINGENCY = 'contingency';
 
     /**
      * @param  list<array{0: Account, 1: int}>  $lines  each [account, amount]: positive into the account, negative out
@@ -106,6 +110,27 @@ class Ledger
         }
 
         return $this->open('member:'.$member->id, $member->id, $kind, self::NGN);
+    }
+
+    /**
+     * One line of one of the cooperative's pool ledgers, or its contingency
+     * fund (config/pools.php). Each pool is its own ledger: its accounts are
+     * held by "pool:{code}".
+     */
+    public function poolAccount(string $pool, string $line): Account
+    {
+        $lines = config("pools.pools.{$pool}.lines");
+        if ($lines === null || ($line !== self::CONTINGENCY && ! array_key_exists($line, $lines))) {
+            throw new LedgerException("Unknown pool line [{$pool}.{$line}].");
+        }
+
+        return $this->open('pool:'.$pool, null, $line, self::NGN);
+    }
+
+    /** A manufacturing partner's account: a separate company from the cooperative. */
+    public function manufacturerAccount(Manufacturer $manufacturer): Account
+    {
+        return $this->open('manufacturer:'.$manufacturer->id, null, 'share', self::NGN);
     }
 
     /** A member's PV account for one leg: $type is "lifetime" or "pairing". */
@@ -182,6 +207,17 @@ class Ledger
 
     public function label(Account $account): string
     {
+        if (str_starts_with($account->holder, 'pool:')) {
+            $pool = substr($account->holder, 5);
+
+            return config("pools.pools.{$pool}.name").': '.($account->kind === self::CONTINGENCY
+                ? config('pools.contingency')
+                : config("pools.pools.{$pool}.lines.{$account->kind}"));
+        }
+        if (str_starts_with($account->holder, 'manufacturer:')) {
+            return Manufacturer::find((int) substr($account->holder, 13))?->name ?? 'Manufacturer';
+        }
+
         return $account->isSystem()
             ? config('ledger.system_accounts')[$account->kind] ?? config('ledger.system_pv_accounts')[$account->kind] ?? $account->kind
             : config('ledger.member_wallets')[$account->kind] ?? config('ledger.member_pv_accounts')[$account->kind] ?? $account->kind;

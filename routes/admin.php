@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\KycReviewController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberWalletController;
 use App\Http\Controllers\Admin\NetworkController;
+use App\Http\Controllers\Admin\PoolsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('kyc/{submission}/files/{field}', [KycReviewController::class, 'file'])->middleware('admin.can:kyc.view')->name('kyc.file');
         Route::post('kyc/{submission}/approve', [KycReviewController::class, 'approve'])->middleware('admin.can:kyc.review')->name('kyc.approve');
         Route::post('kyc/{submission}/reject', [KycReviewController::class, 'reject'])->middleware('admin.can:kyc.review')->name('kyc.reject');
+
+        // Pool ledgers, contingency funds and held payouts
+        Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');
 
         // Packages (read only for now; changing a package is a plan setting)
         Route::get('packages', [NetworkController::class, 'packages'])->middleware('admin.can:settings.view')->name('packages');

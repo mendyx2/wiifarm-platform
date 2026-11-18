@@ -703,3 +703,80 @@ Global Share line. They are replaced in the next build step.
 
 Still open (decision 25): whether each company has its own Paystack and bank
 account, or one account collects and passes the other its share.
+
+## Step 18: The pool ledgers (phase 4, part 1)
+
+**What this is:** the money side of the board's Allocation Blueprint V3, built.
+Every payment can now be split, to the kobo, between the manufacturing
+company and the cooperative's separate pools, ready for the bonuses to be
+paid from them.
+
+- **Separate books:**
+    - each manufacturing partner has its own account. There is one today, and
+      more can be added;
+    - each of the cooperative's pools is its own ledger, with one account per
+      line and its own contingency fund: Registration (A), Strategic Reserve
+      (B), Repurchase (C), Stockist activation (D), Upgrade (E) and Executive
+      Leaders;
+    - public-shop sales have a separate holding ledger that is not a
+      cooperative pool. The affiliate's share and the stockist's rebate wait
+      there until pickup.
+- **The split** (one entry per payment, adding up to the payment exactly):
+    - **registration:** half to the manufacturer. The cooperative's half goes:
+      1% to the Strategic Reserve (then 70% awards / 30% UCB), 2.3% to the
+      contingency fund, 10% to Executive Leaders, and 86.7% to the six bonus
+      lines;
+    - **upgrade:** half to the manufacturer; the cooperative's half goes 1%
+      reserve, 10% leaders, then 52.5% to upgrade bonuses and the rest to the
+      contingency fund;
+    - **repurchase:** half to the manufacturer; the cooperative keeps the full
+      half, split 49 / 10 / 10 / 16, with 15% to the contingency fund;
+    - **public sale:** the affiliate's ₦100 a unit (only when an affiliate
+      sent the buyer) and ₦120 a unit for the stockist are held until pickup.
+      Everything else goes to the manufacturer. No cooperative pool receives
+      anything.
+- **Rounding:** each part rounds down to the kobo, and the few kobo left go to
+  the receiving pool's contingency fund, so nothing is lost or invented.
+- **Once only:** the same payment can never be split twice.
+- **Versioned rates:** the rates are the board's schedule, stored as
+  "version 1". Every split records the version it used, so a future change
+  applies from then on, never backwards.
+- **Paying from a pool** (used by the bonuses when they are built):
+    1. the bonus line pays what it holds;
+    2. that pool's own contingency fund covers the rest; another pool's money
+       is never used;
+    3. if both together cannot cover it, the payout is **held**, in full,
+       never in part. When money arrives it is paid automatically, oldest
+       first; nobody jumps the queue. An hourly run also catches anything
+       missed;
+    4. a share with nobody to receive it moves into that pool's contingency
+       fund and stays with the cooperative.
+- **Pool ledgers can never go below zero:** the ledger itself refuses.
+- **The admin Pools page** (new permission "See the pool ledgers,
+  contingency funds and held payouts") shows:
+    - the manufacturing partners' accounts;
+    - every pool, line by line: what came in and went out today, this month,
+      this quarter or all time, and what it holds now;
+    - each contingency fund;
+    - every held payout and how long it has waited.
+- **Removed:** the old pool accounts from the earlier 30 / 10 / 5 / 55 split,
+  including the Global Share line. The affiliate and stockist rebate wallets
+  leave the member's wallets; affiliates and stockists get their own wallets
+  in a later step.
+- **Tests:** 187 pass (16 new). They check the split to the kobo:
+    - a ₦15,000 Pre Starter registration: ₦7,500 to the manufacturer, ₦2,251.16
+      in the direct line against a ₦2,250 bonus, ₦172.53 in the contingency
+      fund;
+    - a repurchase, an upgrade and a public sale with and without an
+      affiliate.
+
+  They also check: no double split, odd amounts still adding up, the
+  contingency fund covering a shortfall, another pool's money never used,
+  held payouts paid in full and in order, and the permission.
+- **Checked in a browser:** the ten sample registrations (₦1,605,000) put
+  ₦802,500, exactly half, with the manufacturing partner. The pools showed
+  each line, and a ₦2,500 unilevel payout showed as held, because the
+  repurchase pool is still empty. The nightly ledger check passed.
+
+**Next:** orders and pickup codes, then stockists (Mega and Sub stores, their
+wallets, stock allocated by the manufacturer, and rebates paid on pickup).

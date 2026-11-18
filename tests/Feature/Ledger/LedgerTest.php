@@ -97,13 +97,13 @@ class LedgerTest extends TestCase
         $this->assertSame(0, $this->ledger->balances($amaka)['main']);
     }
 
-    public function test_platform_accounts_may_go_below_zero_so_overruns_show()
+    public function test_the_outside_world_account_may_go_below_zero()
     {
         $amaka = User::factory()->create();
 
-        $this->ledger->transfer($this->ledger->systemAccount('crp.direct'), $this->ledger->memberAccount($amaka, 'bonus.direct'), 375_000, 'bonus.direct', 'reg:1:direct');
+        $this->ledger->transfer($this->ledger->systemAccount('external'), $this->ledger->memberAccount($amaka, 'main'), 375_000, 'test.fund', 'fund:1');
 
-        $this->assertSame(-375_000, $this->ledger->balance($this->ledger->systemAccount('crp.direct')));
+        $this->assertSame(-375_000, $this->ledger->balance($this->ledger->systemAccount('external')));
     }
 
     public function test_a_failed_posting_writes_nothing_even_inside_a_bigger_payout()

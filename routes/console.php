@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // Every night: check that the books balance (specification section 1).
 Schedule::command('wiifarm:ledger-check')->dailyAt('02:15');
+
+// Every hour: pay held payouts their pool line can now cover (specification section 7).
+Schedule::command('wiifarm:pay-held')->hourlyAt(7);

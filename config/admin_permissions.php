@@ -22,6 +22,9 @@ return [
             'kyc.view' => 'See KYC submissions and documents',
             'kyc.review' => 'Approve or reject KYC submissions',
         ],
+        'Pools' => [
+            'pools.view' => 'See the pool ledgers, contingency funds and held payouts',
+        ],
         'Settings' => [
             'settings.view' => 'See the settings',
             'settings.edit' => 'Change the settings',

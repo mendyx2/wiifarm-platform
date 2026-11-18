@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Package;
+use App\Models\Pools\Manufacturer;
 use App\Models\User;
 use App\Services\Network\Registration;
+use App\Services\Pools\PaymentSplit;
 use Illuminate\Console\Command;
 
 /**
@@ -35,7 +37,7 @@ class DemoNetwork extends Command
         ['jumoke_s', 'Jumoke', 'Salami', 'dapo_k', 'Mega', null],
     ];
 
-    public function handle(Registration $registration): int
+    public function handle(Registration $registration, PaymentSplit $split): int
     {
         if (app()->environment('production') && ! config('app.demo')) {
             $this->error('Not on the live site.');
@@ -57,7 +59,10 @@ class DemoNetwork extends Command
             $member->email_verified_at = now();
             $member->save();
 
-            $registration->activate($member, Package::where('name', $package)->firstOrFail(), "demo:{$username}");
+            $pkg = Package::where('name', $package)->firstOrFail();
+            $change = $registration->activate($member, $pkg, "demo:{$username}");
+            // The package's price, split between the manufacturing company and the pools.
+            $split->registration($pkg->price, Manufacturer::firstOrFail(), "demo:{$username}", $change);
             $this->line("@{$username} joined with {$package} under @{$sponsor}");
         }
 
