@@ -3,6 +3,7 @@
 namespace App\Models\Payments;
 
 use App\Models\Package;
+use App\Models\Shop\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,8 @@ use Illuminate\Support\Carbon;
  * A payment made online through Paystack: a package, an upgrade or a deposit.
  *
  * @property int $id
- * @property int $user_id
+ * @property ?int $user_id
+ * @property ?int $order_id
  * @property string $purpose
  * @property ?int $package_id
  * @property ?int $from_package_id
@@ -34,6 +36,9 @@ class OnlinePayment extends Model
     public const UPGRADE = 'upgrade';
 
     public const DEPOSIT = 'deposit';
+
+    /** A public-shop order (section 8): the buyer has no account. */
+    public const PUBLIC_ORDER = 'public';
 
     public const PENDING = 'pending';
 
@@ -57,6 +62,12 @@ class OnlinePayment extends Model
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Order, $this> */
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     /** @return BelongsTo<Package, $this> */
     public function package(): BelongsTo
     {
@@ -68,6 +79,7 @@ class OnlinePayment extends Model
         return match ($this->purpose) {
             self::PACKAGE => 'The '.$this->package?->name.' package',
             self::UPGRADE => 'Upgrade to '.$this->package?->name,
+            self::PUBLIC_ORDER => 'Public shop order '.$this->order?->number,
             default => 'Deposit to the main balance',
         };
     }

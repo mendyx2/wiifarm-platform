@@ -28,14 +28,15 @@ class OnlinePaymentController extends Controller
         return Inertia::render('admin/payments', [
             'status' => $status,
             'q' => $q,
-            'payments' => OnlinePayment::with(['user:id,username,first_name,last_name', 'package:id,name'])
+            'payments' => OnlinePayment::with(['user:id,username,first_name,last_name', 'package:id,name', 'order:id,number,buyer_name,buyer_phone'])
                 ->when($status !== 'all', fn ($query) => $query->where('status', $status))
-                ->when($q !== '', fn ($query) => $query->where(fn ($w) => $w->where('reference', 'like', "%{$q}%")->orWhereHas('user', fn ($u) => $u->where('username', 'like', "%{$q}%"))))
+                ->when($q !== '', fn ($query) => $query->where(fn ($w) => $w->where('reference', 'like', "%{$q}%")->orWhereHas('user', fn ($u) => $u->where('username', 'like', "%{$q}%"))->orWhereHas('order', fn ($o) => $o->where('number', 'like', "%{$q}%")->orWhere('buyer_name', 'like', "%{$q}%"))))
                 ->latest('id')->paginate(25)->withQueryString()
                 ->through(fn (OnlinePayment $p) => [
                     'id' => $p->id, 'reference' => $p->reference, 'what' => $p->describe(), 'amount' => $p->amount,
                     'status' => $p->status, 'gateway_status' => $p->gateway_status, 'channel' => $p->channel, 'note' => $p->note,
-                    'member' => ['id' => $p->user->id, 'username' => $p->user->username, 'name' => trim($p->user->first_name.' '.$p->user->last_name)],
+                    'member' => $p->user ? ['id' => $p->user->id, 'username' => $p->user->username, 'name' => trim($p->user->first_name.' '.$p->user->last_name)] : null,
+                    'buyer' => $p->order ? trim($p->order->buyer_name.' · '.$p->order->buyer_phone, ' ·') : null,
                     'at' => $p->created_at->toDateTimeString(), 'paid_at' => $p->paid_at?->toDateTimeString(),
                     // Waiting, or failed after Paystack saw it: a payment that never reached Paystack has nothing to ask about.
                     'can_check' => $p->status === OnlinePayment::PENDING || ($p->status === OnlinePayment::FAILED && $p->gateway_status !== null),

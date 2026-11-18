@@ -16,7 +16,8 @@ type Row = PaymentRow & {
     channel: string | null;
     paid_at: string | null;
     can_check: boolean;
-    member: { id: number; username: string; name: string };
+    member: { id: number; username: string; name: string } | null;
+    buyer: string | null;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -65,7 +66,7 @@ export default function AdminPayments({ payments, status, q }: { payments: Pagin
                     <form onSubmit={submit} className="flex gap-2">
                         <Input
                             aria-label="Search payments"
-                            placeholder="Reference or username"
+                            placeholder="Reference, username or order"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="w-56"
@@ -84,13 +85,19 @@ export default function AdminPayments({ payments, status, q }: { payments: Pagin
                         { key: 'at', header: 'Started', cell: (p) => p.at, className: 'whitespace-nowrap' },
                         {
                             key: 'member',
-                            header: 'Member',
-                            cell: (p) => (
-                                <Link href={route('admin.members.show', p.member.id)} className="underline-offset-4 hover:underline">
-                                    <span className="font-medium">{p.member.name || p.member.username}</span>{' '}
-                                    <span className="text-muted-foreground text-xs">@{p.member.username}</span>
-                                </Link>
-                            ),
+                            header: 'Who',
+                            cell: (p) =>
+                                p.member ? (
+                                    <Link href={route('admin.members.show', p.member.id)} className="underline-offset-4 hover:underline">
+                                        <span className="font-medium">{p.member.name || p.member.username}</span>{' '}
+                                        <span className="text-muted-foreground text-xs">@{p.member.username}</span>
+                                    </Link>
+                                ) : (
+                                    <>
+                                        {p.buyer}
+                                        <span className="text-muted-foreground block text-xs">Public shop</span>
+                                    </>
+                                ),
                         },
                         {
                             key: 'what',

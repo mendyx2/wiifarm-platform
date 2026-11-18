@@ -57,4 +57,12 @@ return [
      * midnight Lagos time (section 12).
      */
     'business_timezone' => 'Africa/Lagos',
+
+    /*
+     * The public shop (specification section 8): how long an affiliate's link
+     * is remembered, and how long an unpaid public order waits before it is
+     * cancelled. A paid order's pickup code never expires.
+     */
+    'affiliate_cookie_days' => 30,
+    'public_order_days' => 3,
 ];

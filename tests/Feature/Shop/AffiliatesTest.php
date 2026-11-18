@@ -90,8 +90,8 @@ class AffiliatesTest extends NetworkTestCase
         $code = Affiliate::sole()->code;
         $this->post('/affiliate/logout');
 
-        $this->get('/r/'.strtolower($code))->assertRedirect('/')->assertCookie('wiifarm_ref', $code);
-        $this->get('/r/WII-NOSUCH')->assertRedirect('/')->assertCookieMissing('wiifarm_ref');
+        $this->get('/r/'.strtolower($code))->assertRedirect('/products')->assertCookie('wiifarm_ref', $code);
+        $this->get('/r/WII-NOSUCH')->assertRedirect('/products')->assertCookieMissing('wiifarm_ref');
     }
 
     public function test_the_commission_is_paid_to_the_affiliate_wallet_on_pickup()

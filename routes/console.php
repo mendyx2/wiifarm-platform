@@ -19,3 +19,6 @@ Schedule::command('wiifarm:match')->dailyAt('01:30')->timezone('Africa/Lagos')->
 
 // Every five minutes: ask Paystack about payments still waiting (specification section 6).
 Schedule::command('wiifarm:check-payments')->everyFiveMinutes()->withoutOverlapping();
+
+// Every night: cancel public orders not paid in time (specification section 8).
+Schedule::command('wiifarm:expire-public-orders')->dailyAt('03:30')->timezone('Africa/Lagos');

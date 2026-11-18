@@ -4,11 +4,13 @@ namespace App\Services\Payments;
 
 use App\Models\Package;
 use App\Models\Payments\OnlinePayment;
+use App\Models\Shop\Order;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\PlacementException;
 use App\Services\Network\Registration;
 use App\Services\Network\Upgrade;
+use App\Services\Shop\Orders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -35,6 +37,7 @@ class OnlinePayments
         private readonly Ledger $ledger,
         private readonly Registration $registration,
         private readonly Upgrade $upgrade,
+        private readonly Orders $orders,
     ) {}
 
     /** @return array{0: OnlinePayment, 1: string} the payment and the Paystack page to send the member to */
@@ -69,6 +72,32 @@ class OnlinePayments
         return [$payment, $url];
     }
 
+    /**
+     * A public-shop order (section 8), paid by someone without an account.
+     *
+     * @return array{0: OnlinePayment, 1: string}
+     */
+    public function startPublic(Order $order, string $email, string $callbackUrl): array
+    {
+        if ($order->kind !== Order::PUBLIC || $order->status !== Order::PENDING) {
+            throw new PaymentException('This order cannot be paid now.');
+        }
+
+        $payment = OnlinePayment::create([
+            'user_id' => null, 'order_id' => $order->id, 'purpose' => OnlinePayment::PUBLIC_ORDER,
+            'amount' => $order->amount, 'reference' => 'WF-'.Str::upper(Str::random(16)), 'status' => OnlinePayment::PENDING,
+        ]);
+
+        try {
+            $url = $this->paystack->initialize($email, $order->amount, $payment->reference, $callbackUrl, ['purpose' => 'public', 'order' => $order->number]);
+        } catch (PaymentException $e) {
+            $payment->forceFill(['status' => OnlinePayment::FAILED, 'note' => 'Not started: '.$e->getMessage()])->save();
+            throw $e;
+        }
+
+        return [$payment, $url];
+    }
+
     /** Asks Paystack about a payment and acts on the answer. */
     public function check(OnlinePayment $payment): OnlinePayment
     {
@@ -84,7 +113,7 @@ class OnlinePayments
     public function confirm(OnlinePayment $payment, array $facts): OnlinePayment
     {
         return DB::transaction(function () use ($payment, $facts) {
-            $payment = OnlinePayment::with(['user', 'package'])->lockForUpdate()->findOrFail($payment->id);
+            $payment = OnlinePayment::with(['user', 'package', 'order'])->lockForUpdate()->findOrFail($payment->id);
             if (in_array($payment->status, [OnlinePayment::PAID, OnlinePayment::MISMATCH], true)) {
                 return $payment; // already settled
             }
@@ -147,6 +176,13 @@ class OnlinePayments
     {
         $key = 'paystack:'.$payment->reference;
         $member = $payment->user;
+
+        if ($payment->purpose === OnlinePayment::PUBLIC_ORDER) {
+            // Paid is paid: even an order cancelled for waiting too long is honoured, with its pickup code.
+            $this->orders->confirmPublicPayment($payment->order, $key);
+
+            return null;
+        }
 
         if ($payment->purpose === OnlinePayment::DEPOSIT) {
             $this->toMainBalance($payment, $key);

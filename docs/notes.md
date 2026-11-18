@@ -1309,3 +1309,63 @@ Decision 10 (how members top up the VISA wallet) is still open.
 
 **Next:** the public storefront, where the public buy at ₦2,000 through an
 affiliate's link and pay online.
+
+## Step 27: The public shop (phase 5, part 3)
+
+**What this is:** the shop for the public (specification section 8). Anyone
+can buy Wiifarm products at ₦2,000 a unit, without an account, and collect
+them from any stockist.
+
+- **The shop page** (`/products`):
+    - lists the products at the public price, with quantity buttons, and
+      asks for the buyer's name, phone and email;
+    - the buyer pays the total with Paystack;
+    - the home page now has a "Shop" button.
+- **Affiliates:** someone who arrives through an affiliate's link
+  (`/r/WII-XXXXXX`, or `/products?ref=WII-XXXXXX`) is remembered for 30
+  days, and the page says "Recommended by …". Their order records the
+  affiliate, who earns ₦100 a unit when the goods are collected, as built
+  in step 21. A banned affiliate's link earns nothing.
+- **After paying:**
+    - the buyer lands on their own page for the order. Its link is signed,
+      so nobody can open another buyer's order by changing the number;
+    - once Paystack confirms, the page shows the pickup code and the
+      stockists where it can be collected (name, address, phone);
+    - while Paystack is still confirming, the page says so and refreshes by
+      itself.
+- **The money** is split as decided for public sales. The affiliate's and
+  stockist's shares are held until pickup, the rest belongs to the
+  manufacturing company, and none goes to the cooperative's pools.
+  Paystack confirms the payment exactly as for members (step 25).
+- **Unpaid orders** are cancelled after 3 days by a nightly job, unless
+  Paystack is still confirming their payment. A payment that arrives late
+  is still honoured: paid is paid.
+- **Admins** see public payments on the Online payments page, with the
+  buyer's name and phone, and can search by order number or buyer.
+- **Tests:** 262 pass (6 new). They cover:
+    - the shop page;
+    - an affiliate's link being remembered and the order being theirs,
+      with the ₦100 a unit held;
+    - the buyer's private page with the code, and refused without the
+      signed link;
+    - incomplete orders;
+    - cancelling unpaid orders, and honouring a late payment;
+    - the admin view.
+- **Checked in a browser:** the shop through an affiliate's link
+  ("Recommended by Kemi Ade"), on a computer and a phone, and the page of a
+  paid order with its code and the stockists. Two faults found and fixed:
+    - the order page's link was signed together with the server's address,
+      so it failed when opened at a different address. Only the page's own
+      path is signed now;
+    - the product card stretched to the height of the details form.
+
+**For the board (decision 33):**
+
+- Are 30 days for the affiliate link and 3 days for an unpaid order right?
+- Buyers must give an email, because Paystack needs one. Is that
+  acceptable?
+- Are prices per state still wanted? For now the public price is the same
+  everywhere.
+
+**Next:** a real member dashboard (balances, PV, team, orders at a glance),
+then the leadership bonus and the monthly runs.

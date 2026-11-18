@@ -18,7 +18,13 @@ export default function Welcome() {
                     <p className="mb-8 text-base text-[#4a5a48] dark:text-[#a9b8a6]">
                         Farm produce, a member network that rewards you, and savings that work for you.
                     </p>
-                    <nav className="flex items-center justify-center gap-3">
+                    <nav className="flex flex-wrap items-center justify-center gap-3">
+                        <Link
+                            href={route('public.shop')}
+                            className="rounded-md border border-[#2e7d32] px-5 py-2 text-sm font-medium text-[#2e7d32] hover:bg-[#2e7d32]/10 dark:text-[#7fc283]"
+                        >
+                            Shop
+                        </Link>
                         {auth.user ? (
                             <Link
                                 href={route('dashboard')}

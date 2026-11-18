@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use App\Models\Affiliate;
+use App\Models\Payments\OnlinePayment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -51,6 +52,12 @@ class Order extends Model
     protected $guarded = ['id'];
 
     protected $hidden = ['pickup_code', 'pickup_code_hash'];
+
+    /** @return HasMany<OnlinePayment, $this> */
+    public function onlinePayments(): HasMany
+    {
+        return $this->hasMany(OnlinePayment::class);
+    }
 
     protected function casts(): array
     {

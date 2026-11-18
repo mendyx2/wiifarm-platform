@@ -377,6 +377,13 @@ A public sale earns no PV for anyone and pays no network bonus.
 
 5. An order not paid within the admin's set number of days is cancelled. A paid order's code never expires.
 
+**How the public shop works now** (built November 2026):
+
+- The shop is at `/products`, with no account needed. An affiliate's link (`/r/WII-XXXXXX`, or `/products?ref=WII-XXXXXX`) is remembered for 30 days, and the page says who recommended it.
+- The buyer gives their name, phone and email (Paystack needs an email for its receipt), chooses quantities, and pays with Paystack.
+- After paying, the buyer lands on their own private page for the order (a signed link nobody can guess). It shows the pickup code and the list of active stockists, with their addresses and phone numbers.
+- An unpaid order is cancelled after 3 days, unless Paystack is still confirming its payment. A payment that arrives after that is still honoured.
+
 **Order statuses:** pending, paid (awaiting pickup), fulfilled, cancelled.
 
 **Ad Center:** admins publish adverts (image, caption, link). Members share them on WhatsApp, Facebook, X, Telegram, TikTok and Instagram with their own link attached. Clicks and orders are reported per advert.
@@ -561,3 +568,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **30. Unused autoship money.** At month end an autoship balance not spent goes to the cooperative (5.6). It comes from the registration ledger's matching line: should it go back to that ledger's (Pool A's) contingency fund? And what may it buy: any product in the shop, paid from the autoship wallet? Neither the spending nor the month-end sweep is built yet.
 - [ ] **31. Paystack's fee and deposit limits.** Members pay exactly the price; Paystack takes its fee from what it sends on, so the company receiving the money bears it. Should members pay the fee on top instead (for deposits, packages, or both)? Deposits are set at ₦1,000 to ₦5,000,000: right? And a deposit is treated as the member's own money, not a sale, so nothing is split until it is spent (section 6): please confirm.
 - [ ] **32. E-pin rules.** (a) A pin worth more than the package chosen pays it, and the rest goes to the new member's main balance. Should the rest go back to the buyer instead, or should a pin only pay the package it was bought for? (b) A pin an admin creates is paid for by the cooperative: its value comes from the platform's adjustment account, and once used, it is split like any registration and pays the usual bonuses. Who may create them, and is there a limit? (c) Should members be able to cancel their own unused pins?
+- [ ] **33. Public shop details.** (a) The affiliate link is remembered for 30 days and an unpaid order waits 3 days: right? (Both are settings for now, not yet on an admin screen.) (b) Buyers must give an email, because Paystack needs one: is that acceptable, or should a placeholder be used for buyers without email? (c) Prices per state (section 8) are not built: the public price is the same everywhere. Are per-state prices still wanted?

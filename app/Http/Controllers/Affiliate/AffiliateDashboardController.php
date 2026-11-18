@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Affiliate;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PublicShop\PublicShopController;
 use App\Models\Affiliate;
 use App\Models\Shop\Order;
 use App\Services\Ledger\Ledger;
@@ -43,8 +44,9 @@ class AffiliateDashboardController extends Controller
     {
         $affiliate = Affiliate::where('code', strtoupper($code))->where('status', Affiliate::ACTIVE)->first();
 
-        $response = redirect('/');
+        // To the public shop, remembering who sent the buyer.
+        $response = redirect()->route('public.shop');
 
-        return $affiliate ? $response->withCookie(cookie('wiifarm_ref', $affiliate->code, 60 * 24 * 30)) : $response;
+        return $affiliate ? $response->withCookie(PublicShopController::refCookie($affiliate)) : $response;
     }
 }

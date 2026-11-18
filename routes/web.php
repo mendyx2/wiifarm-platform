@@ -9,12 +9,19 @@ use App\Http\Controllers\Member\TeamController;
 use App\Http\Controllers\Member\WalletController;
 use App\Http\Controllers\Member\WithdrawController;
 use App\Http\Controllers\PaystackWebhookController;
+use App\Http\Controllers\PublicShop\PublicShopController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
+
+// The public shop (specification section 8): no account needed.
+Route::get('products', [PublicShopController::class, 'index'])->name('public.shop');
+Route::post('products/order', [PublicShopController::class, 'order'])->middleware('throttle:10,1')->name('public.order.store');
+Route::get('products/paid', [PublicShopController::class, 'return'])->name('public.return');
+Route::get('products/order/{order}', [PublicShopController::class, 'show'])->middleware('signed:relative')->name('public.order');
 
 // Paystack's signed message that a payment succeeded (no session, no CSRF token).
 Route::post('webhooks/paystack', PaystackWebhookController::class)->middleware('throttle:120,1')->name('webhooks.paystack');
