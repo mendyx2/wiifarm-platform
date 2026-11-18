@@ -36,23 +36,26 @@ describe V2), the percentage column is followed.
   - upgrade ledger: ₦317.06 a unit;
   - anything a line does not pay out also stays in its ledger.
 
-## Public shop (board, November 2026)
+## Decisions from the November 2026 meeting
 
-Per ₦2,000 unit:
+- **Public shop sales stay outside the cooperative.** Of a ₦2,000 unit:
+  - 20% of the ₦500 margin (₦100) to the affiliate's wallet, when an
+    affiliate's link brought the buyer;
+  - the usual ₦120 / ₦90 to the stockist who hands it over;
+  - the rest to the manufacturers: ₦1,780 to ₦1,910 a unit.
 
-| Share | Per unit |
-| --- | --- |
-| Manufacturers | ₦750 |
-| Cooperative pool | ₦750 |
-| Affiliate (20% of the ₦500 margin) | ₦100 |
-| Manufacturers' account (rest of the margin) | ₦400 |
-
-It adds up to ₦2,000 exactly. Still open (decision 23):
-
-- which ledger takes the cooperative's ₦750;
-- whether the stockist's rebate on a public pickup comes from it;
-- where the ₦100 goes when nobody referred the buyer;
-- whether a public sale earns PV.
+  No PV, no network bonus. Sales straight from the landing page have no
+  affiliate share.
+- **Affiliates and stockists each have their own wallet.**
+- **The stockist sponsor bonus is Pool D** (8% / 6.5% to 10 sponsor
+  generations). There is no ongoing share of store sales.
+- **10 generations, never 15:**
+  - unilevel is now 43% over 10 generations;
+  - every package from Booster up reaches all 10;
+  - store PV also stops at 10.
+- **Contingency fund.** Every reserve and leftover goes into a contingency
+  fund, kept per ledger. Each ledger is self-sufficient: its shortfalls are
+  covered only from its own contingency fund, never by another ledger.
 
 ## What still does not fit
 
@@ -60,7 +63,7 @@ It adds up to ₦2,000 exactly. Still open (decision 23):
 | --- | --- | --- | --- |
 | Recognition (rank) awards | ₦5.25 | 8 to 19 × the pool | Was ₦52.50 under V2; the 1% Strategic Reserve cut it by 90% |
 | Binary matching | ₦108.01 | 0.8 to 1.1 × typically, up to 2.1 × in very even growth | Daily caps mostly delay payment |
-| Unilevel at full depth | ₦367.50 | ₦387 (10 generations) or ₦441 (15) | Real payouts are lower: package depth and inactive members |
+| Unilevel at full depth | ₦367.50 | ₦387 (10 generations) | ₦19.50 short only when all 10 uplines qualify; covered by the repurchase ledger's own contingency fund (₦112.50 a unit goes in) |
 | Repurchase awards | ₦75 | Section 5.11's table costs 1.3 to 7 × for one earner | The board's schedule has not arrived |
 
 These are open decisions 17 to 24 in specification section 13. Two things
@@ -85,4 +88,4 @@ cannot be built until the board decides them:
 4. Registration and upgrade bonuses.
 5. Daily matching with caps, then leadership, unilevel and awards, once the
    shortfall rule is set.
-6. The public shop and affiliates. The split is set; which ledger takes the cooperative's ₦750 is still open.
+6. The public shop, affiliates and their wallets (split settled).

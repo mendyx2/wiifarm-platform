@@ -632,3 +632,34 @@ questions:
 - whether the stockist's rebate on a public pickup comes from it;
 - where the affiliate's ₦100 goes when nobody referred the buyer;
 - whether a public sale earns PV.
+
+## Step 15: More board decisions: public sales, contingency, 10 generations
+
+From the board, written into the specification:
+
+- **Public shop sales stay outside the cooperative.** They are there to bring
+  the products to the public. Of a ₦2,000 unit:
+    - 20% of the ₦500 margin (₦100) goes to the affiliate, when one sent the
+      buyer;
+    - the usual ₦120 / ₦90 goes to the stockist who hands it over;
+    - the rest goes to the manufacturers.
+
+  A public sale earns no PV and pays no network bonus.
+- **Affiliates get their own wallet,** as stockists do.
+- **The stockist sponsor bonus is the Pool D bonus** to 10 sponsor
+  generations; the old 3% of store sales is gone.
+- **10 generations, never 15.**
+    - Unilevel is now 10% · 7% · 5% · 4% · 4% · 3% · 3% · 3% · 2% · 2% (43%),
+      and every package from Booster up reaches all 10.
+    - The packages already in the database were corrected (a small database
+      change). A test checks no package goes beyond 10.
+- **Contingency fund.** Every reserve and leftover is placed in a contingency
+  fund, kept per ledger and fully tracked. When a line runs short, it is
+  covered from its own ledger's contingency fund. No ledger ever pays for
+  another.
+
+Still open: rank awards (₦5.25 a unit), what happens if a ledger's contingency
+fund is also empty, whether unpaid shares go to the contingency fund or the
+company, the affiliate's 20% base, and the Global Share Pool.
+
+Tests: 171 pass.
