@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EPinController;
 use App\Http\Controllers\Admin\KycReviewController;
 use App\Http\Controllers\Admin\MatchingController;
 use App\Http\Controllers\Admin\MemberController;
@@ -91,6 +92,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Pool ledgers, contingency funds and held payouts
         Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');
+        Route::get('epins', [EPinController::class, 'index'])->middleware('admin.can:epins.view')->name('epins.index');
+        Route::middleware('admin.can:epins.manage')->group(function () {
+            Route::post('epins', [EPinController::class, 'store'])->name('epins.store');
+            Route::post('epins/{epin}/cancel', [EPinController::class, 'cancel'])->name('epins.cancel');
+        });
         Route::middleware('admin.can:payments.view')->group(function () {
             Route::get('payments', [OnlinePaymentController::class, 'index'])->name('payments.index');
             Route::post('payments/{payment}/check', [OnlinePaymentController::class, 'check'])->middleware('throttle:30,1')->name('payments.check');

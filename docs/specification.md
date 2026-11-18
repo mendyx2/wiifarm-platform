@@ -39,7 +39,7 @@ A person becomes a member when their package is paid. Until then they hold a pen
 **Ways to join:**
 
 1. **Self sign-up.** The person fills in the form, chooses a package, and pays by Paystack or with an e-pin. Placement and bonuses happen at the moment payment is confirmed.
-2. **Key-in by a member ("Add Distributor").** A member registers someone and pays the package from their own VISA wallet. The member doing the key-in earns the key-in bonus (section 5).
+2. **Key-in by a member ("Add Distributor").** A member registers someone and pays the package from their own VISA wallet. The member doing the key-in earns the key-in bonus (section 5). The member fills in the person's details, including the password they will sign in with. Creating the account, taking the price from the VISA wallet, and placing and paying for the new member happen together, or not at all.
 
 **Sign-up details:**
 
@@ -283,6 +283,12 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
 - **Bonus transfer** moves money from a bonus wallet to the member's own main balance.
 
 **E-pins:** a pin is a code worth a fixed amount, bought from the VISA wallet or created by an admin. A pin pays one registration, once. Pins show who created them, who used them, and when.
+
+- A member buys pins from their VISA wallet, up to 50 at a time, each worth one package's price. The money waits in an "e-pins issued" account until a pin is used.
+- An admin creates pins with a reason, recorded in the audit log.
+- A person who has signed up enters the code on their "My package" page. A pin pays a package costing up to its value; anything over goes to the new member's main balance (decision 32).
+- An admin can cancel an unused pin. A bought pin's value goes back to the buyer's VISA wallet.
+- Codes look like pickup codes (for example K7QM-3XPA-R9TD) and are stored encrypted. Only the buyer, and admins allowed to manage pins, see an unused code.
 
 ## 7. Pools and governance
 
@@ -529,7 +535,7 @@ The specification can be signed off once the board settles the points below.
 
 - [ ] **8. Bans:** should a ban pause bonuses (paid on unban, as now) or cancel them for good?
 - [ ] **9. Matrix stages:** is the current "stage two" matrix and its stage-out report still part of the plan? If not, it is left out.
-- [ ] **10. VISA wallet:** how do members top it up: by deposit, by bonus transfer, or only by an admin?
+- [ ] **10. VISA wallet:** how do members top it up: by deposit, by bonus transfer, or only by an admin? *For now only an admin can, through "Add to or subtract from a member's wallet" on the member's page.*
 - [x] **11. Empty compensation budget:** Settled: payouts are held until the line refills (section 7).
 - [ ] **12. Dividend reversal:** may it take a member's balance below zero, or stop at zero?
 - [ ] **13. Loans:** when does a missed instalment make a loan "in default", and what happens then (fees, guarantors)?
@@ -554,3 +560,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **29. Withdrawal charges and limits.** The system sets up "Bank transfer" from ₦1,000 to ₦5,000,000 with no charge, for an admin to change. What should each method's charge be (fixed and percentage), and is it right that charges go to the cooperative? Member withdrawals also need verified KYC (an admin switch, on by default); stockist withdrawals follow the stockist's own member account; affiliates have no KYC. Is that right?
 - [ ] **30. Unused autoship money.** At month end an autoship balance not spent goes to the cooperative (5.6). It comes from the registration ledger's matching line: should it go back to that ledger's (Pool A's) contingency fund? And what may it buy: any product in the shop, paid from the autoship wallet? Neither the spending nor the month-end sweep is built yet.
 - [ ] **31. Paystack's fee and deposit limits.** Members pay exactly the price; Paystack takes its fee from what it sends on, so the company receiving the money bears it. Should members pay the fee on top instead (for deposits, packages, or both)? Deposits are set at ₦1,000 to ₦5,000,000: right? And a deposit is treated as the member's own money, not a sale, so nothing is split until it is spent (section 6): please confirm.
+- [ ] **32. E-pin rules.** (a) A pin worth more than the package chosen pays it, and the rest goes to the new member's main balance. Should the rest go back to the buyer instead, or should a pin only pay the package it was bought for? (b) A pin an admin creates is paid for by the cooperative: its value comes from the platform's adjustment account, and once used, it is split like any registration and pays the usual bonuses. Who may create them, and is there a limit? (c) Should members be able to cancel their own unused pins?

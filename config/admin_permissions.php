@@ -24,6 +24,8 @@ return [
         ],
         'Money' => [
             'payments.view' => 'See online payments (Paystack) and ask Paystack about one',
+            'epins.view' => 'See e-pins: who created each, who used it and when',
+            'epins.manage' => 'Create and cancel e-pins, and see unused codes',
             'withdrawals.view' => 'See withdrawal requests',
             'withdrawals.decide' => 'Approve and reject withdrawals',
             'withdrawals.methods' => 'Set up withdrawal methods, limits and charges',

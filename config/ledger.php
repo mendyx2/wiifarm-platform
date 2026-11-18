@@ -65,6 +65,7 @@ return [
         'external' => 'Money in and out of the platform',
         'adjustments' => 'Admin corrections',
         'withdrawals.pending' => 'Withdrawals waiting for an admin',
+        'epins.outstanding' => 'E-pins issued and not yet used',
     ],
 
     /*

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
 use App\Models\Payments\OnlinePayment;
+use App\Services\Network\PlacementException;
+use App\Services\Payments\EPins;
 use App\Services\Payments\OnlinePayments;
 use App\Services\Payments\PaymentException;
 use App\Services\Payments\Paystack;
@@ -49,6 +51,24 @@ class PaymentController extends Controller
         $purpose = $member->isActivated() ? OnlinePayment::UPGRADE : OnlinePayment::PACKAGE;
 
         return $this->startOrFail(fn () => $payments->start($member, $purpose, Package::findOrFail($data['package_id']), null, route('payments.return')), 'package_id');
+    }
+
+    /** A person who has signed up pays their package with an e-pin. */
+    public function redeemPin(Request $request, EPins $epins): RedirectResponse
+    {
+        $data = $request->validate([
+            'code' => ['required', 'string', 'max:30'],
+            'package_id' => ['required', 'integer', 'exists:packages,id'],
+        ]);
+        $package = Package::findOrFail($data['package_id']);
+
+        try {
+            $epins->redeem($request->user(), $data['code'], $package);
+        } catch (PaymentException|PlacementException $e) {
+            throw ValidationException::withMessages(['code' => $e->getMessage()]);
+        }
+
+        return to_route('package')->with('status', "E-pin accepted. Welcome: you are now a member on {$package->name}.");
     }
 
     public function deposit(Request $request, Paystack $paystack): Response

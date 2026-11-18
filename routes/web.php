@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Member\EPinController;
+use App\Http\Controllers\Member\KeyInController;
 use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\StoreController;
@@ -25,6 +27,11 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('wallet', WalletController::class)->name('wallet');
     Route::get('package', [PaymentController::class, 'package'])->name('package');
     Route::post('package', [PaymentController::class, 'payPackage'])->middleware('throttle:10,1')->name('package.pay');
+    Route::post('package/epin', [PaymentController::class, 'redeemPin'])->middleware('throttle:10,1')->name('package.epin');
+    Route::get('epins', [EPinController::class, 'index'])->name('epins');
+    Route::post('epins', [EPinController::class, 'buy'])->middleware('throttle:10,1')->name('epins.buy');
+    Route::get('team/add', [KeyInController::class, 'create'])->name('team.add');
+    Route::post('team/add', [KeyInController::class, 'store'])->middleware('throttle:10,1')->name('team.add.store');
     Route::get('deposit', [PaymentController::class, 'deposit'])->name('deposit');
     Route::post('deposit', [PaymentController::class, 'payDeposit'])->middleware('throttle:10,1')->name('deposit.pay');
     Route::get('payments/return', [PaymentController::class, 'return'])->name('payments.return');

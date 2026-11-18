@@ -1,6 +1,8 @@
 import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { FormField } from '@/components/wf/form-field';
 import { OfflineNotice, PaymentHistory, type PaymentRow } from '@/components/wf/payment-history';
 import AppLayout from '@/layouts/app-layout';
 import { formatKobo } from '@/lib/money';
@@ -31,6 +33,12 @@ export default function PackagePage({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         form.post(route('package.pay'));
+    };
+    const pin = useForm({ code: '', package_id: 0 });
+    const redeem: FormEventHandler = (e) => {
+        e.preventDefault();
+        pin.transform((d) => ({ ...d, package_id: form.data.package_id }));
+        pin.post(route('package.epin'), { preserveScroll: true });
     };
 
     return (
@@ -94,6 +102,29 @@ export default function PackagePage({
                             {chosen ? `Pay ${formatKobo(chosen.to_pay)} with Paystack` : 'Choose a package'}
                         </Button>
                         <p className="text-muted-foreground text-xs">You will pay on Paystack’s secure page and come back here.</p>
+                    </form>
+                )}
+
+                {!current && chosen && (
+                    <form onSubmit={redeem} className="bg-card max-w-xl space-y-3 rounded-xl border p-4">
+                        <h2 className="font-medium">Or pay with an e-pin</h2>
+                        <FormField
+                            id="pin-code"
+                            label={`E-pin for ${chosen.name}`}
+                            error={pin.errors.code}
+                            hint="The code a member gave you, such as K7QM-3XPA-R9TD."
+                        >
+                            <Input
+                                id="pin-code"
+                                autoComplete="off"
+                                className="font-mono uppercase"
+                                value={pin.data.code}
+                                onChange={(e) => pin.setData('code', e.target.value)}
+                            />
+                        </FormField>
+                        <Button variant="secondary" disabled={!pin.data.code.trim() || pin.processing}>
+                            Pay {chosen.name} with this e-pin
+                        </Button>
                     </form>
                 )}
 

@@ -33,6 +33,7 @@ import {
     ShieldCheck,
     ShoppingBag,
     Store,
+    Ticket,
     Users,
     type LucideIcon,
 } from 'lucide-react';
@@ -45,6 +46,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
     { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
     { title: 'Online payments', url: '/admin/payments', icon: CreditCard, permission: 'payments.view' },
+    { title: 'E-pins', url: '/admin/epins', icon: Ticket, permission: 'epins.view' },
     { title: 'Withdrawals', url: '/admin/withdrawals', icon: Banknote, permission: 'withdrawals.view' },
     { title: 'Orders', url: '/admin/orders', icon: ShoppingBag, permission: 'orders.view' },
     { title: 'Affiliates', url: '/admin/affiliates', icon: Megaphone, permission: 'affiliates.view' },

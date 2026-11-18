@@ -1233,3 +1233,79 @@ Paystack's dashboard set the webhook address to `https://<site>/webhooks/paystac
 
 **Next:** e-pins and keying in a new member from the VISA wallet ("Add
 Distributor").
+
+## Step 26: E-pins and Add Distributor (phase 5, part 2)
+
+**What this is:** the two other ways to pay a package (specification section
+2), besides paying online.
+
+- **Add Distributor (key-in):** on the new "Add distributor" page a member
+  registers someone and pays their package from their own VISA wallet.
+    - The form asks for the person's details (including state, city and
+      address, which key-in needs), the sponsor (the member, unless
+      someone else invited the person), an optional place in the tree,
+      the package, and the password the person will sign in with.
+    - The account is created, the price leaves the VISA wallet, and the
+      person is placed and paid for in one step. If anything fails (not
+      enough in the VISA wallet, a wrong place in the tree), nothing
+      happens at all.
+    - The member earns the key-in bonus (2%), and the direct bonus too
+      when they are the sponsor.
+    - A form sent twice registers once.
+- **E-pins:** a code that pays one person's package, once.
+    - **Buying:** a member buys pins on the new "E-pins" page, from the VISA
+      wallet, up to 50 at a time, each worth one package's price. They see
+      each unused code with a Copy button, and later who used it and when.
+    - **Using:** the person signs up, chooses their package on "My package"
+      and types the code under "Or pay with an e-pin". Spaces, dashes and
+      small letters do not matter. A used or cancelled pin, or a wrong
+      code, is refused. If the person cannot be placed (for example their
+      sponsor has not paid), the pin stays unused.
+    - A pin pays a package costing up to its value; anything over goes to
+      the new member's main balance (decision 32).
+    - **Admins:** the new admin "E-pins" page lists every pin and who
+      created and used it:
+        - "See e-pins" lets an admin view the list;
+        - "Create and cancel e-pins" lets them create pins (with a reason,
+          for the audit log), see unused codes and cancel an unused pin. A
+          bought pin's value goes back to the buyer's VISA wallet.
+    - **The money:** a bought pin's value waits in an "E-pins issued and not
+      yet used" account. When the pin is used, it is split like any
+      registration. Codes are stored encrypted, never in plain text.
+- **VISA wallet top-ups (decision 10):** the board has not said how members
+  top it up. For now an admin does it with the existing "Add to or subtract
+  from a member's wallet" on the member's page, which is audited.
+- **Tidying:** the checks on a sign-up form (username, email, mobile,
+  sponsor, place in the tree) now live in one place, so self sign-up and Add
+  Distributor apply exactly the same rules.
+- **Tests:** 256 pass (8 new). They cover:
+    - buying pins once per form, with limits and a short wallet;
+    - using a pin once, typed loosely;
+    - the rest of a pin's value going to the main balance, and a pin
+      too small for the package;
+    - a pin that cannot place its user staying unused;
+    - admin permissions, creating and cancelling with the refund;
+    - key-in with both bonuses;
+    - nothing created when the wallet is short or the form is incomplete;
+    - a member without a package not being able to key in.
+- **Checked in a browser:**
+    - an admin topped up a member's VISA wallet;
+    - the member bought two Starter pins;
+    - the demo member who had not paid used one, typed in small letters,
+      and became a member on Starter;
+    - the first member keyed in a new Pre Starter member;
+    - the admin page showed one pin used (by whom, and when) and one unused
+      with its code;
+    - the ledger check passed (110 transactions).
+
+**For the board (decision 32):**
+
+- When a pin is worth more than the package, where should the rest go?
+- Admin-created pins are paid for by the cooperative. Who may create them,
+  and up to what limit?
+- May members cancel their own unused pins?
+
+Decision 10 (how members top up the VISA wallet) is still open.
+
+**Next:** the public storefront, where the public buy at ₦2,000 through an
+affiliate's link and pay online.
