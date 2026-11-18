@@ -579,3 +579,39 @@ unilevel, rank awards and repurchase awards would pay more than their pools
 take in as the network grows, so the board needs to say what happens when a
 pool is short. Fourteen questions are listed, and specification sections 5
 and 7 will be updated to match V2 once they are answered.
+
+## Step 13: The board's Allocation Blueprint V3 adopted (no code)
+
+The board replaced the V2 blueprint with **Allocation Blueprint V3**, a
+workbook now kept in `docs/board/`. A board meeting also settled how goods and
+stockists work. Both are now in the specification:
+
+- **Section 7 (pools)** follows V3:
+    - ₦750 of every unit to the manufacturers, ₦750 to the cooperative;
+    - separate ledgers for registration, repurchase, upgrade and stockist
+      activation, each with its own lines and safety net;
+    - the Strategic Reserve, Executive Leaders, Contingency Reserve and
+      Sub-leaders pools.
+- **Sections 8 and 9 (shop and stockists)** follow the meeting:
+    - everyone pays the company, never a stockist;
+    - goods move from the manufacturers to the Mega store, then the Sub
+      store, then the buyer, with the company allocating;
+    - pickup codes work at any stockist, never expire and release the whole
+      order at once;
+    - stockists have their own wallet and earn ₦120 (Mega) or ₦90 (Sub) per
+      unit handed over;
+    - the old 6% / 8% rebates, the 3% stockist-sponsor bonus, cash on pickup
+      and the stockists' own till are removed.
+- **Section 5:**
+    - the leadership bonus qualifies at 480,000 PV on the repurchase PV log;
+    - matching and leadership are funded from the registration ledger.
+- **Open decisions:**
+    - 1 and 2 are settled by V3;
+    - eight new ones (17 to 24) are added. The most important are the 1%
+      Strategic Reserve (rank awards now get ₦5.25 a unit instead of ₦52.50)
+      and the rule for a line that runs short.
+
+The check is in `docs/blueprint-v3-review.md`. In short, the registration
+ledger now adds up to exactly 100%, and every fixed-formula bonus fits its
+line to the kobo. Rank awards, and in some network shapes matching and
+unilevel, can still cost more than their lines.

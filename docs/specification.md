@@ -150,6 +150,7 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 - **When:** once a day, at the scheduled run (section 12).
 - **Matches:** one match needs 50 pairing PV on **both** legs. The number of matches is the smaller leg's pairing PV ÷ 50, rounded down.
 - **Daily cap:** the package's daily cap, minus any matches already paid that day.
+- **Funded by:** the registration ledger's matching line, 16.61% of the net (₦108.01 a unit, section 7).
 - **Amount:** the matches paid × the package's "paid per match".
 - **PV used:** 50 PV per match is taken from each leg. **Everything left over carries forward** to the next days. Nothing is ever wiped.
 - **No sponsor is needed** on either leg. Only PV counts.
@@ -166,7 +167,8 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 
 ### 5.7 Leadership bonus
 
-- **Who qualifies:** a member who holds the **Executive Ambassador** rank (450,000 PV, 5.8).
+- **Who qualifies:** a member who reaches **480,000 PV on their repurchase PV log** (Blueprint V3). The plan calls this the Executive Ambassador level; the binary rank of that name in 5.8 is 450,000 PV of lifetime binary volume, which is a different measure.
+- **Funded by:** the registration ledger's leadership line, 9.5% of the net (₦61.77 a unit, section 7).
 - **Amount:** **5%** of what their team earns from the matching bonus each month.
 - **Paid:** monthly, for the month just ended. Each month is paid once.
 - **Open:** whether "team" means the whole downline or a set number of levels (section 13).
@@ -269,63 +271,42 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
 
 ## 7. Pools and governance
 
-The blueprint's guiding principle governs this section: **every payout must be traceable to the transaction that produced its margin.** Every incoming naira is tagged with the engine that earned it, split into budget pools, and every bonus is charged to its own budget line.
+The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xlsx`, November 2026) governs this section. Where a note in the workbook disagrees with its percentage column, the percentage column is followed. **Every payout must be traceable to the purchase that funded it**: each naira is tagged with the kind of purchase that brought it in, kept in that purchase's own ledger, and every bonus is charged to its own line.
 
-**Two financing engines:**
+**The split of every member purchase** (₦1,500 a unit; 10 units = one ₦15,000 pack = 15 PV, so ₦1,000 of price = 1 PV):
 
-| Engine | Earned from | Funds |
+| Share | Per unit | Where it goes |
 | --- | --- | --- |
-| Registration engine | New registrations and package upgrades | The Consumer Rewards Pool (CRP): acquisition incentives |
-| Commerce engine | Repurchases, retail sales and stockist purchases | The Commerce Pool (CP): recurring commercial incentives |
+| Manufacturers | ₦750 (50%) | Recorded as owed to the manufacturers |
+| Cooperative | ₦750 (50%) | The ledger for that kind of purchase, below |
 
-**How each naira of revenue is allocated:**
+**The ledgers.** Each has its own balance and statement. Money moves between ledgers only as recorded transfers, never by editing a balance.
 
-| Allocation | Share | Inside it |
-| --- | --- | --- |
-| Company return | 30.00% |  |
-| Executive and frontline leadership | 10.00% |  |
-| Operations | 5.00% | Platform maintenance 0.50%, marketing and business development 1.00%, business expansion and retained earnings 3.00%, miscellaneous and contingency 0.50% |
-| Member compensation budget | 55.00% | Consumer Rewards Pool 22.00%, Commerce Pool 24.75%, Strategic Reserve 8.25% |
-
-The Strategic Reserve is a reserve inside the 55% compensation budget, not a third engine.
-
-**The allocation is applied per product pack.** Every package is made of packs of 15 PV at ₦15,000 each (Mega = 30 packs), and a carton is 15 packs. The split above applies to each pack's price, so one pack carries: company ₦4,500, executive and frontline leadership ₦1,500, operations ₦750, and members ₦8,250 (Consumer Rewards ₦3,300, Commerce ₦3,712.50, Strategic Reserve ₦1,237.50). A package or carton's budget is the pack budget × its number of packs. Each bonus line's budget per pack is its share × ₦15,000 (for example, direct referral 6% = ₦900 per pack).
-
-**Budget lines inside the compensation budget (share of revenue):**
-
-| Pool | Budget line | Share |
-| --- | --- | --- |
-| Consumer Rewards Pool (22%) | Key-in bonus | 1.00% |
-|  | Direct referral bonus | 6.00% |
-|  | Indirect referral bonus | 5.00% |
-|  | Binary matching bonus | 8.00% |
-|  | Upgrade bonus | 2.00% |
-| Commerce Pool (24.75%) | Unilevel bonus | 9.00% |
-|  | Leadership bonus | 4.00% |
-|  | Repurchase bonus | 5.00% |
-|  | Stockist sponsorship rebate | 3.00% |
-|  | Stockist product rebate | 3.75% |
-| Strategic Reserve (8.25%) | Contingency reserve | 1.00% |
-|  | Rank achievement awards | 4.50% |
-|  | Achievers / Upline Celebrated Bonus | 1.50% |
-|  | Global Share | 1.25% |
+| Ledger | Funded by | Taken off the top (of ₦750) | Shared out (of what is left) |
+| --- | --- | --- | --- |
+| **Registration (Pool A)** | First purchase: a new member's package | Strategic Reserve 1% (₦7.50), Contingency Reserve 2.3% (₦17.25), Executive Leaders 10% (₦75) | ₦650.25 (86.7%): direct 34.62% (₦225.12), indirect 18% (₦117.05), key-in 2.77% (₦18.01), binary matching 16.61% (₦108.01), leadership 9.5% (₦61.77), stockist rebate 18.5% (₦120.30). Adds up to 100%. |
+| **Repurchase (Pool C, Commerce)** | Members' repurchases | Nothing: the full ₦750 | Unilevel 49% (₦367.50), repurchase awards 10% (₦75), Sub-leaders 10% (₦75), stockist rebate 16% (₦120). Safety net 15% (₦112.50). |
+| **Upgrade (Pool E)** | The price difference of an upgrade | Strategic Reserve 1% (₦7.50), Executive Leaders 10% (₦75) | ₦667.50: upgrade bonuses 52.5% (₦350.44). Safety net ₦317.06. |
+| **Stockist activation (Pool D)** | A store's activation deposit | | Sub store (₦3M): 8% = ₦240,000. Mega store (₦10M): 6.5% = ₦650,000. Paid to 10 sponsor generations (section 9). |
+| **Strategic Reserve (Pool B)** | 1% of Pools A and E | | Recognition (rank) awards 70% (₦5.25 a unit), Upline Celebrated Bonus 30% (₦2.25 a unit) |
+| **Executive Leaders** | 10% of Pools A and E | | Held until the board sets its payout rules |
+| **Contingency Reserve** | 2.3% of Pool A | | Held; its use is a board decision (section 13) |
+| **Sub-leaders** | 10% of Pool C | | Held and paid in batches to qualified Sub-leaders; ranks and targets to be set |
 
 **Rules:**
 
-- **Splitting:** each confirmed payment is split into these allocations as ledger entries that add up to the payment exactly. The rounding remainder goes to the compensation budget.
-- **Charging:** every bonus payout is a debit from its own budget line, naming the member and the transaction that funded it.
-- **Reporting:** the admin dashboard and the financial report show, for each pool and each line, what came in, what was paid and what is left, by day, month and quarter.
-- **Plan versus budget:** the plan pays some bonuses as a share of PV value, and those can be larger than their budget line. For example, the direct bonus is 25% of a package's value, while its budget line is 6% of revenue. What happens when a payout would overrun its line is a board decision (section 13). Until it is made, payouts follow the plan and overruns are reported, never hidden.
+- **Splitting:** each confirmed payment is split into these lines as ledger entries that add up to the payment exactly. Per-unit amounts such as ₦225.11655 are not whole kobo, so the split is worked out on the whole payment and the rounding remainder goes to that ledger's safety net.
+- **Charging:** every bonus is a debit from its own line, naming the member and the purchase that funded it. The plan's formulas decide what is paid (for example, the direct bonus is 25% × PV × ₦600 = ₦225 a unit). The line holds slightly more, and the difference stays in the ledger.
+- **Safety net:** whatever a line does not pay out stays in its ledger as a safety net. Whether one ledger's safety net may cover another ledger's shortfall is a board decision (section 13).
+- **Shortfalls:** a line is never allowed to hide a shortfall. If it cannot cover what the plan pays, the shortfall is shown in the reports until the board's rule for it is applied (section 13).
+- **Breakage:** shares with no one to receive them go to the company: a missing generation, a company-sponsored member, a key-in by an admin.
+- **Reporting:** the admin dashboard and the financial report show each ledger and line (what came in, what was paid, what is left) by day, month and quarter.
 
-**Global Share Pool:**
-
-- **What it collects:** its 1.25% budget line, per calendar quarter.
-- **When it pays:** on the 1st of January, April, July and October, for the quarter just ended. Each quarter is paid once.
-- **Who gets it:** shared equally among the qualifying members. The plan does not say who qualifies. The current system uses the Diamond rank and above (section 13).
+**What the blueprint replaces:** the earlier 30 / 10 / 5 / 55 split and its 22% / 24.75% / 8.25% pools are replaced by the ledgers above. **The Global Share Pool has no line in V3**, so it is not built unless the board adds one (section 13).
 
 ## 8. Shop and affiliate
 
-The shop sells Wiifarm's products to members and to the public. Public buyers collect from a stockist in their state, and the member who sent them earns an affiliate bonus.
+The shop sells Wiifarm's products to members and to the public. **Everyone pays the company; nobody pays a stockist.** Every order gets a pickup code, and the buyer collects the goods from a stockist with it.
 
 **Products:**
 
@@ -337,23 +318,30 @@ The shop sells Wiifarm's products to members and to the public. Public buyers co
 
 **Prices:** each product has a member price and a suggested retail price, so members can see their retail profit (5.12).
 
-**Registration packs:** each package comes with its number of product packs (section 4). A new member collects them from a stockist with a code, in the same way as a Welcome Back Package.
+**Registration packs:** each package comes with its number of product packs (section 4). A new member collects them from a stockist with the pickup code of their registration.
+
+**Pickup codes** (board meeting, November 2026):
+
+- One code per order, issued when the payment is confirmed.
+- It can be used at **any** stockist, and it **never expires**.
+- The whole order is collected at once; an order cannot be collected in parts.
+- The stockist enters the code, sees the order details, and confirms the handover. The store's stock is then balanced automatically, and the stockist's rebate is paid (section 9). A code works once only.
 
 **Member orders:**
 
-- A member pays from their main balance, product wallet or autoship wallet.
+- A member pays the company: from their main balance or product wallet, or online. They receive a pickup code.
 - The product's PV climbs the tree (section 3), and the purchase pays the unilevel bonus (5.10).
 - It also counts towards autoship (5.6) and repurchase PV.
 
 **Public (affiliate) orders:**
 
 1. A member shares their personal link (for example `?ref=WII-XXXXXX`) or an advert from the Ad Center. A click is remembered for a number of days set by the admin.
-2. The buyer chooses their state and pays by Paystack or chooses **cash on pickup**. They receive a pickup code.
+2. The buyer pays the company online at the public price of **₦2,000 a unit**, and receives a pickup code.
 3. A stockist checks the code in person and hands over the goods. The order is then fulfilled.
-4. On fulfilment, the referring member's affiliate bonus is paid. A percentage bonus is worked out on the item's actual price: 10% of a ₦40,000 item is ₦4,000. The stockist earns their rebate and pickup fee, and the stockist's sponsor their 3% (section 9).
-5. An order not paid or collected within the admin's set number of days expires, and its stock is released.
+4. On fulfilment, the referring member's affiliate bonus is paid, and the stockist earns their rebate. How the ₦2,000 is shared (manufacturers, affiliate, stockist, company) is a board decision (section 13).
+5. An order not paid within the admin's set number of days is cancelled. A paid order's code never expires.
 
-**Order statuses:** pending, paid, awaiting pickup, fulfilled, cancelled, expired.
+**Order statuses:** pending, paid (awaiting pickup), fulfilled, cancelled.
 
 **Ad Center:** admins publish adverts (image, caption, link). Members share them on WhatsApp, Facebook, X, Telegram, TikTok and Instagram with their own link attached. Clicks and orders are reported per advert.
 
@@ -361,7 +349,7 @@ The shop sells Wiifarm's products to members and to the public. Public buyers co
 
 ## 9. Stockists
 
-A stockist is a member who runs a store that holds Wiifarm stock, sells to members, and hands over public orders. There are two kinds.
+A stockist is a member who runs a store that holds Wiifarm stock and hands over orders by pickup code. Stockists never take buyers' money. Each stockist has a **stockist wallet**, separate from their member wallets. There are two kinds.
 
 |  | Basic store | Mega store |
 | --- | --- | --- |
@@ -369,8 +357,8 @@ A stockist is a member who runs a store that holds Wiifarm stock, sells to membe
 | Products received to service the store | 100% of the setup value | 100% of the setup value |
 | Store PV (for awards only) | 3,000 PV | 10,000 PV |
 | Stockist bonus, total over 10 generations | ₦240,000 | ₦650,000 |
-| Rebate on products that go out of the store (share of PV value) | 6% | 8% |
-| Buys stock from | Wiifarm or a Mega store | Wiifarm |
+| Rebate per unit handed over | ₦90 | ₦120 |
+| Receives stock from | Collects from its Mega store | The manufacturers |
 
 **Becoming a stockist:**
 
@@ -379,7 +367,7 @@ A stockist is a member who runs a store that holds Wiifarm stock, sells to membe
 3. On activation, in one step that is paid once only:
    - the stockist bonus goes to 10 generations of the stockist's referral chain (generation 1 is the stockist's sponsor, or their referrer if none was named);
    - the store PV goes up the stockist's uplines as lifetime PV, which counts for awards and never for matching. The plan's table shows the PV reaching 15 generations, while its text says 10 (section 13);
-   - the payment is split into the pools on the commerce engine (section 7).
+   - 8% (Sub) or 6.5% (Mega) of the deposit goes to the stockist activation ledger, Pool D (section 7).
 4. A banned upline is skipped, and the generation still counts.
 
 **Enrollment bonus by generation:**
@@ -393,11 +381,10 @@ These figures match the current system. The other split in Wiifarm's remediation
 
 **Running the store:**
 
-- **Inventory:** stock in and out, with a record of every movement. Stock arrives through approved stock requests, transfers between stockists, and supplies from Wiifarm.
-- **Point of sale:** the stockist sells to members and records the invoice. The member's PV, repurchase PV and unilevel bonuses follow.
-- **Redemptions:** the stockist redeems member invoices, Welcome Back Packages and public pickup orders in person, by code.
-- **Rebate:** the stockist earns 6% (Basic) or 8% (Mega) of the PV value of stock they hand over. A state's own rebate rate, when set, replaces it.
-- **Stockist sponsor bonus:** the member who sponsored the store earns 3% of the PV value of the store's sales. For example, 500 PV sold = ₦300,000, so the sponsor earns ₦9,000.
+- **Stock flow:** manufacturers → Mega store → Sub store → buyer. **The company allocates** the stock; a Sub store collects from its Mega store. Every movement is recorded, and each store's stock is balanced automatically as codes are entered.
+- **Handovers:** the stockist hands over registration packs, repurchases, public orders and Welcome Back Packages, in person, by pickup code (section 8).
+- **Rebate:** on each unit handed over, a Mega store earns ₦120 and a Sub store ₦90, paid to the stockist wallet. Registration packs are paid from the registration ledger's stockist line (₦120.30 a unit); repurchases from the repurchase ledger's (₦120). Only the store that hands the unit over is paid.
+- **Stockist sponsor bonus:** the earlier 3% to the store's sponsor has no line in the V3 blueprint, so it is not built unless the board adds one (section 13).
 - **Status:** an admin can deactivate a store. A deactivated store cannot sell or redeem.
 
 ## 10. Investments, farm cycles, savings and loans
@@ -500,8 +487,8 @@ The specification can be signed off once the board settles the points below.
 
 **From the plan and the blueprint:**
 
-- [ ] **1. Plan versus budget.** Several plan payouts are larger than their blueprint budget lines. Direct is 25% of package value against a 6% line, and unilevel can reach 49% across 15 generations against 9%. When a payout would overrun its line, should it be paid in full and reported, capped at the line, or should the plan or the budget be revised?
-- [ ] **2. Funding between engines.** Does revenue from registrations fund only the Consumer Rewards Pool and commerce revenue only the Commerce Pool? Or is every payment split across all three pools in the 22 / 24.75 / 8.25 ratio?
+- [x] **1. Plan versus budget.** Settled for the direct, indirect, key-in, upgrade and stockist lines by Blueprint V3 (section 7): each line now holds what the plan pays. Still open for matching, unilevel and awards (17 and 18 below). *Earlier question:* Several plan payouts are larger than their blueprint budget lines. Direct is 25% of package value against a 6% line, and unilevel can reach 49% across 15 generations against 9%. When a payout would overrun its line, should it be paid in full and reported, capped at the line, or should the plan or the budget be revised?
+- [x] **2. Funding between engines.** Settled by Blueprint V3: each kind of purchase funds its own ledger (section 7). *Earlier question:* Does revenue from registrations fund only the Consumer Rewards Pool and commerce revenue only the Commerce Pool? Or is every payment split across all three pools in the 22 / 24.75 / 8.25 ratio?
 - [ ] **3. Leadership bonus team.** Does "5% of what your team members earn from matching" cover the whole downline, or a set number of levels or generations? Is it counted through the tree or the referral chain?
 - [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus?
 - [ ] **5. Store PV reach.** Does store PV go up 10 or 15 generations? Is it counted through the referral chain or the binary tree?
@@ -519,3 +506,14 @@ The specification can be signed off once the board settles the points below.
 - [ ] **14. Sponsor changes:** when an admin changes a member's sponsor, should their place in the binary tree also move, and do bonuses already paid stay as they are? (Today only the sponsor changes, for the future.)
 - [ ] **15. Wallet corrections:** who may add to or subtract from a member's wallet? Today it is a permission any role can be given ("Add to or subtract from a member's wallet"). Should it be super-admin only, or need a second admin to approve above an amount?
 - [ ] **16. Sponsor not yet paid:** someone signs up with the referral of a person whose own package is not paid yet (so that person has no place in the tree). When the new member pays, should they wait, be placed under the sponsor's nearest paid upline, or under the company account? Today the placement is refused with a clear message and nothing is paid.
+
+**From Blueprint V3 (November 2026):**
+
+- [ ] **17. Recognition awards.** The Strategic Reserve is now 1% (it was 10%), so recognition awards receive ₦5.25 a unit, not ₦52.50. The award ladder (₦80,000 at Emerald up to ₦180M) costs 8 to 19 times what the volume under an earner puts into that pool, even before other uplines earn on the same volume. Should the awards be lowered, funded from elsewhere (for example the Contingency Reserve or safety nets), or paid only while the pool holds enough? The workbook's notes still say 10% (₦75); please confirm 1%.
+- [ ] **18. When a line runs short.** Matching (₦108 a unit) fits typical growth but can reach about twice that in a very evenly growing network. Unilevel at full depth pays ₦387 (10 generations) or ₦441 (15) a unit against ₦367.50. When a line runs short: pay and show the deficit, scale payouts down, or hold them until it refills?
+- [ ] **19. Contingency Reserve and safety nets.** What is the Contingency Reserve (2.3% of registrations) for, and who may spend it? May one ledger's safety net cover another ledger's shortfall?
+- [ ] **20. Unilevel depth.** The V3 note says 1st to 10th generation; the plan's packages unlock up to 15 (section 4). Which applies?
+- [ ] **21. Repurchase award schedule.** The milestone schedule the board refers to has not been received. Is it the table in 5.11? That table also costs more than its ₦75 a unit.
+- [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
+- [ ] **23. Public shop split.** Of the ₦2,000 a unit sold to the public: the manufacturers' share, the affiliate's percentage, and whether the stockist's ₦120 / ₦90 comes from it. Does a public sale earn PV?
+- [ ] **24. Global Share Pool and stockist sponsor bonus.** Neither has a line in V3. Are both dropped?

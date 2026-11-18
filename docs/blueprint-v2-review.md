@@ -1,5 +1,7 @@
 # Allocation Blueprint V2: review and implementation plan
 
+> **Superseded.** The board replaced V2 with Allocation Blueprint V3 in November 2026. See `docs/blueprint-v3-review.md`; this page is kept as the record of how V2 was checked.
+
 The board's final decisions on bonuses and allocations arrived as two
 documents: **Allocation Blueprint V2** (the pool allocation schedule) and
 **Baseline Rules & Formula for the Allocation Blueprint**. This page checks
