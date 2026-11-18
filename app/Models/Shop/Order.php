@@ -36,6 +36,8 @@ class Order extends Model
 
     public const PUBLIC = 'public';
 
+    public const UPGRADE = 'upgrade';
+
     public const PENDING = 'pending';
 
     public const PAID = 'paid';

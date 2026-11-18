@@ -2,6 +2,10 @@
 const typeNames: Record<string, string> = {
     'adjustment.credit': 'Added by Wiifarm',
     'adjustment.debit': 'Taken off by Wiifarm',
+    'order.payment': 'Order paid',
+    'payout.stockist_rebate': 'Stockist rebate',
+    'payout.stockist_sponsor': 'Stockist sponsor bonus',
+    'payout.unilevel': 'Unilevel bonus',
 };
 
 export const transactionName = (type: string) => typeNames[type] ?? type;

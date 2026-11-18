@@ -59,6 +59,30 @@ class Orders
         });
     }
 
+    /** The extra packs of a higher package, created when an upgrade is paid (board, November 2026). */
+    public function upgradePacks(User $member, Package $from, Package $to, PackageChange $change): ?Order
+    {
+        $key = 'upgrade:'.$change->payment_key;
+        if ($existing = Order::where('payment_key', $key)->first()) {
+            return $existing;
+        }
+
+        $product = Product::where('sku', config('wiifarm.registration_product_sku'))->firstOrFail();
+        $units = ($to->product_packs - $from->product_packs) * $product->units_per_pack;
+        if ($units <= 0) {
+            return null;
+        }
+
+        return DB::transaction(function () use ($member, $from, $to, $product, $units, $key) {
+            $amount = $to->price - $from->price;
+            $pv = ($to->pv - $from->pv) * 100;
+            $order = $this->create(Order::UPGRADE, $member, collect([[$product, $units, intdiv($amount, $units), intdiv($pv, $units)]]));
+            $order->forceFill(['amount' => $amount, 'pv' => $pv])->save();
+
+            return $this->markPaid($order, 'package', $key);
+        });
+    }
+
     /**
      * A member buys products from a wallet. $formId makes a resent form count once.
      *

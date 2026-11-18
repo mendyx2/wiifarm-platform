@@ -5,6 +5,7 @@ namespace App\Services\Network;
 use App\Models\Package;
 use App\Models\PackageChange;
 use App\Models\User;
+use App\Services\Shop\Orders;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Upgrade
 {
-    public function __construct(private readonly PvClimb $climb) {}
+    public function __construct(private readonly PvClimb $climb, private readonly Orders $orders) {}
 
     public function priceDifference(User $member, Package $to): int
     {
@@ -66,6 +67,9 @@ class Upgrade
             ]);
 
             $this->climb->credit($member, ($to->pv - $from->pv) * 100, PvClimb::SOURCE_UPGRADE, 'pv:upgrade:'.$change->id, $change);
+
+            // The higher package's extra packs, collected with a pickup code (board, November 2026).
+            $this->orders->upgradePacks($member, $from, $to, $change);
 
             return $change;
         });

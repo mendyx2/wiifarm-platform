@@ -69,6 +69,18 @@ class PaymentSplit
         ], $subject);
     }
 
+    /**
+     * A store's activation deposit (section 9): 8% (Sub) or 6.5% (Mega) to
+     * Pool D for the stockist sponsor bonus; the rest is the manufacturer's,
+     * for the products the store receives.
+     */
+    public function activation(int $deposit, string $storeKind, Manufacturer $manufacturer, string $key, ?Model $subject = null): Transaction
+    {
+        $pool = Money::share($deposit, $this->schedule()->rates['activation'][$storeKind]);
+
+        return $this->post('split.activation', $key, $deposit, $manufacturer, $deposit - $pool, ['D.sponsor_bonus' => $pool], $subject);
+    }
+
     private function member(string $kind, int $amount, Manufacturer $manufacturer, string $key, ?Model $subject): Transaction
     {
         if ($amount <= 0) {

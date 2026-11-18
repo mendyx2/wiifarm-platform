@@ -42,6 +42,8 @@ return [
         'pv.R.pairing' => 'Right leg: pairing PV',
         // The member's own repurchases, for unilevel, leadership and monthly activity.
         'pv.repurchase' => 'Repurchase PV (own purchases)',
+        // Store PV from the referral chain (section 9): awards only, 10 generations.
+        'pv.team_store' => 'Store PV from your referral chain',
     ],
 
     /*

@@ -12,6 +12,11 @@ export function OrderStatusBadge({ status }: { status: string }) {
     return <Badge variant={variant}>{label}</Badge>;
 }
 
-const kinds: Record<string, string> = { registration: 'Registration packs', repurchase: 'Repurchase', public: 'Public shop' };
+const kinds: Record<string, string> = {
+    registration: 'Registration packs',
+    upgrade: 'Upgrade packs',
+    repurchase: 'Repurchase',
+    public: 'Public shop',
+};
 
 export const orderKindName = (kind: string) => kinds[kind] ?? kind;

@@ -26,6 +26,11 @@ return [
             'orders.view' => 'See orders',
             'products.manage' => 'Add and change products, prices and PV',
         ],
+        'Stockists' => [
+            'stockists.view' => 'See stockist stores, their stock and wallets',
+            'stockists.manage' => 'Set up, activate and deactivate stockist stores',
+            'stock.allocate' => 'Allocate stock to Mega stores (the manufacturing company)',
+        ],
         'Pools' => [
             'pools.view' => 'See the pool ledgers, contingency funds and held payouts',
         ],

@@ -28,6 +28,7 @@ import {
     Settings,
     ShieldCheck,
     ShoppingBag,
+    Store,
     Users,
     type LucideIcon,
 } from 'lucide-react';
@@ -40,6 +41,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
     { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
     { title: 'Orders', url: '/admin/orders', icon: ShoppingBag, permission: 'orders.view' },
+    { title: 'Stockists', url: '/admin/stockists', icon: Store, permission: 'stockists.view' },
     { title: 'Products', url: '/admin/products', icon: Package, permission: 'products.manage' },
     { title: 'Pools', url: '/admin/pools', icon: Landmark, permission: 'pools.view' },
     { title: 'Packages', url: '/admin/packages', icon: Boxes, permission: 'settings.view' },

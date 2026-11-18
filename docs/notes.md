@@ -847,3 +847,80 @@ the extra product packs of the higher package?
 **Next:** stockists: Mega and Sub stores, their own wallets, stock allocated
 by the manufacturer, and handing goods over by pickup code with the rebate
 paid on the spot.
+
+## Step 20: Stockists (phase 4, part 3)
+
+**What this is:** the stores that hold the goods and hand them over. A store
+never takes a buyer's money: it checks the pickup code, hands the goods over,
+and is paid its rebate on the spot.
+
+- **Stores:**
+    - a stockist is a member in good standing with a paid package, and runs one
+      store: **Mega** (₦10M deposit) or **Sub** (₦3M deposit). A Sub store is
+      attached to the Mega store it collects from;
+    - each store has its own **stockist wallet**, separate from the owner's
+      member wallets;
+    - admins set up a store (new permissions: see stores; set up, activate and
+      deactivate them; allocate stock), and every step is in the audit log.
+- **Activation,** once the deposit is received. The admin types the payment
+  reference. In one step, once only:
+    - **the deposit is split:** 8% (Sub) or 6.5% (Mega) to Pool D, and the
+      rest to the manufacturing company for the products the store receives
+      (to be confirmed, decision 27);
+    - **the stockist sponsor bonus** goes to 10 generations, starting with the
+      store's sponsor: ₦50,000 / ₦30,000 / ₦20,000 × 8 for a Sub store, and
+      ₦150,000 / ₦100,000 / ₦50,000 × 8 for a Mega store. A share with nobody
+      to receive it (the company account, a missing or banned member) stays in
+      Pool D's contingency fund;
+    - **the store PV** (3,000 or 10,000) goes 10 levels up the stockist's tree
+      as lifetime PV, and 10 generations up their referral chain. It counts
+      for awards only, never for matching.
+- **Stock:**
+    - stock is counted in the ledger, unit by unit, exactly like money. A store
+      can never hand over or pass on what it does not hold;
+    - **the manufacturing company allocates** stock to Mega stores (admin
+      page, "Allocate stock");
+    - **a Sub store collects from its Mega store**, and the Mega stockist
+      records it on their store page (to be confirmed, decision 28).
+- **Handover by code:**
+    - on the new **My store** page, the stockist types the buyer's code. They
+      see the order (number, what is in it, the buyer's first name, and their
+      own rebate) and confirm;
+    - in one step: the whole order is marked collected, the store's stock goes
+      down, and the rebate is paid to the stockist wallet: ₦120 a unit for a
+      Mega store, ₦90 for a Sub store;
+    - the rebate comes from the ledger that funded the order: registration
+      packs from Pool A, repurchases from Pool C, upgrade packs from Pool E's
+      contingency fund, and public orders from what the sale held back. What a
+      Sub store does not take (₦30 a unit) goes to the pool's contingency fund,
+      or, for a public order, back to the manufacturer;
+    - a code works once; a second try says when the order was collected. A
+      store that is short of stock hands over nothing, and a deactivated store
+      cannot hand over.
+- **Upgrade packs** (board decision): an upgrade now creates an order for the
+  higher package's extra packs. For example, Starter to Builder adds 2 packs
+  (20 units).
+- **Tests:** 210 pass (12 new):
+    - the deposit split and the sponsor bonus to the kobo;
+    - store PV for awards only;
+    - activation once only, and a Sub store needing an active Mega;
+    - allocation and collection;
+    - handovers by a Sub store and a Mega store, paid from the right pool;
+    - a public pickup, and an upgrade's packs;
+    - short stock and deactivated stores refused;
+    - the stockist's page and the admin permissions.
+- **Checked in a browser** with the sample network:
+    - Adaeze got the Ikeja Mega Store and Chika the Yaba Sub Store under it;
+    - the manufacturer allocated 1,000 units to Ikeja, and Yaba collected 200;
+    - Chika typed Gbenga's code in lower case, saw his 10-unit pack order,
+      and handed it over. Her wallet showed ₦900 and her stock 190.
+
+  The ledger check passed.
+- **Tidied while checking:** the code box now clears after a handover, and
+  statements say "Stockist rebate" instead of a system name.
+
+**For the board:** decision 27 (the rest of a store's deposit goes to the
+manufacturer) and decision 28 (who records a Sub store's collection).
+
+**Next:** the bonuses: direct, indirect and key-in on registration, upgrade
+bonuses, then daily matching.

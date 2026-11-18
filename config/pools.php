@@ -51,6 +51,8 @@ return [
             'name' => 'Upgrade (Pool E)',
             'lines' => [
                 'upgrade' => 'Upgrade bonuses',
+                // No share of its own: rebates for upgrade packs come from this pool's contingency fund.
+                'stockist_rebate' => 'Stockist rebate (upgrade packs)',
             ],
         ],
         'L' => [

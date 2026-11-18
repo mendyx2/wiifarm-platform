@@ -6,6 +6,8 @@ use App\Models\Ledger\Account;
 use App\Models\Ledger\Entry;
 use App\Models\Ledger\Transaction;
 use App\Models\Pools\Manufacturer;
+use App\Models\Shop\Product;
+use App\Models\Stockists\Store;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -34,6 +36,9 @@ class Ledger
     public const NGN = 'NGN';
 
     public const PV = 'PV';
+
+    /** Product units: a store's stock is ledger entries too, so it can never be handed over twice. */
+    public const UNIT = 'UNIT';
 
     /** The name of every pool's contingency fund account. */
     public const CONTINGENCY = 'contingency';
@@ -144,6 +149,37 @@ class Ledger
         return $this->open('member:'.$member->id, $member->id, $kind, self::PV);
     }
 
+    /** A store's wallet: the stockist's rebates (section 9). Separate from the owner's member wallets. */
+    public function storeWallet(Store $store): Account
+    {
+        return $this->open('store:'.$store->id, $store->user_id, 'wallet', self::NGN);
+    }
+
+    /** A store's stock of one product, in units. */
+    public function stockAccount(Store $store, Product $product): Account
+    {
+        return $this->open('store:'.$store->id, $store->user_id, 'stock:'.$product->id, self::UNIT);
+    }
+
+    /**
+     * Where stock comes from ("supplied": the manufacturer's allocations) and
+     * goes ("delivered": handed over to buyers), per product. May go below zero.
+     */
+    public function stockSystemAccount(string $what, Product $product): Account
+    {
+        if (! in_array($what, ['supplied', 'delivered'], true)) {
+            throw new LedgerException("Unknown stock account [{$what}].");
+        }
+
+        return $this->open(Account::SYSTEM, null, "stock.{$what}:{$product->id}", self::UNIT);
+    }
+
+    /** Store PV from a member's referral chain (section 9), for awards only. */
+    public function teamStorePvAccount(User $member): Account
+    {
+        return $this->open('member:'.$member->id, $member->id, 'pv.team_store', self::PV);
+    }
+
     /** A member's own repurchase PV log (specification section 3). */
     public function repurchasePvAccount(User $member): Account
     {
@@ -219,6 +255,9 @@ class Ledger
             return config("pools.pools.{$pool}.name").': '.($account->kind === self::CONTINGENCY
                 ? config('pools.contingency')
                 : config("pools.pools.{$pool}.lines.{$account->kind}"));
+        }
+        if (str_starts_with($account->holder, 'store:')) {
+            return $account->kind === 'wallet' ? 'Stockist wallet' : 'Store stock';
         }
         if (str_starts_with($account->holder, 'manufacturer:')) {
             return Manufacturer::find((int) substr($account->holder, 13))?->name ?? 'Manufacturer';

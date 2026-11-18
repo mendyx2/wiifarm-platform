@@ -27,6 +27,9 @@ class PvClimb
 
     public const SOURCE_STORE = 'pv.store'; // awards only: lifetime PV, never pairing
 
+    /** How far store PV climbs the tree (board, November 2026). */
+    public const STORE_LEVELS = 10;
+
     public function __construct(private readonly Tree $tree, private readonly Ledger $ledger) {}
 
     /**
@@ -40,6 +43,9 @@ class PvClimb
         }
 
         $uplines = $this->tree->uplines($member);
+        if ($source === self::SOURCE_STORE) {
+            $uplines = array_slice($uplines, 0, self::STORE_LEVELS); // store PV reaches 10 levels, never more
+        }
         if ($uplines === []) {
             return null;
         }

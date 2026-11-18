@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PoolsController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\StockistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +62,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('products/{product}', [ProductController::class, 'edit'])->name('products.edit');
             Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
         });
+
+        // Stockists
+        Route::get('stockists', [StockistController::class, 'index'])->middleware('admin.can:stockists.view')->name('stockists.index');
+        Route::get('stockists/create', [StockistController::class, 'create'])->middleware('admin.can:stockists.manage')->name('stockists.create');
+        Route::post('stockists', [StockistController::class, 'store'])->middleware('admin.can:stockists.manage')->name('stockists.store');
+        Route::get('stockists/{store}', [StockistController::class, 'show'])->middleware('admin.can:stockists.view')->name('stockists.show');
+        Route::post('stockists/{store}/activate', [StockistController::class, 'activate'])->middleware('admin.can:stockists.manage')->name('stockists.activate');
+        Route::post('stockists/{store}/standing', [StockistController::class, 'standing'])->middleware('admin.can:stockists.manage')->name('stockists.standing');
+        Route::post('stockists/{store}/allocate', [StockistController::class, 'allocate'])->middleware('admin.can:stock.allocate')->name('stockists.allocate');
 
         // Pool ledgers, contingency funds and held payouts
         Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');

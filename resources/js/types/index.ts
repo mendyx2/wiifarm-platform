@@ -37,6 +37,7 @@ export interface SharedData {
     auth: Auth;
     signedInAdmin: AdminData | null;
     flash: { status: string | null };
+    hasStore: boolean;
     [key: string]: unknown;
 }
 
