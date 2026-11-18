@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use App\Models\Affiliate;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property ?string $number
  * @property string $kind
  * @property ?int $user_id
+ * @property ?int $affiliate_id
  * @property string $status
  * @property int $amount
  * @property int $pv
@@ -63,6 +65,12 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /** @return BelongsTo<Affiliate, $this> */
+    public function affiliate(): BelongsTo
+    {
+        return $this->belongsTo(Affiliate::class);
     }
 
     /** @return HasMany<OrderItem, $this> */

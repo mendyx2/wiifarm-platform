@@ -2,6 +2,7 @@
 
 namespace App\Services\Ledger;
 
+use App\Models\Affiliate;
 use App\Models\Ledger\Account;
 use App\Models\Ledger\Entry;
 use App\Models\Ledger\Transaction;
@@ -149,6 +150,12 @@ class Ledger
         return $this->open('member:'.$member->id, $member->id, $kind, self::PV);
     }
 
+    /** An affiliate's wallet: their commissions on public-shop sales (section 8). */
+    public function affiliateWallet(Affiliate $affiliate): Account
+    {
+        return $this->open('affiliate:'.$affiliate->id, null, 'wallet', self::NGN);
+    }
+
     /** A store's wallet: the stockist's rebates (section 9). Separate from the owner's member wallets. */
     public function storeWallet(Store $store): Account
     {
@@ -255,6 +262,9 @@ class Ledger
             return config("pools.pools.{$pool}.name").': '.($account->kind === self::CONTINGENCY
                 ? config('pools.contingency')
                 : config("pools.pools.{$pool}.lines.{$account->kind}"));
+        }
+        if (str_starts_with($account->holder, 'affiliate:')) {
+            return 'Affiliate wallet';
         }
         if (str_starts_with($account->holder, 'store:')) {
             return $account->kind === 'wallet' ? 'Stockist wallet' : 'Store stock';

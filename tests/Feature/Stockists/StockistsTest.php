@@ -213,7 +213,7 @@ class StockistsTest extends NetworkTestCase
         app(Stock::class)->collect($mega, $sub, $this->product(), 10, (string) Str::uuid());
         $orders = app(Orders::class);
         $order = $orders->publicOrder([$this->product()->id => 4], ['name' => 'Kemi Ade', 'phone' => '0803']);
-        $orders->confirmPublicPayment($order, 'ref_1', viaAffiliate: false);
+        $orders->confirmPublicPayment($order, 'ref_1');
         $maker = fn () => $this->ledger->balance($this->ledger->manufacturerAccount(Manufacturer::firstOrFail()));
         $before = $maker();
 

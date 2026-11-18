@@ -3,6 +3,7 @@
 namespace Tests\Feature\Shop;
 
 use App\Models\Admin;
+use App\Models\Affiliate;
 use App\Models\AuditLog;
 use App\Models\Pools\Manufacturer;
 use App\Models\Shop\Order;
@@ -117,12 +118,13 @@ class OrdersTest extends NetworkTestCase
     public function test_a_public_order_is_paid_online_outside_the_cooperative()
     {
         $orders = app(Orders::class);
-        $order = $orders->publicOrder([$this->product()->id => 3], ['name' => 'Kemi Ade', 'phone' => '08031234567']);
+        $affiliate = Affiliate::forceCreate(['code' => 'WII-TEST01', 'first_name' => 'Ada', 'last_name' => 'Eze', 'email' => 'ada@example.com', 'phone' => '0803', 'password' => 'password']);
+        $order = $orders->publicOrder([$this->product()->id => 3], ['name' => 'Kemi Ade', 'phone' => '08031234567'], $affiliate);
         $this->assertSame([Order::PENDING, 600_000], [$order->status, $order->amount]);
         $this->assertNull($order->pickup_code);
 
-        $orders->confirmPublicPayment($order, 'ref_1', viaAffiliate: true);
-        $orders->confirmPublicPayment($order->fresh(), 'ref_1', viaAffiliate: true); // the gateway calls twice
+        $orders->confirmPublicPayment($order, 'ref_1');
+        $orders->confirmPublicPayment($order->fresh(), 'ref_1'); // the gateway calls twice
 
         $ledger = app(Ledger::class);
         $this->assertSame(Order::PAID, $order->fresh()->status);

@@ -48,15 +48,17 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 // Always the member (the web guard). On admin pages the admin
                 // guard is the default, and an admin is never shared as a member.
-                'user' => $request->is('admin', 'admin/*') ? null : Auth::guard('web')->user(),
+                'user' => $request->is('admin', 'admin/*', 'affiliate', 'affiliate/*') ? null : Auth::guard('web')->user(),
             ],
             // On admin pages: the signed-in admin and what their roles allow,
             // so the panel only shows what they may use.
             // Named so no page's own "admin" prop (e.g. the admin being edited) can hide it.
             'signedInAdmin' => fn () => $this->admin($request),
             // Whether the signed-in member runs a store, for the "My store" menu item.
-            'hasStore' => fn () => ! $request->is('admin', 'admin/*') && $request->user('web') !== null
-                && Store::where('user_id', $request->user('web')->id)->exists(),
+            'signedInAffiliate' => fn () => $request->is('affiliate', 'affiliate/*') && ($a = Auth::guard('affiliate')->user())
+                ? ['name' => $a->name(), 'code' => $a->code] : null,
+            'hasStore' => fn () => ! $request->is('admin', 'admin/*', 'affiliate', 'affiliate/*') && Auth::guard('web')->user() !== null
+                && Store::where('user_id', Auth::guard('web')->id())->exists(),
             // A one-line message after an action, e.g. "Details saved."
             'flash' => ['status' => fn () => $request->session()->get('status')],
         ]);

@@ -2,6 +2,7 @@
 
 namespace App\Services\Shop;
 
+use App\Models\Affiliate;
 use App\Models\Package;
 use App\Models\PackageChange;
 use App\Models\Pools\Manufacturer;
@@ -132,16 +133,20 @@ class Orders
      * @param  array<int, int>  $quantities
      * @param  array{name: string, phone: string, email?: ?string}  $buyer
      */
-    public function publicOrder(array $quantities, array $buyer): Order
+    public function publicOrder(array $quantities, array $buyer, ?Affiliate $affiliate = null): Order
     {
         $order = $this->create(Order::PUBLIC, null, $this->lines($quantities, fn (Product $p) => $p->public_price));
-        $order->forceFill(['buyer_name' => $buyer['name'], 'buyer_phone' => $buyer['phone'], 'buyer_email' => $buyer['email'] ?? null])->save();
+        $order->forceFill([
+            'buyer_name' => $buyer['name'], 'buyer_phone' => $buyer['phone'], 'buyer_email' => $buyer['email'] ?? null,
+            // The affiliate whose link brought the buyer; a banned affiliate earns nothing.
+            'affiliate_id' => $affiliate && ! $affiliate->isBanned() ? $affiliate->id : null,
+        ])->save();
 
         return $order;
     }
 
     /** The online payment for a public order is confirmed (by the payment gateway, in a later step). */
-    public function confirmPublicPayment(Order $order, string $paymentKey, bool $viaAffiliate): Order
+    public function confirmPublicPayment(Order $order, string $paymentKey): Order
     {
         if ($order->kind !== Order::PUBLIC) {
             throw new InvalidArgumentException('Only a public order is paid online here.');
@@ -150,8 +155,9 @@ class Orders
             return $order;
         }
 
-        return DB::transaction(function () use ($order, $paymentKey, $viaAffiliate) {
+        return DB::transaction(function () use ($order, $paymentKey) {
             $order->load('items');
+            $viaAffiliate = $order->affiliate_id !== null;
             foreach ($order->items->groupBy('manufacturer_id') as $makerId => $items) {
                 foreach ($items as $item) {
                     $this->split->publicSale($item->quantity, $item->unit_price, Manufacturer::findOrFail($makerId), $viaAffiliate, "public:{$order->id}:i{$item->id}", $order);

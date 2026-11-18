@@ -38,6 +38,7 @@ export interface SharedData {
     signedInAdmin: AdminData | null;
     flash: { status: string | null };
     hasStore: boolean;
+    signedInAffiliate: { name: string; code: string } | null;
     [key: string]: unknown;
 }
 

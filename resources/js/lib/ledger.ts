@@ -10,6 +10,7 @@ const typeNames: Record<string, string> = {
     'payout.indirect': 'Indirect referral bonus',
     'payout.keyin': 'Key-in bonus',
     'payout.upgrade': 'Upgrade bonus',
+    'payout.affiliate': 'Affiliate commission',
 };
 
 export const transactionName = (type: string) => typeNames[type] ?? type;

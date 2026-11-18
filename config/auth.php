@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Admin;
+use App\Models\Affiliate;
 use App\Models\User;
 
 return [
@@ -44,6 +45,12 @@ return [
             'provider' => 'users',
         ],
 
+        // Affiliates sign in separately too (specification section 8).
+        'affiliate' => [
+            'driver' => 'session',
+            'provider' => 'affiliates',
+        ],
+
         // Admins sign in separately from members (specification section 11).
         'admin' => [
             'driver' => 'session',
@@ -77,6 +84,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => Admin::class,
+        ],
+
+        'affiliates' => [
+            'driver' => 'eloquent',
+            'model' => Affiliate::class,
         ],
 
         // 'users' => [

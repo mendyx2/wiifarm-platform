@@ -9,6 +9,7 @@ use App\Services\Ledger\InsufficientFunds;
 use App\Services\Ledger\Ledger;
 use App\Services\Pools\PoolPayouts;
 use App\Services\Shop\Orders;
+use App\Support\Money;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -85,6 +86,35 @@ class Handover
         };
     }
 
+    /**
+     * The affiliate's 20% of the margin, held since the sale, is paid on pickup.
+     * If the affiliate has been banned since, it goes to the manufacturer.
+     */
+    private function affiliateCommission(Order $order): void
+    {
+        if ($order->affiliate_id === null) {
+            return;
+        }
+
+        $rates = config('pools.schedule.public');
+        $shares = $order->items->groupBy('manufacturer_id')->map(fn ($items) => $items->sum(fn ($i) => Money::share(max(0, $i->quantity * ($i->unit_price - $rates['member_unit_price'])), $rates['affiliate_share_of_margin'])));
+        $total = $shares->sum();
+        if ($total <= 0) {
+            return;
+        }
+
+        $affiliate = $order->affiliate;
+        $lines = [[$this->ledger->poolAccount('P', 'affiliate'), -$total]];
+        if ($affiliate && ! $affiliate->isBanned()) {
+            $lines[] = [$this->ledger->affiliateWallet($affiliate), $total];
+        } else {
+            foreach ($shares as $makerId => $share) {
+                $lines[] = [$this->ledger->manufacturerAccount(Manufacturer::findOrFail($makerId)), $share];
+            }
+        }
+        $this->ledger->post('payout.affiliate', 'affiliate:'.$order->id, array_values(array_filter($lines, fn ($l) => $l[1] !== 0)), "Commission on order {$order->number}", $order);
+    }
+
     private function rate(Store $store): int
     {
         return config('pools.schedule.stockist_rebate')[$store->kind];
@@ -107,6 +137,7 @@ class Handover
                 }
             }
             $this->ledger->post('payout.stockist_rebate', 'rebate:'.$order->id, $lines, $memo, $order);
+            $this->affiliateCommission($order);
 
             return;
         }

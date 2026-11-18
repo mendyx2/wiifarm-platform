@@ -971,3 +971,48 @@ pays from their VISA wallet comes with payments. How the VISA wallet is topped
 up is still open decision 10. The bonus service is ready for it.
 
 **Next:** affiliate accounts, then withdrawals.
+
+## Step 22: Affiliate accounts (phase 4, part 5)
+
+**What this is:** the people who bring buyers to the public shop. As the board
+decided, anyone can register as an affiliate, member or not, and every
+affiliate has their own account and wallet.
+
+- **Registering:** a new page at `/affiliate/register` asks for name, email,
+  phone and a password. The affiliate gets a referral code such as
+  `WII-TDAKD4`. A member can register too: it is a separate account with its
+  own sign-in, and one affiliate account per email address.
+- **Signing in:** at `/affiliate/login`, separate from member and admin
+  sign-in. Five wrong passwords lock it for a minute. A banned affiliate cannot
+  sign in and is told why.
+- **Their link:** `/r/WII-TDAKD4` remembers the affiliate for 30 days on the
+  visitor's device, then shows the site. The public storefront will read it
+  when it is built with online payment, so the sale is credited to them.
+- **Their dashboard:** the link with a Copy button, their affiliate wallet,
+  what is still waiting for buyers to collect, the sales through their link,
+  and the wallet statement.
+- **Commission:**
+    - a public order now records the affiliate who brought the buyer;
+    - when the buyer collects the order from a stockist, the ₦100 a unit held
+      since the sale (20% of the ₦500 margin) goes to the affiliate's wallet;
+    - if the affiliate has been banned in the meantime, it goes to the
+      manufacturer.
+- **Admins:** a new Affiliates page (permissions "See affiliates and what they
+  earned" and "Ban and unban affiliates") lists every affiliate with their
+  code, contacts, sales and wallet. Admins can search, and ban or unban with a
+  reason; it is audited.
+- **Tests:** 223 pass (7 new):
+    - registering and getting a code;
+    - a member registering as an affiliate;
+    - separate sign-in, and banned affiliates kept out;
+    - the link being remembered;
+    - the commission paid on pickup, or to the manufacturer when banned;
+    - the admin page with its permissions.
+- **Checked in a browser:** signing up as an affiliate, the welcome message
+  with the code, and the dashboard on a laptop and a phone.
+
+**Not yet:** an affiliate's password reset by email comes with email
+messages. The public storefront comes with online payment.
+
+**Next:** withdrawals, from the main balance, stockist wallets and affiliate
+wallets, and moving bonuses to the main balance (bonus transfer).

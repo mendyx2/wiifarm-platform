@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function () {
             Route::middleware('web')->group(base_path('routes/admin.php'));
+            Route::middleware('web')->group(base_path('routes/affiliate.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -31,8 +32,16 @@ return Application::configure(basePath: dirname(__DIR__))
         // Admin pages send signed-out visitors to the admin sign-in, not the
         // member one; and a signed-in admin visiting the admin sign-in goes to
         // the admin dashboard.
-        $middleware->redirectGuestsTo(fn (Request $request) => $request->is('admin', 'admin/*') ? route('admin.login') : route('login'));
-        $middleware->redirectUsersTo(fn (Request $request) => $request->is('admin', 'admin/*') ? route('admin.dashboard') : route('dashboard'));
+        $middleware->redirectGuestsTo(fn (Request $request) => match (true) {
+            $request->is('admin', 'admin/*') => route('admin.login'),
+            $request->is('affiliate', 'affiliate/*') => route('affiliate.login'),
+            default => route('login'),
+        });
+        $middleware->redirectUsersTo(fn (Request $request) => match (true) {
+            $request->is('admin', 'admin/*') => route('admin.dashboard'),
+            $request->is('affiliate', 'affiliate/*') => route('affiliate.dashboard'),
+            default => route('dashboard'),
+        });
 
         $middleware->web(append: [
             SignOutBannedMembers::class,

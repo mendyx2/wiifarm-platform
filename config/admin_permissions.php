@@ -25,6 +25,8 @@ return [
         'Shop' => [
             'orders.view' => 'See orders',
             'products.manage' => 'Add and change products, prices and PV',
+            'affiliates.view' => 'See affiliates and what they earned',
+            'affiliates.manage' => 'Ban and unban affiliates',
         ],
         'Stockists' => [
             'stockists.view' => 'See stockist stores, their stock and wallets',

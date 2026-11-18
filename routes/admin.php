@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -62,6 +63,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('products/{product}', [ProductController::class, 'edit'])->name('products.edit');
             Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
         });
+
+        // Affiliates
+        Route::get('affiliates', [AffiliateController::class, 'index'])->middleware('admin.can:affiliates.view')->name('affiliates.index');
+        Route::post('affiliates/{affiliate}/standing', [AffiliateController::class, 'standing'])->middleware('admin.can:affiliates.manage')->name('affiliates.standing');
 
         // Stockists
         Route::get('stockists', [StockistController::class, 'index'])->middleware('admin.can:stockists.view')->name('stockists.index');
