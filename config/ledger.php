@@ -40,6 +40,8 @@ return [
         'pv.L.pairing' => 'Left leg: pairing PV',
         'pv.R.lifetime' => 'Right leg: lifetime PV',
         'pv.R.pairing' => 'Right leg: pairing PV',
+        // The member's own repurchases, for unilevel, leadership and monthly activity.
+        'pv.repurchase' => 'Repurchase PV (own purchases)',
     ],
 
     /*

@@ -780,3 +780,70 @@ paid from them.
 
 **Next:** orders and pickup codes, then stockists (Mega and Sub stores, their
 wallets, stock allocated by the manufacturer, and rebates paid on pickup).
+
+## Step 19: Products, orders and pickup codes (phase 4, part 2)
+
+**What this is:** how members get their goods. Everyone pays through the
+platform, never a stockist. Each paid order gets a pickup code, which the
+buyer shows at a stockist to collect the goods.
+
+- **Products:**
+    - each product has a name, a code, its **manufacturer**, a member price,
+      a public price, PV a unit and units in a pack;
+    - the first product, "Wiifarm product" (₦1,500 / ₦2,000 a unit, 1.5 PV,
+      10 a pack), is set up automatically, because every package's packs are
+      made of it. It can be renamed;
+    - admins add and change products on a new Products page (new permission
+      "Add and change products, prices and PV"), and every change is in the
+      audit log. A new price applies to orders from then on.
+- **Three kinds of order:**
+    - **registration packs:** when a package is paid, an order for its packs
+      is created and marked paid, with its own pickup code. Pre Starter is 1
+      pack (10 units); Mega is 30 packs (300 units);
+    - **repurchase:** a member chooses products in the new **Shop** and pays
+      from their main balance or product wallet. In one step the wallet pays,
+      the money is split (half to the product's manufacturer, half to the
+      repurchase pool, Pool C), the PV climbs the tree, and the member's own
+      repurchase PV is recorded, which unilevel and leadership will need. If
+      the wallet is short, nothing happens. A resent form buys once;
+    - **public:** the order is created waiting for online payment. When the
+      payment is confirmed, it is split the public way (affiliate and stockist
+      shares held until pickup, the rest to the manufacturer). The online
+      payment itself comes with Paystack.
+- **Pickup codes:**
+    - twelve letters and digits in three groups, such as `6DSA-E22Y-UYJM`.
+      Look-alike characters (0 / O, 1 / I / L) are left out, so they can be
+      read aloud; there are about 10¹⁸ possible codes, so they cannot be
+      guessed;
+    - **only the buyer sees the code**, on "My orders", with a Copy button.
+      The database keeps it encrypted, plus a keyed fingerprint used to find
+      the order. Admins see only its last four characters;
+    - it works at any stockist, never expires, releases the whole order, and
+      works once. Typing it in lower case or with spaces still works.
+- **Screens:**
+    - members: Shop and My orders;
+    - admins: Orders (search, filter by status and kind, and each order's
+      details) and Products.
+- **Fixed while checking:** member pages did not show the one-line
+  confirmation after an action ("Order WF0000012 is paid…"). Admin pages
+  already did; both now share the same message bar.
+- **Tests:** 198 pass (11 new):
+    - a package's pack order;
+    - codes found however they are typed, and never stored in plain text;
+    - a repurchase paid, split and climbing;
+    - a resent form buying once; a short wallet buying nothing;
+    - an unpaid member refused;
+    - a public order paid online, even if the gateway reports it twice;
+    - members seeing only their own codes, and admins never seeing them;
+    - buying through the Shop page;
+    - products with permission and audit.
+- **Checked in a browser:** the ten sample members' pack orders (10 to 300
+  units), a member buying 3 units from her product wallet and getting her
+  code, and the admin Orders list. The ledger check passed.
+
+**For the board (decision 26):** when a member upgrades, do they also receive
+the extra product packs of the higher package?
+
+**Next:** stockists: Mega and Sub stores, their own wallets, stock allocated
+by the manufacturer, and handing goods over by pickup code with the rebate
+paid on the spot.

@@ -37,5 +37,10 @@ return [
      * tries are allowed before a new code is needed.
      */
     'mobile_code_minutes' => 10,
+
+    /*
+     * The product that fills every package's packs (specification section 4).
+     */
+    'registration_product_sku' => env('WIIFARM_REGISTRATION_PRODUCT_SKU', 'WF-PACK'),
     'mobile_code_attempts' => 5,
 ];

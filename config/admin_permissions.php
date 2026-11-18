@@ -22,6 +22,10 @@ return [
             'kyc.view' => 'See KYC submissions and documents',
             'kyc.review' => 'Approve or reject KYC submissions',
         ],
+        'Shop' => [
+            'orders.view' => 'See orders',
+            'products.manage' => 'Add and change products, prices and PV',
+        ],
         'Pools' => [
             'pools.view' => 'See the pool ledgers, contingency funds and held payouts',
         ],

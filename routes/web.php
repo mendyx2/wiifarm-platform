@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\TeamController;
 use App\Http\Controllers\Member\WalletController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('wallet', WalletController::class)->name('wallet');
+    Route::get('shop', [ShopController::class, 'index'])->name('shop');
+    Route::post('shop', [ShopController::class, 'store'])->middleware('throttle:10,1')->name('shop.store');
+    Route::get('orders', [ShopController::class, 'orders'])->name('orders.index');
     Route::get('team', [TeamController::class, 'tree'])->name('team');
     Route::get('team/pv', [TeamController::class, 'pv'])->name('team.pv');
 });

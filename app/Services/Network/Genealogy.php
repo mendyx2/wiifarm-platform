@@ -72,7 +72,9 @@ class Genealogy
      */
     public function pvLog(User $member, int $perPage = 25): LengthAwarePaginator
     {
-        $accountIds = DB::table('ledger_accounts')->where('holder', 'member:'.$member->id)->where('currency', 'PV')->pluck('kind', 'id');
+        $accountIds = DB::table('ledger_accounts')->where('holder', 'member:'.$member->id)->where('currency', 'PV')
+            ->where(fn ($q) => $q->where('kind', 'like', 'pv.L.%')->orWhere('kind', 'like', 'pv.R.%')) // the tree legs only
+            ->pluck('kind', 'id');
 
         $page = Transaction::query()
             ->whereIn('id', Entry::whereIn('account_id', $accountIds->keys())->select('transaction_id'))
@@ -106,6 +108,7 @@ class Genealogy
             ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
             ->whereIn('ledger_accounts.user_id', $ids)
             ->where('ledger_accounts.currency', 'PV')
+            ->where(fn ($q) => $q->where('ledger_accounts.kind', 'like', 'pv.L.%')->orWhere('ledger_accounts.kind', 'like', 'pv.R.%'))
             ->groupBy('ledger_accounts.user_id', 'ledger_accounts.kind')
             ->selectRaw('ledger_accounts.user_id as user_id, ledger_accounts.kind as kind, SUM(ledger_entries.amount) as total')
             ->get();

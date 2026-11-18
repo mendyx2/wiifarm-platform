@@ -6,6 +6,7 @@ use App\Models\Package;
 use App\Models\PackageChange;
 use App\Models\TreePosition;
 use App\Models\User;
+use App\Services\Shop\Orders;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Registration
 {
-    public function __construct(private readonly Tree $tree, private readonly PvClimb $climb) {}
+    public function __construct(private readonly Tree $tree, private readonly PvClimb $climb, private readonly Orders $orders) {}
 
     public function activate(User $member, Package $package, string $paymentKey): PackageChange
     {
@@ -66,6 +67,9 @@ class Registration
             ]);
 
             $this->climb->credit($member, $package->pv * 100, PvClimb::SOURCE_REGISTRATION, 'pv:join:'.$member->id, $change);
+
+            // The package's packs, collected from a stockist with a pickup code (section 8).
+            $this->orders->registration($member, $package, $change);
 
             return $change;
         });

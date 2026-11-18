@@ -144,6 +144,12 @@ class Ledger
         return $this->open('member:'.$member->id, $member->id, $kind, self::PV);
     }
 
+    /** A member's own repurchase PV log (specification section 3). */
+    public function repurchasePvAccount(User $member): Account
+    {
+        return $this->open('member:'.$member->id, $member->id, 'pv.repurchase', self::PV);
+    }
+
     /** One of the platform's own accounts (naira or PV). */
     public function systemAccount(string $kind): Account
     {

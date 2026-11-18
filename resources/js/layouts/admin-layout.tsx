@@ -2,6 +2,7 @@ import { AppContent } from '@/components/app-content';
 import AppLogo from '@/components/app-logo';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
+import { FlashMessage } from '@/components/flash-message';
 import {
     Sidebar,
     SidebarContent,
@@ -17,15 +18,16 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
     Boxes,
-    CheckCircle2,
     FileCheck2,
     KeyRound,
     Landmark,
     LayoutGrid,
     LogOut,
+    Package,
     ScrollText,
     Settings,
     ShieldCheck,
+    ShoppingBag,
     Users,
     type LucideIcon,
 } from 'lucide-react';
@@ -37,6 +39,8 @@ const navItems: AdminNavItem[] = [
     { title: 'Dashboard', url: '/admin', icon: LayoutGrid },
     { title: 'Members', url: '/admin/members', icon: Users, permission: 'members.view' },
     { title: 'KYC review', url: '/admin/kyc', icon: FileCheck2, permission: 'kyc.view' },
+    { title: 'Orders', url: '/admin/orders', icon: ShoppingBag, permission: 'orders.view' },
+    { title: 'Products', url: '/admin/products', icon: Package, permission: 'products.manage' },
     { title: 'Pools', url: '/admin/pools', icon: Landmark, permission: 'pools.view' },
     { title: 'Packages', url: '/admin/packages', icon: Boxes, permission: 'settings.view' },
     { title: 'Settings', url: '/admin/settings', icon: Settings, permission: 'settings.view' },
@@ -112,19 +116,6 @@ function AdminSidebar() {
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>
-    );
-}
-
-/** The one-line message after an action, e.g. "Member banned and signed out." */
-function FlashMessage() {
-    const { flash } = usePage<SharedData>().props;
-    if (!flash?.status) return null;
-
-    return (
-        <div role="status" className="bg-success-soft text-success mx-4 mt-4 flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium">
-            <CheckCircle2 className="size-4" aria-hidden />
-            {flash.status}
-        </div>
     );
 }
 
