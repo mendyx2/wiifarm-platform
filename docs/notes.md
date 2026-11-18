@@ -615,3 +615,20 @@ The check is in `docs/blueprint-v3-review.md`. In short, the registration
 ledger now adds up to exactly 100%, and every fixed-formula bonus fits its
 line to the kobo. Rank awards, and in some network shapes matching and
 unilevel, can still cost more than their lines.
+
+## Step 14: How a public shop sale is shared (no code)
+
+The board set the split of a public sale. A public unit costs ₦2,000:
+
+- ₦750 goes to the manufacturers;
+- ₦750 goes to the cooperative pool;
+- of the remaining ₦500, 20% (₦100) goes to the member whose link brought the
+  buyer (the affiliate), and ₦400 is reserved in the manufacturers' account.
+
+Specification section 8 now shows this. Decision 23 keeps four smaller
+questions:
+
+- which ledger takes the cooperative's ₦750;
+- whether the stockist's rebate on a public pickup comes from it;
+- where the affiliate's ₦100 goes when nobody referred the buyer;
+- whether a public sale earns PV.

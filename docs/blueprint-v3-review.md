@@ -36,6 +36,24 @@ describe V2), the percentage column is followed.
   - upgrade ledger: ₦317.06 a unit;
   - anything a line does not pay out also stays in its ledger.
 
+## Public shop (board, November 2026)
+
+Per ₦2,000 unit:
+
+| Share | Per unit |
+| --- | --- |
+| Manufacturers | ₦750 |
+| Cooperative pool | ₦750 |
+| Affiliate (20% of the ₦500 margin) | ₦100 |
+| Manufacturers' account (rest of the margin) | ₦400 |
+
+It adds up to ₦2,000 exactly. Still open (decision 23):
+
+- which ledger takes the cooperative's ₦750;
+- whether the stockist's rebate on a public pickup comes from it;
+- where the ₦100 goes when nobody referred the buyer;
+- whether a public sale earns PV.
+
 ## What still does not fit
 
 | Line | Holds per unit | Can cost per unit | Note |
@@ -67,4 +85,4 @@ cannot be built until the board decides them:
 4. Registration and upgrade bonuses.
 5. Daily matching with caps, then leadership, unilevel and awards, once the
    shortfall rule is set.
-6. The public shop and affiliates, once its split is set.
+6. The public shop and affiliates. The split is set; which ledger takes the cooperative's ₦750 is still open.

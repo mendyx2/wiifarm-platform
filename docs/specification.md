@@ -338,7 +338,18 @@ The shop sells Wiifarm's products to members and to the public. **Everyone pays 
 1. A member shares their personal link (for example `?ref=WII-XXXXXX`) or an advert from the Ad Center. A click is remembered for a number of days set by the admin.
 2. The buyer pays the company online at the public price of **₦2,000 a unit**, and receives a pickup code.
 3. A stockist checks the code in person and hands over the goods. The order is then fulfilled.
-4. On fulfilment, the referring member's affiliate bonus is paid, and the stockist earns their rebate. How the ₦2,000 is shared (manufacturers, affiliate, stockist, company) is a board decision (section 13).
+4. On fulfilment, the referring member's affiliate bonus is paid, and the stockist earns their rebate.
+
+**How a public sale is shared** (board, November 2026), per ₦2,000 unit:
+
+| Share | Per unit |
+| --- | --- |
+| Manufacturers | ₦750 |
+| Cooperative pool | ₦750 |
+| The ₦500 above the member price: 20% to the referring affiliate | ₦100 |
+| The rest of the ₦500, reserved in the manufacturers' account | ₦400 |
+
+So the manufacturers receive ₦1,150 a unit and the affiliate ₦100. Which ledger the cooperative's ₦750 joins, and what happens to the ₦100 when nobody referred the buyer, are open (section 13, decision 23).
 5. An order not paid within the admin's set number of days is cancelled. A paid order's code never expires.
 
 **Order statuses:** pending, paid (awaiting pickup), fulfilled, cancelled.
@@ -515,5 +526,5 @@ The specification can be signed off once the board settles the points below.
 - [ ] **20. Unilevel depth.** The V3 note says 1st to 10th generation; the plan's packages unlock up to 15 (section 4). Which applies?
 - [ ] **21. Repurchase award schedule.** The milestone schedule the board refers to has not been received. Is it the table in 5.11? That table also costs more than its ₦75 a unit.
 - [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
-- [ ] **23. Public shop split.** Of the ₦2,000 a unit sold to the public: the manufacturers' share, the affiliate's percentage, and whether the stockist's ₦120 / ₦90 comes from it. Does a public sale earn PV?
+- [ ] **23. Public shop split.** Settled in part: of ₦2,000 a unit, ₦750 to the manufacturers, ₦750 to the cooperative pool, and of the ₦500 margin 20% (₦100) to the affiliate and ₦400 to the manufacturers' account (section 8). Still open: (a) which ledger takes the cooperative's ₦750: the repurchase ledger with its lines (unilevel, awards, Sub-leaders, stockist rebate), or a ledger of its own? If unilevel, up whose chain, since the buyer is not a member? (b) Is the stockist's ₦120 / ₦90 for a public pickup paid from that ₦750? (c) When nobody referred the buyer, does the ₦100 go to the manufacturers, the cooperative or the company? (d) Does a public sale earn PV for anyone, such as the affiliate?
 - [ ] **24. Global Share Pool and stockist sponsor bonus.** Neither has a line in V3. Are both dropped?
