@@ -29,7 +29,7 @@ What the new Wiifarm platform must do, in plain words, so it can be built from s
 | Pairing PV | PV still waiting to be matched. Matches use it up. |
 | Lifetime PV | All PV a leg has ever received. Used for awards; never used up. |
 | Company account | Member #1, the cooperative's own member account. It sponsors anyone who signs up without a referral. |
-| Manufacturing company | The company that makes the products. A separate company from the cooperative, with its own accounts. |
+| Manufacturing company | A company that makes the products. A separate company from the cooperative, with its own accounts. Today there is one manufacturing partner; more can be added later, each with its own products and account. |
 | Cooperative | Wiifarm Cooperative, which runs the network and its pools. A separate company from the manufacturer, with its own accounts. |
 
 ## 2. Members and accounts
@@ -281,7 +281,7 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
 
 The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xlsx`, November 2026) governs this section. Where a note in the workbook disagrees with its percentage column, the percentage column is followed. **Every payout must be traceable to the purchase that funded it**: each naira is tagged with the kind of purchase that brought it in, kept in that purchase's own ledger, and every bonus is charged to its own line.
 
-**Two separate companies.** The manufacturing company and the cooperative are different companies with **different accounts**, and the platform never mixes them. Each payment is split between them the moment it is confirmed, and each has its own books: what it received, what it paid and what it holds.
+**Two separate companies.** The manufacturing company and the cooperative are different companies with **different accounts**, and the platform never mixes them. Today there is one manufacturing partner. Each product names its manufacturer, so when more partners join with their own products, each product's manufacturer share goes to that partner's own account. Each payment is split between them the moment it is confirmed, and each has its own books: what it received, what it paid and what it holds.
 
 **The split of every member purchase** (₦1,500 a unit; 10 units = one ₦15,000 pack = 15 PV, so ₦1,000 of price = 1 PV):
 
@@ -321,7 +321,7 @@ The shop sells Wiifarm's products to members and to the public. **Everyone pays 
 
 **Products:**
 
-- **Details:** name, category, SKU, description, specifications, images, PV, stock quantity, and minimum and maximum order quantities.
+- **Details:** name, manufacturer, category, SKU, description, specifications, images, PV, stock quantity, and minimum and maximum order quantities.
 - **Price per state:** each state can have its own price, with optional per-state bonuses for Mega and Basic stockists.
 - **Wholesale:** cartons of 15 packs by default, with a carton price.
 - **Affiliate bonus:** 20% of the margin between the public price and the member price (₦100 on a ₦2,000 unit), paid to the affiliate wallet (below).
@@ -381,7 +381,7 @@ A stockist is a member who runs a store that holds Wiifarm stock and hands over 
 | Store PV (for awards only) | 3,000 PV | 10,000 PV |
 | Stockist bonus, total over 10 generations | ₦240,000 | ₦650,000 |
 | Rebate per unit handed over | ₦90 | ₦120 |
-| Receives stock from | Collects from its Mega store | The manufacturers |
+| Receives stock from | Collects from its Mega store | The manufacturing company |
 
 **Becoming a stockist:**
 
@@ -404,7 +404,7 @@ These figures match the current system. The other split in Wiifarm's remediation
 
 **Running the store:**
 
-- **Stock flow:** manufacturers → Mega store → Sub store → buyer. **The company allocates** the stock; a Sub store collects from its Mega store. Every movement is recorded, and each store's stock is balanced automatically as codes are entered.
+- **Stock flow:** manufacturers → Mega store → Sub store → buyer. **The manufacturing company allocates** the stock to the stores (board, November 2026); a Sub store collects from its Mega store. Every movement is recorded, and each store's stock is balanced automatically as codes are entered.
 - **Handovers:** the stockist hands over registration packs, repurchases, public orders and Welcome Back Packages, in person, by pickup code (section 8).
 - **Rebate:** on each unit handed over, a Mega store earns ₦120 and a Sub store ₦90, paid to the stockist wallet. Registration packs are paid from the registration ledger's stockist line (₦120.30 a unit); repurchases from the repurchase ledger's (₦120). Only the store that hands the unit over is paid.
 - **Stockist sponsor bonus:** paid once, at activation, from Pool D (above). The earlier 3% of the store's sales to its sponsor is replaced by it.
@@ -539,4 +539,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
 - [x] **23. Public shop split.** Settled: affiliate ₦100 (20% of the ₦500 margin), the stockist's usual ₦120 / ₦90, the rest to the manufacturing company; nothing to the cooperative, no PV. Anyone can be an affiliate, member or not (section 8).
 - [x] **24. Global Share Pool and stockist sponsor bonus.** Settled: no Global Share Pool; the stockist sponsor bonus is Pool D.
-- [ ] **25. Collecting payments for two companies.** Does each company have its own Paystack and bank account, so a payment is split at the gateway; or does one account collect and settle the other's share, and if so how often? And which company allocates stock to the stores: the manufacturing company or the cooperative?
+- [ ] **25. Collecting payments for two companies.** Settled in part: the manufacturing company allocates stock to the stores (section 9); there is one manufacturing partner for now, with more possible later (section 7). Still open: does each company have its own Paystack and bank account, so a payment is split at the gateway, or does one account collect and pass the other company its share, and if so how often?

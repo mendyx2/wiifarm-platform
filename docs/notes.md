@@ -691,3 +691,15 @@ account, and which company allocates stock.
 
 The pool accounts in the code still follow the old allocation, including a
 Global Share line. They are replaced in the next build step.
+
+## Step 17: Manufacturing partners and stock allocation
+
+- **One manufacturing partner for now, with more products later.** Each
+  product will name its manufacturer, so if new partners join with their own
+  products, each product's ₦750 a unit goes to the right partner's account.
+- **The manufacturing company allocates stock to the stores.** The Mega store
+  receives from the manufacturing company, and a Sub store collects from its
+  Mega.
+
+Still open (decision 25): whether each company has its own Paystack and bank
+account, or one account collects and passes the other its share.
