@@ -1074,3 +1074,73 @@ whether charges go to the cooperative, and the KYC rule for withdrawals.
 
 **Next:** daily binary matching with caps, then payments (Paystack and
 e-pins), which bring real money in.
+
+## Step 24: The daily matching bonus (phase 4, part 7)
+
+**What this is:** the binary matching bonus (specification 5.5), paid every
+night.
+
+- **How a match works:**
+    - 50 PV waiting on the left leg plus 50 PV waiting on the right leg make
+      one match;
+    - a member gets as many matches as their smaller leg allows, up to their
+      package's daily cap (Pre Starter 5 a day up to Mega 120 a day);
+    - each match pays the package's rate (₦900 for Pre Starter up to ₦3,600
+      for Mega);
+    - the PV a match uses is taken from both legs, and everything left over
+      waits for the next night. Nothing is wiped. Lifetime PV, used for
+      awards, never goes down.
+- **When it runs:** every night at 01:30 Lagos time, for the day just ended.
+  If a night is missed (the server was down), the next run first does the
+  missed days one by one, each with its own daily cap, so nobody loses a
+  day. Running a day again pays nobody twice.
+- **Where the money comes from:** Pool A's matching line. If the line is
+  short, Pool A's contingency fund covers it. If both are short, the payout
+  is held and paid in full when money arrives, oldest first, as the board
+  decided. The PV is used on the night either way, because the payout is
+  owed.
+- **Who is not paid:** banned members, members whose package is not paid,
+  and the company account. Their PV stays where it is.
+- **The autoship 20%:** until a member buys 10 PV of products in the month,
+  20% of the bonus goes to their autoship wallet (5.6). This is a new admin
+  switch, on by default, because the board has not yet said whether the hold
+  stays (decision 7).
+- **What people see:**
+    - members: a "Matching bonus" table on their PV log, night by night
+      (pairing PV before the run, matches, earnings, the autoship part, and
+      "Daily cap" when the cap stopped them);
+    - the PV log now also shows the PV each match used, once for each leg;
+    - admins: a new Matching page (permission "See the nightly matching
+      runs"), with each night's totals, what is still held, and every
+      member's line.
+- **Tests:** 238 pass (7 new). They cover:
+    - the plan's own example (Mega, 1,000 left and 400 right: 8 matches,
+      ₦28,800, of which ₦5,760 to autoship; 600 PV carries forward);
+    - the daily cap and carrying forward, and a day run twice paying once;
+    - banned members and the company account;
+    - the autoship rule and its switch;
+    - a payout the line cannot cover being held and paid once money
+      arrived;
+    - catching up missed nights;
+    - the admin and member screens.
+- **Checked in a browser:**
+    - a demo Mega member with 320 PV left and 515 PV right got 6 matches,
+      ₦21,600, of which ₦4,320 went to autoship;
+    - the admin page showed the same night;
+    - the PV log showed 300 PV used from each leg.
+
+  The browser check caught a fault in the PV log: it showed "+-600" on one
+  leg for a match. It now shows "−300" against "Each leg".
+
+**For the board:**
+
+- **Decision 7:** should the 20% autoship hold stay? It is a switch, so
+  either answer is a click.
+- **Decision 30 (new):** where should unused autoship money go at month
+  end, and what may it buy? Spending it and the month-end sweep are not
+  built yet.
+- **Before go-live:** the earlier review estimated that matching could cost
+  0.8 to 2.2 times its line as the network grows. The hold rule protects the
+  pool, but members would wait. It should be measured on the live network.
+
+**Next:** payments (Paystack and e-pins), which bring real money in.

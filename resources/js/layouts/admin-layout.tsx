@@ -19,6 +19,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     Banknote,
     Boxes,
+    Combine,
     FileCheck2,
     KeyRound,
     Landmark,
@@ -48,6 +49,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Stockists', url: '/admin/stockists', icon: Store, permission: 'stockists.view' },
     { title: 'Products', url: '/admin/products', icon: Package, permission: 'products.manage' },
     { title: 'Pools', url: '/admin/pools', icon: Landmark, permission: 'pools.view' },
+    { title: 'Matching', url: '/admin/matching', icon: Combine, permission: 'matching.view' },
     { title: 'Packages', url: '/admin/packages', icon: Boxes, permission: 'settings.view' },
     { title: 'Settings', url: '/admin/settings', icon: Settings, permission: 'settings.view' },
     { title: 'Admins', url: '/admin/admins', icon: ShieldCheck, permission: 'admins.manage' },

@@ -1,7 +1,9 @@
 import { type PvLogRow, pv, pvSourceName } from '@/lib/network';
 import { DataTable } from './data-table';
 
-/** Every PV credit a member received, newest first. */
+const signed = (hundredths: number) => (hundredths < 0 ? `−${pv(-hundredths)}` : `+${pv(hundredths)}`);
+
+/** Every PV a member received, and what matches used, newest first. */
 export function PvLogTable({ rows }: { rows: PvLogRow[] }) {
     return (
         <DataTable
@@ -21,9 +23,9 @@ export function PvLogTable({ rows }: { rows: PvLogRow[] }) {
                         </>
                     ),
                 },
-                { key: 'leg', header: 'Leg', cell: (r) => (r.leg === 'L' ? 'Left' : r.leg === 'R' ? 'Right' : '—') },
-                { key: 'pairing', header: 'Pairing PV', align: 'right', cell: (r) => (r.pairing ? `+${pv(r.pairing)}` : '—') },
-                { key: 'lifetime', header: 'Lifetime PV', align: 'right', cell: (r) => `+${pv(r.lifetime)}` },
+                { key: 'leg', header: 'Leg', cell: (r) => (r.leg === 'L' ? 'Left' : r.leg === 'R' ? 'Right' : r.leg === 'both' ? 'Each leg' : '—') },
+                { key: 'pairing', header: 'Pairing PV', align: 'right', cell: (r) => (r.pairing ? signed(r.pairing) : '—') },
+                { key: 'lifetime', header: 'Lifetime PV', align: 'right', cell: (r) => (r.lifetime ? signed(r.lifetime) : '—') },
             ]}
         />
     );

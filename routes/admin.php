@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KycReviewController;
+use App\Http\Controllers\Admin\MatchingController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberWalletController;
 use App\Http\Controllers\Admin\NetworkController;
@@ -89,6 +90,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Pool ledgers, contingency funds and held payouts
         Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');
+        Route::middleware('admin.can:matching.view')->group(function () {
+            Route::get('matching', [MatchingController::class, 'index'])->name('matching.index');
+            Route::get('matching/{run}', [MatchingController::class, 'show'])->name('matching.show');
+        });
 
         // Packages (read only for now; changing a package is a plan setting)
         Route::get('packages', [NetworkController::class, 'packages'])->middleware('admin.can:settings.view')->name('packages');

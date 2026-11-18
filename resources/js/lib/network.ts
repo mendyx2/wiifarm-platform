@@ -13,7 +13,15 @@ export type TreeNode = {
     children?: { L: TreeNode | null; R: TreeNode | null };
 };
 
-export type PvLogRow = { id: number; at: string; source: string; memo: string | null; leg: 'L' | 'R' | null; lifetime: number; pairing: number };
+export type PvLogRow = {
+    id: number;
+    at: string;
+    source: string;
+    memo: string | null;
+    leg: 'L' | 'R' | 'both' | null;
+    lifetime: number;
+    pairing: number;
+};
 
 export const emptyPv: PvTotals = { L: { lifetime: 0, pairing: 0 }, R: { lifetime: 0, pairing: 0 } };
 
@@ -25,6 +33,7 @@ const sources: Record<string, string> = {
     'pv.upgrade': 'Upgraded',
     'pv.purchase': 'Product purchase',
     'pv.store': 'Stockist store (awards only)',
+    'matching.pv': 'Used by matches',
 };
 
 export const pvSourceName = (type: string) => sources[type] ?? type;

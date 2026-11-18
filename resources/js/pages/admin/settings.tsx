@@ -20,6 +20,7 @@ const titles: Record<string, string> = {
     'verification.email_required': 'Email confirmation required',
     'verification.mobile_required': 'Phone confirmation required',
     'withdrawals.kyc_required': 'Identity check (KYC) before withdrawing',
+    'matching.autoship_hold': 'Autoship hold on matching bonuses',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */

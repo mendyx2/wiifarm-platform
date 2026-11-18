@@ -13,3 +13,6 @@ Schedule::command('wiifarm:ledger-check')->dailyAt('02:15');
 
 // Every hour: pay held payouts their pool line can now cover (specification section 7).
 Schedule::command('wiifarm:pay-held')->hourlyAt(7);
+
+// Every night: the matching bonus for the day just ended (specification section 5.5).
+Schedule::command('wiifarm:match')->dailyAt('01:30')->timezone('Africa/Lagos')->withoutOverlapping();

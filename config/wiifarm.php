@@ -25,6 +25,11 @@ return [
         // Members must have their identity verified (KYC) before they can withdraw.
         'withdrawals.kyc_required' => true,
 
+        // Until a member buys 10 PV of products in the month, 20% of each
+        // matching bonus goes to their autoship wallet (sections 5.5 and 5.6;
+        // open decision 7 asks whether this hold stays).
+        'matching.autoship_hold' => true,
+
         // The fields of the KYC form (specification section 2). Types: text,
         // select (with options) and file (an image or PDF, stored privately).
         'kyc.fields' => [
@@ -46,4 +51,10 @@ return [
      */
     'registration_product_sku' => env('WIIFARM_REGISTRATION_PRODUCT_SKU', 'WF-PACK'),
     'mobile_code_attempts' => 5,
+
+    /*
+     * The time zone of the business day: the matching run closes each day at
+     * midnight Lagos time (section 12).
+     */
+    'business_timezone' => 'Africa/Lagos',
 ];

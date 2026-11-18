@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Member;
 
+use App\Http\Controllers\Admin\MatchingController;
 use App\Http\Controllers\Controller;
+use App\Models\Compensation\MemberMatch;
 use App\Models\User;
 use App\Services\Network\Genealogy;
 use App\Services\Network\Tree;
@@ -47,6 +49,9 @@ class TeamController extends Controller
         return Inertia::render('team/pv', [
             'pv' => $genealogy->pvFor([$me->id])[$me->id] ?? null,
             'log' => $genealogy->pvLog($me),
+            'package' => $me->package ? ['name' => $me->package->name, 'cap' => $me->package->daily_cap_matches, 'per_match' => $me->package->perMatch()] : null,
+            'matches' => MemberMatch::with(['run:id,day', 'package:id,name'])->where('user_id', $me->id)->latest('id')->limit(31)->get()
+                ->map(fn (MemberMatch $m) => MatchingController::row($m) + ['day' => $m->run->day]),
         ]);
     }
 }

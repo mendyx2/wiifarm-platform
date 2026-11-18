@@ -160,6 +160,9 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 - **No sponsor is needed** on either leg. Only PV counts.
 - **Banned members:** they are not paid. Their pairing PV is left as it is.
 - **Autoship split:** if the member has not met this month's autoship (5.6), 80% goes to the matching wallet and 20% to the autoship wallet.
+- **The run:** at 01:30 Lagos time it closes the day just ended, using the pairing PV each member holds at that moment (PV that arrives between midnight and the run counts that night). If a night is missed, the next run first closes the missed days one by one, each with its own cap, so nobody loses a day. A member is matched once per day, so a run started again pays nobody twice.
+- **When the line is short:** covered from Pool A's contingency fund; if that is short too, the payout is held and paid in full when money arrives, oldest first (section 7). The PV is used on the night either way: the payout is owed.
+- **The company account** earns no matching bonus; its PV stays where it is.
 - **Example:** a Mega member with 1,000 left and 400 right has 8 possible matches, under the cap of 120. They earn 8 × ₦3,600 = ₦28,800: ₦23,040 for matching and ₦5,760 to autoship. 600 PV carries forward on the left and 0 on the right.
 
 ### 5.6 Autoship
@@ -516,7 +519,7 @@ The specification can be signed off once the board settles the points below.
 - [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus?
 - [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
 - [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).
-- [ ] **7. Autoship hold.** The plan mentions the 10 PV authorship but not the 20% hold on matching bonuses (5.6). Should the hold stay?
+- [ ] **7. Autoship hold.** The plan mentions the 10 PV authorship but not the 20% hold on matching bonuses (5.6). Should the hold stay? *Built as an admin switch, on by default as section 5.5 says, so the answer needs no new code.*
 
 **From the current system:**
 
@@ -545,3 +548,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **27. The rest of a store's deposit.** Pool D takes 8% (Sub) or 6.5% (Mega) of the deposit. The system sends the rest (₦2,760,000 or ₦9,350,000) to the manufacturing company, for the products the store receives. Is that right?
 - [ ] **28. Recording a Sub store's collection.** The system has the Mega stockist record what each of their Sub stores collects, moving the units from the Mega's stock to the Sub's. Should the manufacturing company record it instead, or should the Sub store confirm it too?
 - [ ] **29. Withdrawal charges and limits.** The system sets up "Bank transfer" from ₦1,000 to ₦5,000,000 with no charge, for an admin to change. What should each method's charge be (fixed and percentage), and is it right that charges go to the cooperative? Member withdrawals also need verified KYC (an admin switch, on by default); stockist withdrawals follow the stockist's own member account; affiliates have no KYC. Is that right?
+- [ ] **30. Unused autoship money.** At month end an autoship balance not spent goes to the cooperative (5.6). It comes from the registration ledger's matching line: should it go back to that ledger's (Pool A's) contingency fund? And what may it buy: any product in the shop, paid from the autoship wallet? Neither the spending nor the month-end sweep is built yet.

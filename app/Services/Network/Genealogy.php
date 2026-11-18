@@ -88,8 +88,13 @@ class Genealogy
             $row = ['id' => $t->id, 'at' => $t->created_at->toDateTimeString(), 'source' => $t->type, 'memo' => $t->memo, 'leg' => null, 'lifetime' => 0, 'pairing' => 0];
             foreach ($entries[$t->id] ?? [] as $e) {
                 [, $leg, $type] = explode('.', $accountIds[$e->account_id]);
-                $row['leg'] = $leg;
+                $row['leg'] = $row['leg'] === null || $row['leg'] === $leg ? $leg : 'both';
                 $row[$type] += $e->amount;
+            }
+            if ($row['leg'] === 'both') {
+                // A match uses the same PV from each leg: show it once, "each leg".
+                $row['lifetime'] = intdiv($row['lifetime'], 2);
+                $row['pairing'] = intdiv($row['pairing'], 2);
             }
 
             return $row;
