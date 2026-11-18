@@ -57,6 +57,35 @@ describe V2), the percentage column is followed.
   fund, kept per ledger. Each ledger is self-sufficient: its shortfalls are
   covered only from its own contingency fund, never by another ledger.
 
+## The board's answers (November 2026)
+
+- **The 1% Strategic Reserve is confirmed.** Rank awards receive ₦5.25 a
+  unit, and an award the pool cannot cover yet is held until it refills.
+- **Shortfalls are held until the line refills.** The order is:
+  1. the line pays what it can;
+  2. that ledger's own contingency fund covers the rest;
+  3. anything still uncovered is held as pending and paid when money
+     arrives, oldest first.
+
+  Nothing is paid in part, and nothing is cancelled.
+- **Unpaid shares stay with the cooperative,** in that ledger's contingency
+  fund. Examples: a missing generation, a banned upline, a member sponsored
+  by the company.
+- **The manufacturing company and the cooperative are separate companies,
+  with separate accounts.** Each payment is split between them at once, and
+  their books never mix.
+- **The affiliate's 20% is of the ₦500 margin (₦100).** Anyone can register
+  as an affiliate, member or not.
+- **There is no Global Share Pool.** All pool ledgers are separate.
+- **Store PV counts both ways:** 10 levels up the binary tree and 10
+  generations up the referral chain, for awards only.
+
+Still open (decision 25):
+
+- whether each company has its own Paystack and bank account, or one collects
+  for both;
+- which company allocates stock to the stores.
+
 ## What still does not fit
 
 | Line | Holds per unit | Can cost per unit | Note |
@@ -66,12 +95,9 @@ describe V2), the percentage column is followed.
 | Unilevel at full depth | ₦367.50 | ₦387 (10 generations) | ₦19.50 short only when all 10 uplines qualify; covered by the repurchase ledger's own contingency fund (₦112.50 a unit goes in) |
 | Repurchase awards | ₦75 | Section 5.11's table costs 1.3 to 7 × for one earner | The board's schedule has not arrived |
 
-These are open decisions 17 to 24 in specification section 13. Two things
-cannot be built until the board decides them:
-
-- **the rule for a line that runs short** (decision 18), which blocks real
-  matching and award payouts;
-- **the awards** (decisions 17 and 21).
+With the hold-until-it-refills rule, none of these can overpay: a line only
+ever pays what it, or its own contingency fund, holds. The repurchase award
+schedule (decision 21) is still to come.
 
 ## Build order (unchanged)
 

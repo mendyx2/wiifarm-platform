@@ -28,7 +28,9 @@ What the new Wiifarm platform must do, in plain words, so it can be built from s
 | Match | 50 PV on the left leg paired with 50 PV on the right leg. |
 | Pairing PV | PV still waiting to be matched. Matches use it up. |
 | Lifetime PV | All PV a leg has ever received. Used for awards; never used up. |
-| Company account | Member #1. It sponsors anyone who signs up without a referral. |
+| Company account | Member #1, the cooperative's own member account. It sponsors anyone who signs up without a referral. |
+| Manufacturing company | The company that makes the products. A separate company from the cooperative, with its own accounts. |
+| Cooperative | Wiifarm Cooperative, which runs the network and its pools. A separate company from the manufacturer, with its own accounts. |
 
 ## 2. Members and accounts
 
@@ -117,7 +119,7 @@ Generations never go beyond the 10th (board, November 2026), so Booster and ever
 
 ## 5. Compensation
 
-The plan lists thirteen ways of earning. They are retail profit, the key-in, direct, indirect, matching and upgrade bonuses, binary awards, UCB, the leadership bonus, the unilevel bonus, repurchase awards, the stockist bonus and the stockist rebate. Autoship and the Global Share Pool come from the blueprint and the current system. Each payout goes into its own bonus wallet (section 6) and is charged to its budget line (section 7). **Every bonus is only paid to active members.** A banned member's share is not paid, it does not pass to anyone else, and the generation still counts.
+The plan lists thirteen ways of earning. They are retail profit, the key-in, direct, indirect, matching and upgrade bonuses, binary awards, UCB, the leadership bonus, the unilevel bonus, repurchase awards, the stockist bonus and the stockist rebate. Autoship comes from the blueprint and the current system. There is no Global Share Pool (board, November 2026). Each payout goes into its own bonus wallet (section 6) and is charged to its budget line (section 7). **Every bonus is only paid to active members.** A banned member's share is not paid, it does not pass to anyone else, and the generation still counts.
 
 ### 5.1 Direct bonus
 
@@ -165,7 +167,7 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 - **Rule:** a member meets autoship for a calendar month by buying at least **10 PV** of products in that month.
 - **Until then:** 20% of each matching bonus is held in their autoship wallet.
 - **Using it:** the autoship balance can only be spent on products.
-- **Month end:** an autoship balance not used by the end of the month goes to the company, and the sweep is logged.
+- **Month end:** an autoship balance not used by the end of the month goes to the cooperative, and the sweep is logged.
 
 ### 5.7 Leadership bonus
 
@@ -235,9 +237,8 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 ### 5.12 Retail profit and the earnings described elsewhere
 
 - **Retail profit** is not a payout. Members buy products at member prices and can resell them for over 50% profit; the plan's example is ₦225,000 on a ₦450,000 Mega repurchase. The system only needs a member price and a retail price per product (section 8).
-- The stockist bonus, stockist rebate and 3% stockist sponsor bonus are in section 9.
+- The stockist rebate and the stockist sponsor bonus (Pool D) are in section 9.
 - The affiliate bonus is in section 8.
-- The Global Share Pool is in section 7.
 - Cash back as a Welcome Back Package is in section 8. It is currently ₦0 on every package.
 
 ## 6. Wallets, ledger and payments
@@ -280,12 +281,14 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
 
 The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xlsx`, November 2026) governs this section. Where a note in the workbook disagrees with its percentage column, the percentage column is followed. **Every payout must be traceable to the purchase that funded it**: each naira is tagged with the kind of purchase that brought it in, kept in that purchase's own ledger, and every bonus is charged to its own line.
 
+**Two separate companies.** The manufacturing company and the cooperative are different companies with **different accounts**, and the platform never mixes them. Each payment is split between them the moment it is confirmed, and each has its own books: what it received, what it paid and what it holds.
+
 **The split of every member purchase** (₦1,500 a unit; 10 units = one ₦15,000 pack = 15 PV, so ₦1,000 of price = 1 PV):
 
 | Share | Per unit | Where it goes |
 | --- | --- | --- |
-| Manufacturers | ₦750 (50%) | Recorded as owed to the manufacturers |
-| Cooperative | ₦750 (50%) | The ledger for that kind of purchase, below |
+| Manufacturing company | ₦750 (50%) | The manufacturing company's account |
+| Cooperative | ₦750 (50%) | The cooperative's ledger for that kind of purchase, below |
 
 **The ledgers.** Each has its own balance and statement. Money moves between ledgers only as recorded transfers, never by editing a balance.
 
@@ -306,15 +309,15 @@ The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xls
 - **Charging:** every bonus is a debit from its own line, naming the member and the purchase that funded it. The plan's formulas decide what is paid (for example, the direct bonus is 25% × PV × ₦600 = ₦225 a unit). The line holds slightly more, and the difference stays in the ledger.
 - **Contingency fund** (board, November 2026): every reserve and every leftover goes into a contingency fund, which is the safety net. That covers the 2.3% Contingency Reserve, each ledger's unassigned share (repurchase 15%, upgrade ₦317.06 a unit), what a line holds above what the plan pays (for example ₦0.12 a unit on the direct line), and a Sub store's ₦30 below the ₦120 rebate line. It is kept and reported **per ledger**, so it is always clear where each naira came from.
 - **Self-sufficient ledgers:** no ledger ever pays for another ledger's bonuses. When a line in a ledger runs short, it is covered first from **that ledger's own** contingency fund.
-- **Shortfalls:** a shortfall is never hidden. Each use of a contingency fund is recorded against the line it covered. If a ledger's contingency fund is also empty, the board's rule for that case applies (section 13, decision 18).
-- **Breakage:** shares with no one to receive them go to the company: a missing generation, a company-sponsored member, a key-in by an admin.
+- **Shortfalls: hold until it refills** (board, November 2026). A shortfall is never hidden. Each use of a contingency fund is recorded against the line it covered. If a line and its ledger's contingency fund cannot cover a payout, the payout is **held**: the member sees it as pending, nothing is paid in part, and it is paid as soon as the money arrives. Held payouts are paid oldest first. A payout is never cancelled because a line ran short.
+- **Unpaid shares** (board, November 2026): a share with no one to receive it stays with **the cooperative**, never the manufacturing company. This covers a missing generation, a banned upline, a company-sponsored member and a key-in by an admin. It goes into that ledger's contingency fund.
 - **Reporting:** the admin dashboard and the financial report show each ledger and line (what came in, what was paid, what is left) by day, month and quarter.
 
-**What the blueprint replaces:** the earlier 30 / 10 / 5 / 55 split and its 22% / 24.75% / 8.25% pools are replaced by the ledgers above. **The Global Share Pool has no line in V3**, so it is not built unless the board adds one (section 13).
+**What the blueprint replaces:** the earlier 30 / 10 / 5 / 55 split and its 22% / 24.75% / 8.25% pools are replaced by the separate ledgers above. **There is no Global Share Pool** (board, November 2026).
 
 ## 8. Shop and affiliate
 
-The shop sells Wiifarm's products to members and to the public. **Everyone pays the company; nobody pays a stockist.** Every order gets a pickup code, and the buyer collects the goods from a stockist with it.
+The shop sells Wiifarm's products to members and to the public. **Everyone pays through the platform; nobody pays a stockist.** Each payment is split at once between the manufacturing company and the cooperative (section 7). Every order gets a pickup code, and the buyer collects the goods from a stockist with it.
 
 **Products:**
 
@@ -337,14 +340,14 @@ The shop sells Wiifarm's products to members and to the public. **Everyone pays 
 
 **Member orders:**
 
-- A member pays the company: from their main balance or product wallet, or online. They receive a pickup code.
+- A member pays through the platform: from their main balance or product wallet, or online. They receive a pickup code.
 - The product's PV climbs the tree (section 3), and the purchase pays the unilevel bonus (5.10).
 - It also counts towards autoship (5.6) and repurchase PV.
 
 **Public (affiliate) orders:**
 
-1. A member shares their personal link (for example `?ref=WII-XXXXXX`) or an advert from the Ad Center. A click is remembered for a number of days set by the admin.
-2. The buyer pays the company online at the public price of **₦2,000 a unit**, and receives a pickup code.
+1. An affiliate shares their personal link (for example `?ref=WII-XXXXXX`) or an advert from the Ad Center. **Anyone can register as an affiliate, member or not**; an affiliate has their own account and affiliate wallet. A click is remembered for a number of days set by the admin.
+2. The buyer pays online at the public price of **₦2,000 a unit**, and receives a pickup code.
 3. A stockist checks the code in person and hands over the goods. The order is then fulfilled.
 4. On fulfilment, the referring member's affiliate bonus is paid, and the stockist earns their rebate.
 
@@ -354,7 +357,7 @@ The shop sells Wiifarm's products to members and to the public. **Everyone pays 
 | --- | --- | --- |
 | Affiliate wallet: 20% of the ₦500 above the member price | ₦100 | none |
 | Stockist wallet: the usual rebate for the store that hands it over | ₦120 (Mega) / ₦90 (Sub) | ₦120 (Mega) / ₦90 (Sub) |
-| Manufacturers: everything else | ₦1,780 / ₦1,810 | ₦1,880 / ₦1,910 |
+| Manufacturing company: everything else | ₦1,780 / ₦1,810 | ₦1,880 / ₦1,910 |
 
 A public sale earns no PV for anyone and pays no network bonus.
 
@@ -386,7 +389,7 @@ A stockist is a member who runs a store that holds Wiifarm stock and hands over 
 2. An admin reviews the application, takes payment and activates the store. The stockist receives products worth 100% of the setup payment.
 3. On activation, in one step that is paid once only:
    - the **stockist sponsor bonus** (Pool D) goes to 10 generations of the stockist's referral chain (generation 1 is the stockist's sponsor, or their referrer if none was named). This is the only stockist sponsor bonus; there is no ongoing share of the store's sales;
-   - the store PV goes up the stockist's uplines as lifetime PV, which counts for awards and never for matching. It reaches 10 generations, never more (board, November 2026);
+   - the store PV counts for awards only, never for matching, and reaches 10 steps, never more (board, November 2026). It counts **both ways**: up 10 levels of the stockist's binary tree as lifetime PV (binary awards), and up 10 generations of the referral chain;
    - 8% (Sub) or 6.5% (Mega) of the deposit goes to the stockist activation ledger, Pool D (section 7).
 4. A banned upline is skipped, and the generation still counts.
 
@@ -454,7 +457,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Dashboard | Members, deposits, withdrawals, orders, stockists and pins at a glance; the four pool balances |
 | Members | Search and filter (active, banned, KYC state, with balance, paid/free); view a member's details, tree and wallets; edit details; add or subtract from a wallet with a reason; ban or unban; block withdrawals; change a sponsor; review KYC; sign in as the member to help them; send a notification |
 | Money | Approve or reject deposits and withdrawals; manage gateways and withdrawal methods; create e-pins |
-| Plan | Packages, awards (approve and pay), unilevel levels, repurchase awards, leadership settings, the Global Share Pool |
+| Plan | Packages, awards (approve and pay), unilevel levels, repurchase awards, leadership settings, pool ledgers and their contingency funds, held payouts |
 | Commerce | Products, categories, state prices, orders, stockists and their requests, the Ad Center, affiliate settings, Welcome Back Packages |
 | Finance | Investment plans and dividend batches, farm cycles, savings and loan products, loan approvals |
 | Content | Website pages and sections, SEO, cookie notice, languages, notices and announcements to members |
@@ -491,7 +494,6 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Daily 03:00 | Full database backup, kept 30 days |
 | Daily | Expire unpaid or uncollected public orders (8). This is not scheduled in the current system, and should be |
 | Last day of the month, 23:00 | Autoship sweep (5.6) |
-| 1st of Jan, Apr, Jul, Oct, 01:17 | Global Share Pool payout for the quarter just ended (7) |
 
 Every job can run again safely: a second run never pays twice. Each run is logged with what it did.
 
@@ -511,8 +513,8 @@ The specification can be signed off once the board settles the points below.
 - [x] **2. Funding between engines.** Settled by Blueprint V3: each kind of purchase funds its own ledger (section 7). *Earlier question:* Does revenue from registrations fund only the Consumer Rewards Pool and commerce revenue only the Commerce Pool? Or is every payment split across all three pools in the 22 / 24.75 / 8.25 ratio?
 - [ ] **3. Leadership bonus team.** Does "5% of what your team members earn from matching" cover the whole downline, or a set number of levels or generations? Is it counted through the tree or the referral chain?
 - [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus?
-- [x] **5. Store PV reach.** Settled in part: 10 generations, never more (board, November 2026). Still open: counted through the referral chain or the binary tree? *Earlier question:* Does store PV go up 10 or 15 generations? Is it counted through the referral chain or the binary tree?
-- [ ] **6. Global Share Pool.** Who qualifies (the current system uses Diamond and above)? And if nobody qualifies in a quarter, is the pool carried forward or returned?
+- [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
+- [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).
 - [ ] **7. Autoship hold.** The plan mentions the 10 PV authorship but not the 20% hold on matching bonuses (5.6). Should the hold stay?
 
 **From the current system:**
@@ -520,7 +522,7 @@ The specification can be signed off once the board settles the points below.
 - [ ] **8. Bans:** should a ban pause bonuses (paid on unban, as now) or cancel them for good?
 - [ ] **9. Matrix stages:** is the current "stage two" matrix and its stage-out report still part of the plan? If not, it is left out.
 - [ ] **10. VISA wallet:** how do members top it up: by deposit, by bonus transfer, or only by an admin?
-- [ ] **11. Empty compensation budget:** if a pool runs out, do bonuses stop until it refills, or are they paid and the pool shown below zero?
+- [x] **11. Empty compensation budget:** Settled: payouts are held until the line refills (section 7).
 - [ ] **12. Dividend reversal:** may it take a member's balance below zero, or stop at zero?
 - [ ] **13. Loans:** when does a missed instalment make a loan "in default", and what happens then (fees, guarantors)?
 - [ ] **14. Sponsor changes:** when an admin changes a member's sponsor, should their place in the binary tree also move, and do bonuses already paid stay as they are? (Today only the sponsor changes, for the future.)
@@ -529,11 +531,12 @@ The specification can be signed off once the board settles the points below.
 
 **From Blueprint V3 (November 2026):**
 
-- [ ] **17. Recognition awards.** The Strategic Reserve is now 1% (it was 10%), so recognition awards receive ₦5.25 a unit, not ₦52.50. The award ladder (₦80,000 at Emerald up to ₦180M) costs 8 to 19 times what the volume under an earner puts into that pool, even before other uplines earn on the same volume. Should the awards be lowered, funded from elsewhere (for example the Contingency Reserve or safety nets), or paid only while the pool holds enough? The workbook's notes still say 10% (₦75); please confirm 1%.
-- [ ] **18. When a line runs short.** Settled in part: a shortfall is covered first from the same ledger's contingency fund, and never from another ledger (section 7). Still open: what happens if that contingency fund is also empty? Pay and show the deficit, scale the payouts down, or hold them until it refills? Matching (₦108.01 a unit) can reach about twice its line in very evenly growing networks; unilevel at full depth pays ₦387 against ₦367.50.
-- [x] **19. Contingency Reserve and safety nets.** Settled: every reserve and leftover goes into a contingency fund, kept per ledger, used only for that ledger's shortfalls (section 7). Still open: do unpaid shares (a missing generation, a banned upline, a company-sponsored member) also go to the contingency fund, or to the company as the baseline rules say?
+- [x] **17. Recognition awards.** Settled: the Strategic Reserve is 1%, so recognition awards receive ₦5.25 a unit (section 7). Awards the pool cannot cover yet are held until it refills, oldest first. At that rate an ₦80,000 Emerald award needs the reserve from about 15,200 registration units, so awards will often wait.
+- [x] **18. When a line runs short.** Settled: covered from the same ledger's contingency fund; if that is empty too, held until it refills, oldest first (section 7).
+- [x] **19. Contingency Reserve and safety nets.** Settled: every reserve and leftover goes into a contingency fund kept per ledger, used only for that ledger's shortfalls; unpaid shares stay with the cooperative, in that fund (section 7).
 - [x] **20. Unilevel depth.** Settled: 10 generations, never 15 (sections 4 and 5.10).
 - [ ] **21. Repurchase award schedule.** The milestone schedule the board refers to has not been received. Is it the table in 5.11? That table also costs more than its ₦75 a unit.
 - [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
-- [x] **23. Public shop split.** Settled: affiliate ₦100 (20% of the ₦500 margin), the stockist's usual ₦120 / ₦90, the rest to the manufacturers; nothing to the cooperative, no PV (section 8). Still open: is the affiliate's 20% of the ₦500 margin (₦100) or of the ₦2,000 price (₦400)? Can a non-member be an affiliate?
-- [ ] **24. Global Share Pool.** The stockist sponsor bonus is Pool D (settled). The Global Share Pool still has no line in V3: is it dropped?
+- [x] **23. Public shop split.** Settled: affiliate ₦100 (20% of the ₦500 margin), the stockist's usual ₦120 / ₦90, the rest to the manufacturing company; nothing to the cooperative, no PV. Anyone can be an affiliate, member or not (section 8).
+- [x] **24. Global Share Pool and stockist sponsor bonus.** Settled: no Global Share Pool; the stockist sponsor bonus is Pool D.
+- [ ] **25. Collecting payments for two companies.** Does each company have its own Paystack and bank account, so a payment is split at the gateway; or does one account collect and settle the other's share, and if so how often? And which company allocates stock to the stores: the manufacturing company or the cooperative?

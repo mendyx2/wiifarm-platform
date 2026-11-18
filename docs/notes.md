@@ -663,3 +663,31 @@ fund is also empty, whether unpaid shares go to the contingency fund or the
 company, the affiliate's 20% base, and the Global Share Pool.
 
 Tests: 171 pass.
+
+## Step 16: The board's answers on pools, shortfalls and the two companies
+
+- **The 1% Strategic Reserve is confirmed.** Rank awards receive ₦5.25 a
+  unit. An award the pool cannot cover yet waits until it can; at that rate
+  awards will often wait.
+- **Shortfalls are held until the money arrives.** A payout that its line and
+  its ledger's contingency fund cannot cover shows as pending. It is paid in
+  full once money comes in, oldest first, and never cancelled.
+- **Unpaid shares stay with the cooperative.** For example, a missing
+  generation or a banned upline: that share goes into the ledger's contingency
+  fund.
+- **Two separate companies.** The manufacturing company and the cooperative
+  have different accounts. The specification now names them apart
+  everywhere. Each payment is split between them at once, and their books
+  never mix.
+- **Affiliates:** 20% of the ₦500 margin (₦100), and anyone can register as
+  one, member or not.
+- **No Global Share Pool.** It is removed from the specification, with its
+  quarterly payout.
+- **Store PV counts both ways:** 10 levels up the binary tree and 10
+  generations up the referral chain, for awards only.
+
+Open: decision 25, whether each company has its own Paystack and bank
+account, and which company allocates stock.
+
+The pool accounts in the code still follow the old allocation, including a
+Global Share line. They are replaced in the next build step.
