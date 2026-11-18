@@ -1369,3 +1369,45 @@ them from any stockist.
 
 **Next:** a real member dashboard (balances, PV, team, orders at a glance),
 then the leadership bonus and the monthly runs.
+
+## Step 28: The member dashboard (phase 5, part 4)
+
+**What this is:** the first page a member sees after signing in. Until now
+it was an empty placeholder; it now shows their position at a glance.
+
+- **For someone who has not paid yet:** a reminder to choose their package,
+  pay online or with an e-pin, and a button to the package page.
+- **For a member:**
+    - **who they are:** their package and since when, and their own sign-up
+      link (`/register?ref=their username`) with a Copy button;
+    - **what needs doing,** shown only when it applies:
+        - orders waiting to be collected with a pickup code;
+        - identity (KYC) not yet verified, so they cannot withdraw;
+        - this month's product purchases below 10 PV, so 20% of their
+          matching bonus goes to autoship (shown only while that switch
+          is on);
+    - **money:**
+        - the main balance;
+        - what is waiting in the bonus wallets;
+        - **earned so far** (every bonus ever paid to them, even after
+          moving it to the main balance);
+        - the VISA wallet, and the autoship wallet when it holds money;
+    - **PV:** what is waiting to match and the lifetime PV on each leg;
+    - **matching:** what a match pays on their package, the daily cap, and
+      last night's matches (marked when the cap stopped them or the payout
+      is held);
+    - **team:** how many members they sponsored, how many sign-ups have not
+      paid yet, and how many members sit in their left and right teams;
+    - **latest earnings:** the last six bonuses, with what each was for.
+- **Team counts** are worked out from the tree in one database query, for
+  each leg, however deep it goes.
+- **Tests:** 264 pass (2 new): the page for someone not yet paid, and every
+  figure for a member, including that moving a bonus to the main balance
+  does not change "earned so far".
+- **Checked in a browser** on a computer and a phone with a demo Mega
+  member. One fault found and fixed: on a laptop-sized screen the four money
+  cards were too narrow and cut the amounts off ("₦75,810...."). They now
+  sit two to a row until the screen is wide enough.
+
+**Next:** the leadership bonus and the monthly runs (decisions 3 and 6
+affect who qualifies and who counts as the team).

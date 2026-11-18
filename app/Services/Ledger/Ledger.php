@@ -119,6 +119,17 @@ class Ledger
     }
 
     /**
+     * The ids of a member's wallets of these kinds that have been opened.
+     *
+     * @param  list<string>  $kinds
+     * @return list<int>
+     */
+    public function memberAccountIds(User $member, array $kinds): array
+    {
+        return Account::where('holder', 'member:'.$member->id)->whereIn('kind', $kinds)->pluck('id')->map(fn ($id) => (int) $id)->all();
+    }
+
+    /**
      * One line of one of the cooperative's pool ledgers, or its contingency
      * fund (config/pools.php). Each pool is its own ledger: its accounts are
      * held by "pool:{code}".

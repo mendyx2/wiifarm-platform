@@ -136,6 +136,32 @@ class Tree
         return $uplines;
     }
 
+    /**
+     * How many members sit below a member, on each leg.
+     *
+     * @return array{L: int, R: int}
+     */
+    public function teamSize(User $member): array
+    {
+        $rows = DB::select('
+            WITH RECURSIVE down (user_id, side, steps) AS (
+                SELECT user_id, leg, 1 FROM tree_positions WHERE parent_id = ?
+                UNION ALL
+                SELECT t.user_id, down.side, down.steps + 1
+                FROM tree_positions t JOIN down ON t.parent_id = down.user_id
+                WHERE down.steps < 100000
+            )
+            SELECT side, COUNT(*) AS n FROM down GROUP BY side
+        ', [$member->id]);
+
+        $out = ['L' => 0, 'R' => 0];
+        foreach ($rows as $row) {
+            $out[$row->side] = (int) $row->n;
+        }
+
+        return $out;
+    }
+
     /** Whether $candidateId is $ancestorId or somewhere below them. */
     public function isInTreeOf(int $candidateId, int $ancestorId): bool
     {

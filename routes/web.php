@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\EPinController;
 use App\Http\Controllers\Member\KeyInController;
 use App\Http\Controllers\Member\PaymentController;
@@ -27,9 +28,7 @@ Route::get('products/order/{order}', [PublicShopController::class, 'show'])->mid
 Route::post('webhooks/paystack', PaystackWebhookController::class)->middleware('throttle:120,1')->name('webhooks.paystack');
 
 Route::middleware(['auth', 'member.verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('wallet', WalletController::class)->name('wallet');
     Route::get('package', [PaymentController::class, 'package'])->name('package');
