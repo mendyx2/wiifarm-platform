@@ -4,7 +4,10 @@ namespace App\Services\Network;
 
 use App\Models\Package;
 use App\Models\PackageChange;
+use App\Models\Shop\Product;
 use App\Models\User;
+use App\Services\Compensation\JoiningBonuses;
+use App\Services\Pools\PaymentSplit;
 use App\Services\Shop\Orders;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +22,12 @@ use Illuminate\Support\Facades\DB;
  */
 class Upgrade
 {
-    public function __construct(private readonly PvClimb $climb, private readonly Orders $orders) {}
+    public function __construct(
+        private readonly PvClimb $climb,
+        private readonly Orders $orders,
+        private readonly PaymentSplit $split,
+        private readonly JoiningBonuses $bonuses,
+    ) {}
 
     public function priceDifference(User $member, Package $to): int
     {
@@ -70,6 +78,11 @@ class Upgrade
 
             // The higher package's extra packs, collected with a pickup code (board, November 2026).
             $this->orders->upgradePacks($member, $from, $to, $change);
+
+            // The payment: half to the manufacturer, half to the upgrade pool (section 7); then the upgrade bonuses.
+            $maker = Product::where('sku', config('wiifarm.registration_product_sku'))->firstOrFail()->manufacturer;
+            $this->split->upgrade($to->price - $from->price, $maker, $paymentKey, $change);
+            $this->bonuses->forUpgrade($change->setRelation('user', $member)->setRelation('fromPackage', $from)->setRelation('toPackage', $to));
 
             return $change;
         });

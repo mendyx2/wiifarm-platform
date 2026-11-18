@@ -4,25 +4,36 @@ namespace App\Services\Network;
 
 use App\Models\Package;
 use App\Models\PackageChange;
+use App\Models\Pools\Manufacturer;
 use App\Models\TreePosition;
 use App\Models\User;
+use App\Services\Compensation\JoiningBonuses;
+use App\Services\Pools\PaymentSplit;
 use App\Services\Shop\Orders;
 use Illuminate\Support\Facades\DB;
 
 /**
  * A member's package is paid: they become a member (specification section 2).
- * In one transaction: placed in the tree, given the package, and the
- * package's PV climbs to every upline. If anything fails, nothing happens.
+ * In one transaction: placed in the tree, given the package, the package's
+ * PV climbs to every upline, the packs' order is created, the payment is
+ * split (manufacturer and Pool A), and the direct, indirect and key-in
+ * bonuses are paid. If anything fails, nothing happens.
  *
  * $paymentKey names the payment (for example "paystack:ref_123" or
  * "epin:4567"). The same payment activates once only; calling again with it
- * changes nothing. Bonuses are added to this step in a later phase.
+ * changes nothing.
  */
 class Registration
 {
-    public function __construct(private readonly Tree $tree, private readonly PvClimb $climb, private readonly Orders $orders) {}
+    public function __construct(
+        private readonly Tree $tree,
+        private readonly PvClimb $climb,
+        private readonly Orders $orders,
+        private readonly PaymentSplit $split,
+        private readonly JoiningBonuses $bonuses,
+    ) {}
 
-    public function activate(User $member, Package $package, string $paymentKey): PackageChange
+    public function activate(User $member, Package $package, string $paymentKey, ?User $keyedInBy = null): PackageChange
     {
         if ($done = PackageChange::where('payment_key', $paymentKey)->first()) {
             if ($done->user_id !== $member->id || $done->kind !== PackageChange::JOIN || $done->to_package_id !== $package->id) {
@@ -47,7 +58,7 @@ class Registration
             throw new PlacementException("@{$member->username} has no sponsor; only the company account has none.");
         }
 
-        return DB::transaction(function () use ($member, $package, $paymentKey, $sponsor) {
+        return DB::transaction(function () use ($member, $package, $paymentKey, $sponsor, $keyedInBy) {
             $member = User::lockForUpdate()->findOrFail($member->id);
             if ($member->isActivated()) { // checked again under the lock: two payments at once
                 throw new PlacementException("@{$member->username} is already a member with a paid package.");
@@ -69,7 +80,13 @@ class Registration
             $this->climb->credit($member, $package->pv * 100, PvClimb::SOURCE_REGISTRATION, 'pv:join:'.$member->id, $change);
 
             // The package's packs, collected from a stockist with a pickup code (section 8).
-            $this->orders->registration($member, $package, $change);
+            $order = $this->orders->registration($member, $package, $change);
+
+            // The payment: half to the packs' manufacturer, half to the registration pool (section 7).
+            $this->split->registration($package->price, Manufacturer::findOrFail($order->items()->value('manufacturer_id')), $paymentKey, $change);
+
+            // The bonuses paid at once: direct, indirect and key-in (section 5).
+            $this->bonuses->forJoining($change->setRelation('user', $member), $keyedInBy);
 
             return $change;
         });

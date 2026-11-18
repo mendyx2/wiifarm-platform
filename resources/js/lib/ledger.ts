@@ -6,6 +6,10 @@ const typeNames: Record<string, string> = {
     'payout.stockist_rebate': 'Stockist rebate',
     'payout.stockist_sponsor': 'Stockist sponsor bonus',
     'payout.unilevel': 'Unilevel bonus',
+    'payout.direct': 'Direct referral bonus',
+    'payout.indirect': 'Indirect referral bonus',
+    'payout.keyin': 'Key-in bonus',
+    'payout.upgrade': 'Upgrade bonus',
 };
 
 export const transactionName = (type: string) => typeNames[type] ?? type;

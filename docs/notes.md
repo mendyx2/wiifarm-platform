@@ -924,3 +924,50 @@ manufacturer) and decision 28 (who records a Sub store's collection).
 
 **Next:** the bonuses: direct, indirect and key-in on registration, upgrade
 bonuses, then daily matching.
+
+## Step 21: Joining and upgrade bonuses (phase 4, part 4)
+
+**What this is:** the first bonuses paid with real effect. When a package is
+paid, its bonuses are paid at once from the registration pool. When a member
+upgrades, the upgrade bonuses are paid from the upgrade pool.
+
+- **One step when a package is paid.** Everything now happens together, all
+  or nothing:
+    1. the member is placed in the tree;
+    2. their PV climbs;
+    3. their packs' order is created;
+    4. the payment is split between the manufacturer and Pool A;
+    5. the bonuses are paid.
+
+  Because the split comes first in the same step, every bonus line already
+  holds the money it pays out. The same applies to an upgrade.
+- **The bonuses** (on the package's PV value, PV × ₦600):
+    - **direct**, 25% to the sponsor. A Mega sign-up pays ₦67,500, and a Pre
+      Starter ₦2,250;
+    - **indirect**, to the 10 generations above the sponsor: 3%, 2%, then 1%
+      each. A Mega sign-up pays ₦8,100, ₦5,400, then ₦2,700 to each of the next
+      eight;
+    - **key-in**, 2% to the member who keyed the new member in (₦5,400 on a
+      Mega). A sponsor who keys in their own recruit gets both the direct and
+      the key-in bonus. A self sign-up has no key-in; the share stays with the
+      cooperative;
+    - **upgrade**, on the PV difference: 25% to the sponsor, 2% to generation
+      2, and 1% each to generations 3 to 10. Starter to Builder (30 PV, ₦18,000)
+      pays ₦4,500, ₦360, then ₦180 each.
+- **Unpaid shares:** a share with nobody to receive it is not passed to anyone
+  else, and the generation still counts. It stays with the cooperative in the
+  pool's contingency fund. This covers a missing generation, a banned member,
+  a member whose package is not paid, the company account, and a self
+  sign-up's key-in.
+- **Once only:** the same payment can never pay its bonuses twice.
+- **Every line covers its bonus:** checked for every package size, each bonus
+  line receives a little more than the bonus it pays (for example ₦2,251.16
+  against a ₦2,250 direct bonus), so these bonuses never wait for money.
+- **Tests:** 216 pass (6 new). Each checks the plan's own worked examples to
+  the kobo, including that a banned generation's share is not passed up.
+
+**Not yet:** the "Add Distributor" screen where a member keys someone in and
+pays from their VISA wallet comes with payments. How the VISA wallet is topped
+up is still open decision 10. The bonus service is ready for it.
+
+**Next:** affiliate accounts, then withdrawals.

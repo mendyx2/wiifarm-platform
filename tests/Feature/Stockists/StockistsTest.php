@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Services\Ledger\InsufficientFunds;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\Upgrade;
-use App\Services\Pools\PaymentSplit;
 use App\Services\Shop\Orders;
 use App\Services\Stockists\Handover;
 use App\Services\Stockists\Stock;
@@ -65,10 +64,8 @@ class StockistsTest extends NetworkTestCase
     private function registeredMember(string $username, string $package = 'Pre Starter'): Order
     {
         $member = $this->join($username, package: $package);
-        $order = Order::where('user_id', $member->id)->where('kind', Order::REGISTRATION)->sole();
-        app(PaymentSplit::class)->registration($order->amount, Manufacturer::firstOrFail(), 'pay:'.$username);
 
-        return $order;
+        return Order::where('user_id', $member->id)->where('kind', Order::REGISTRATION)->sole(); // its payment was split on joining
     }
 
     public function test_activating_a_mega_store_splits_the_deposit_and_pays_the_sponsor_bonus()
@@ -232,8 +229,7 @@ class StockistsTest extends NetworkTestCase
         $mega = $this->activeStore($this->join('mega_owner'), Store::MEGA);
         app(Stock::class)->allocate($this->admin, $mega, $this->product(), 100, (string) Str::uuid());
         $member = $this->join('upgrader', package: 'Starter');            // 2 packs
-        app(Upgrade::class)->apply($member, $this->package('Builder'), 'pay:up:1'); // 4 packs: 2 more
-        app(PaymentSplit::class)->upgrade(3_000_000, Manufacturer::firstOrFail(), 'pay:up:1');
+        app(Upgrade::class)->apply($member, $this->package('Builder'), 'pay:up:1'); // 4 packs: 2 more; the payment is split
 
         $order = Order::where('user_id', $member->id)->where('kind', Order::UPGRADE)->sole();
         $this->assertSame([20, 3_000_000, 3000], [$order->units, $order->amount, $order->pv]);
