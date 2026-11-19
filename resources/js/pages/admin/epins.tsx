@@ -55,7 +55,7 @@ function CreatePins({ packages }: { packages: { id: number; name: string; price:
     };
 
     return (
-        <form onSubmit={submit} className="bg-card grid gap-4 rounded-xl border p-4 md:grid-cols-[1fr_8rem_2fr_auto] md:items-end">
+        <form onSubmit={submit} className="bg-card shadow-soft grid gap-4 rounded-xl border p-4 md:grid-cols-[1fr_8rem_2fr_auto] md:items-end">
             <FormField id="a-package" label="Package" error={form.errors.package_id}>
                 <select
                     id="a-package"

@@ -89,7 +89,7 @@ export default function AddDistributor({
                     earn the key-in bonus.
                 </p>
 
-                <section className="bg-card grid gap-5 rounded-xl border p-4">
+                <section className="bg-card shadow-soft grid gap-5 rounded-xl border p-4">
                     <h2 className="font-medium">Their details</h2>
                     <div className="grid gap-5 sm:grid-cols-2">
                         <FormField id="k-first_name" label="First name" error={errors.first_name}>
@@ -166,7 +166,7 @@ export default function AddDistributor({
                     </div>
                 </section>
 
-                <section className="bg-card grid gap-5 rounded-xl border p-4">
+                <section className="bg-card shadow-soft grid gap-5 rounded-xl border p-4">
                     <h2 className="font-medium">Their place in the team</h2>
                     <FormField id="k-sponsor" label="Sponsor's username" error={errors.sponsor} hint="You, unless someone else invited them.">
                         <Input required {...text('sponsor')} />
@@ -190,7 +190,7 @@ export default function AddDistributor({
                     </div>
                 </section>
 
-                <section className="bg-card grid gap-5 rounded-xl border p-4">
+                <section className="bg-card shadow-soft grid gap-5 rounded-xl border p-4">
                     <h2 className="font-medium">Their package</h2>
                     <FormField id="k-package" label="Package" error={errors.package_id}>
                         <select

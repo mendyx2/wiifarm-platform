@@ -106,7 +106,7 @@ export default function PackagePage({
                 )}
 
                 {!current && chosen && (
-                    <form onSubmit={redeem} className="bg-card max-w-xl space-y-3 rounded-xl border p-4">
+                    <form onSubmit={redeem} className="bg-card shadow-soft max-w-xl space-y-3 rounded-xl border p-4">
                         <h2 className="font-medium">Or pay with an e-pin</h2>
                         <FormField
                             id="pin-code"

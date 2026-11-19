@@ -24,7 +24,7 @@ class ShopController extends Controller
 
         return Inertia::render('shop', [
             'products' => Product::where('is_active', true)->orderBy('name')->get()
-                ->map(fn (Product $p) => ['id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->member_price, 'pv' => $p->pv]),
+                ->map(fn (Product $p) => ['id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->member_price, 'pv' => $p->pv, 'image' => $p->imageUrl()]),
             'wallets' => ['main' => $balances['main'], 'product' => $balances['product']],
             'canBuy' => $request->user()->isActivated(),
         ]);

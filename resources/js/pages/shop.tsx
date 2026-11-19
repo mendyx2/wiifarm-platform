@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ProductImage } from '@/components/wf/product-image';
 import AppLayout from '@/layouts/app-layout';
 import { formatKobo } from '@/lib/money';
 import { pv } from '@/lib/network';
@@ -13,7 +14,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { Clock } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-type Product = { id: number; name: string; description: string | null; price: number; pv: number };
+type Product = { id: number; name: string; description: string | null; price: number; pv: number; image: string | null };
 
 interface ShopProps {
     products: Product[];
@@ -63,10 +64,11 @@ export default function Shop({ products, wallets, canBuy }: ShopProps) {
 
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {products.map((p) => (
-                        <Card key={p.id} className="py-0">
+                        <Card key={p.id} className="overflow-hidden py-0">
+                            <ProductImage src={p.image} name={p.name} className="rounded-none border-b" />
                             <CardContent className="grid gap-3 p-5">
                                 <div>
-                                    <p className="font-medium">{p.name}</p>
+                                    <h2 className="text-base font-semibold">{p.name}</h2>
                                     {p.description && <p className="text-muted-foreground text-sm">{p.description}</p>}
                                 </div>
                                 <p className="text-sm">

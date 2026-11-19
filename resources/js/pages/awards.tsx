@@ -61,7 +61,7 @@ export default function Awards({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Awards" />
             <div className="max-w-5xl space-y-6 p-4">
-                <section className="bg-card space-y-4 rounded-xl border p-4">
+                <section className="bg-card shadow-soft space-y-4 rounded-xl border p-4">
                     <h2 className="font-medium">Your progress</h2>
                     {nextRank && <Progress value={lesserLeg} max={nextRank.pv} label={`Lesser leg towards ${nextRank.name}`} />}
                     {nextTier && <Progress value={teamRepurchase} max={nextTier.pv} label="Your 1st to 10th generations' repurchases" />}

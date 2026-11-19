@@ -30,7 +30,7 @@ export default function Deposit({ online, min, max, payments }: { online: boolea
                     payment.
                 </p>
                 {!online && <OfflineNotice />}
-                <form onSubmit={submit} className="bg-card max-w-md space-y-4 rounded-xl border p-4">
+                <form onSubmit={submit} className="bg-card shadow-soft max-w-md space-y-4 rounded-xl border p-4">
                     <div className="grid gap-2">
                         <Label htmlFor="d-amount">Amount (₦)</Label>
                         <Input

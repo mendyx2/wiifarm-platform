@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $name
  * @property string $sku
  * @property ?string $description
+ * @property ?string $image_path
  * @property int $member_price
  * @property int $public_price
  * @property int $pv
@@ -34,5 +35,11 @@ class Product extends Model
     public function manufacturer(): BelongsTo
     {
         return $this->belongsTo(Manufacturer::class);
+    }
+
+    /** The photo's web address, or null when the product has none. */
+    public function imageUrl(): ?string
+    {
+        return $this->image_path ? '/storage/'.$this->image_path : null;
     }
 }

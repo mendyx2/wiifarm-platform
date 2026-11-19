@@ -1743,3 +1743,58 @@ Possible next steps for a more premium feel, if wanted:
 - the real product photos in the shop;
 - a heading typeface with more character;
 - softer card shadows.
+
+## Step 36: Product photos, brand headings and softer shadows
+
+**What this is:** the three finishing touches the owner asked for, to make
+the platform feel more premium.
+
+- **Product photos:**
+    - **Where they come from:** the VitaActive and VitaForce photos come
+      from the owner's own plan document ("Wiifarm Coop Binary System"),
+      cropped and compressed for the web (60 to 130 KB each). They are kept
+      in `public/images/brand/`. They are Wiifarm's own brand images, not
+      files from the old system.
+    - **Admins upload photos:** each product's admin page now has a
+      **Photo** card. It takes a JPEG, PNG or WebP of up to 3 MB and at
+      least 200 pixels; a new photo replaces the old one (the old file is
+      deleted), and a photo can be removed. Each change is recorded in the
+      audit log. Photos are stored on the server's public disk, so the
+      server needs `php artisan storage:link` once (now in the README).
+    - **Where they show:** the public shop, the members' shop, and as small
+      thumbnails in the admin product list. A product without a photo shows
+      a tidy Wiifarm tile instead of a gap.
+    - **The public shop** now opens with a banner: the VitaActive range
+      photo (sachet, pouch and tub), the brand's own line "Nourishing
+      lives, empowering communities", and the heading "Wholesome Wiifarm
+      nutrition, made in Nigeria".
+- **Headings in Montserrat,** the typeface of Wiifarm's brand documents:
+    - it is served from our own server (`public/fonts/montserrat/`), not a
+      font website, so it loads fast and never depends on a third party;
+    - it is free for commercial use under the SIL Open Font License, the
+      same licence as Inter, the body text font already in use. The
+      licence file is kept with the font;
+    - every page heading, card title and the "Wiifarm" name in the menu now
+      use it.
+- **Softer shadows:** one soft, warm shadow defined in the theme
+  (`shadow-soft`), used on cards, tables and panels everywhere, with
+  slightly rounder corners.
+- **Tests:** 287 pass (2 new). They cover:
+    - uploading, replacing and removing a photo;
+    - the wrong file type or a too-small photo being refused;
+    - both shops showing the photo;
+    - only admins who manage products being able to change photos.
+- **Checked in a browser** through the real admin pages: a photo uploaded
+  to a product, and a demo VitaForce product added with its photo. Then
+  the public shop on a computer and a phone, the members' shop, the
+  dashboard and the admin product page, with the browser confirming
+  Montserrat had loaded. Two fixes came out of it:
+    - a thin dark edge on the VitaActive pouch photo, left over from the
+      PDF, was trimmed;
+    - the dashboard greeting was made larger and bolder so the heading
+      typeface shows.
+
+**For the owner:** on the live site, set the real product names, prices
+and PV in the admin panel and upload each product's photo there. My local
+copy has a demo "VitaForce Male Vitality Beverage" product, at the same
+prices as the pack product; it exists only on my local copy.

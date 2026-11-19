@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/wf/data-table';
+import { ProductImage } from '@/components/wf/product-image';
 import AdminLayout from '@/layouts/admin-layout';
 import { formatKobo } from '@/lib/money';
 import { pv } from '@/lib/network';
@@ -19,6 +20,7 @@ type Row = {
     units_per_pack: number;
     is_active: boolean;
     is_pack_product: boolean;
+    image: string | null;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -50,14 +52,17 @@ export default function Products({ products }: { products: Row[] }) {
                             key: 'name',
                             header: 'Product',
                             cell: (p) => (
-                                <Link href={route('admin.products.edit', p.id)} className="group block">
-                                    <span className="font-medium group-hover:underline">{p.name}</span>
-                                    <span className="text-muted-foreground block text-xs">
-                                        {p.sku} · {p.manufacturer}
-                                    </span>
-                                    <span className="mt-1 flex gap-1">
-                                        {p.is_pack_product && <Badge variant="gold">In every package</Badge>}
-                                        {!p.is_active && <Badge variant="outline">Not on sale</Badge>}
+                                <Link href={route('admin.products.edit', p.id)} className="group flex items-start gap-3">
+                                    <ProductImage src={p.image} name={p.name} className="w-16 shrink-0" />
+                                    <span className="block">
+                                        <span className="font-medium group-hover:underline">{p.name}</span>
+                                        <span className="text-muted-foreground block text-xs">
+                                            {p.sku} · {p.manufacturer}
+                                        </span>
+                                        <span className="mt-1 flex gap-1">
+                                            {p.is_pack_product && <Badge variant="gold">In every package</Badge>}
+                                            {!p.is_active && <Badge variant="outline">Not on sale</Badge>}
+                                        </span>
                                     </span>
                                 </Link>
                             ),

@@ -90,7 +90,7 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
             <div className="space-y-6 p-4">
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div className="min-w-0">
-                        <h1 className="text-xl font-semibold">Welcome back, {member.first_name}</h1>
+                        <h1 className="text-2xl font-bold">Welcome back, {member.first_name}</h1>
                         <p className="text-muted-foreground text-sm">
                             {member.package ? `${member.package.name} member (${member.package.pv} PV)` : 'Member'} since {member.joined}
                         </p>
@@ -267,7 +267,7 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                     {recent.length === 0 ? (
                         <p className="text-muted-foreground text-sm">Your bonuses will appear here as you earn them.</p>
                     ) : (
-                        <ul className="bg-card divide-y rounded-xl border">
+                        <ul className="bg-card shadow-soft divide-y rounded-xl border">
                             {recent.map((r) => (
                                 <li key={r.id} className="flex items-start justify-between gap-4 px-4 py-3 text-sm">
                                     <div className="min-w-0">

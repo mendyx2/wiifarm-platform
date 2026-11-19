@@ -5,9 +5,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { ProductImage } from '@/components/wf/product-image';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 type Editing = {
@@ -21,7 +22,52 @@ type Editing = {
     pv: string;
     units_per_pack: number;
     is_active: boolean;
+    image: string | null;
 };
+
+function ProductPhoto({ product }: { product: Editing }) {
+    const form = useForm<{ photo: File | null }>({ photo: null });
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        form.post(route('admin.products.photo', product.id), { preserveScroll: true, forceFormData: true, onSuccess: () => form.reset() });
+    };
+
+    return (
+        <Card className="py-0">
+            <CardContent className="grid gap-4 p-5 sm:grid-cols-[12rem_1fr] sm:items-start">
+                <ProductImage src={product.image} name={product.name} className="border" />
+                <form onSubmit={submit} className="grid gap-3">
+                    <div>
+                        <h2 className="font-semibold">Photo</h2>
+                        <p className="text-muted-foreground text-sm">
+                            Shown in the public shop and the members' shop. JPEG, PNG or WebP, up to 3 MB.
+                        </p>
+                    </div>
+                    <Input
+                        id="photo"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={(e) => form.setData('photo', e.target.files?.[0] ?? null)}
+                    />
+                    <InputError message={form.errors.photo} />
+                    <div className="flex flex-wrap gap-2">
+                        <Button disabled={!form.data.photo || form.processing}>{product.image ? 'Replace the photo' : 'Upload the photo'}</Button>
+                        {product.image && (
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                className="text-destructive"
+                                onClick={() => router.delete(route('admin.products.photo.remove', product.id), { preserveScroll: true })}
+                            >
+                                Remove
+                            </Button>
+                        )}
+                    </div>
+                </form>
+            </CardContent>
+        </Card>
+    );
+}
 
 export default function ProductForm({ product, manufacturers }: { product: Editing | null; manufacturers: { id: number; name: string }[] }) {
     const isNew = product === null;
@@ -114,6 +160,11 @@ export default function ProductForm({ product, manufacturers }: { product: Editi
                     </CardContent>
                 </Card>
             </form>
+            {!isNew && (
+                <div className="max-w-3xl px-4 pb-4">
+                    <ProductPhoto product={product} />
+                </div>
+            )}
         </AdminLayout>
     );
 }

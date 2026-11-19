@@ -62,7 +62,7 @@ export default function EPins({
                     person it is for: they enter it on their “My package” page after signing up.
                 </p>
                 {canBuy ? (
-                    <form onSubmit={submit} className="bg-card grid max-w-xl gap-4 rounded-xl border p-4 sm:grid-cols-[2fr_1fr]">
+                    <form onSubmit={submit} className="bg-card shadow-soft grid max-w-xl gap-4 rounded-xl border p-4 sm:grid-cols-[2fr_1fr]">
                         <FormField id="p-package" label="Package" error={form.errors.package_id}>
                             <select
                                 id="p-package"

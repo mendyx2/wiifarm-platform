@@ -10,6 +10,7 @@ use App\Services\Admin\Audit;
 use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -27,6 +28,7 @@ class ProductController extends Controller
                 'member_price' => $p->member_price, 'public_price' => $p->public_price, 'pv' => $p->pv,
                 'units_per_pack' => $p->units_per_pack, 'is_active' => $p->is_active,
                 'is_pack_product' => $p->sku === config('wiifarm.registration_product_sku'),
+                'image' => $p->imageUrl(),
             ]),
         ]);
     }
@@ -55,6 +57,7 @@ class ProductController extends Controller
                 'public_price' => number_format($product->public_price / 100, 2, '.', ''),
                 'pv' => number_format($product->pv / 100, 2, '.', ''),
                 'units_per_pack' => $product->units_per_pack, 'is_active' => $product->is_active,
+                'image' => $product->imageUrl(),
             ],
             'manufacturers' => $this->manufacturers(),
         ]);
@@ -72,6 +75,34 @@ class ProductController extends Controller
         }
 
         return back()->with('status', 'Product saved. New prices apply to orders from now on.');
+    }
+
+    /** A photo for the shop: JPEG, PNG or WebP, up to 3 MB. It replaces any earlier photo. */
+    public function photo(Request $request, Product $product, Audit $audit): RedirectResponse
+    {
+        $request->validate(['photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072', 'dimensions:min_width=200,min_height=200']], [
+            'photo.dimensions' => 'Use a photo at least 200 pixels wide and high.',
+        ]);
+        $old = $product->image_path;
+        $path = $request->file('photo')->store('products', 'public');
+        $product->forceFill(['image_path' => $path])->save();
+        if ($old) {
+            Storage::disk('public')->delete($old);
+        }
+        $audit->record($this->admin($request), 'products.photo', $product, ['image_path' => $old], ['image_path' => $path]);
+
+        return back()->with('status', 'Photo saved. It shows in the shop now.');
+    }
+
+    public function removePhoto(Request $request, Product $product, Audit $audit): RedirectResponse
+    {
+        if ($product->image_path) {
+            Storage::disk('public')->delete($product->image_path);
+            $audit->record($this->admin($request), 'products.photo', $product, ['image_path' => $product->image_path], ['image_path' => null]);
+            $product->forceFill(['image_path' => null])->save();
+        }
+
+        return back()->with('status', 'Photo removed.');
     }
 
     /** @return array<string, mixed> */

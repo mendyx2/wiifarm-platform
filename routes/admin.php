@@ -69,6 +69,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('products', [ProductController::class, 'store'])->name('products.store');
             Route::get('products/{product}', [ProductController::class, 'edit'])->name('products.edit');
             Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+            Route::post('products/{product}/photo', [ProductController::class, 'photo'])->name('products.photo');
+            Route::delete('products/{product}/photo', [ProductController::class, 'removePhoto'])->name('products.photo.remove');
         });
 
         // Withdrawals

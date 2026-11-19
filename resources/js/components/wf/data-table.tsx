@@ -25,7 +25,7 @@ export function DataTable<Row>({ columns, rows, rowKey, emptyTitle = 'Nothing he
     }
 
     return (
-        <div className="overflow-x-auto rounded-lg border">
+        <div className="bg-card shadow-soft overflow-x-auto rounded-xl border">
             <table className="w-full text-sm">
                 <thead className="bg-muted/60 text-muted-foreground">
                     <tr>

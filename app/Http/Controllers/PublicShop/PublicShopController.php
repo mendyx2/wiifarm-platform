@@ -46,7 +46,7 @@ class PublicShopController extends Controller
 
         return Inertia::render('public/shop', [
             'products' => Product::where('is_active', true)->orderBy('name')->get()->map(fn (Product $p) => [
-                'id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->public_price,
+                'id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->public_price, 'image' => $p->imageUrl(),
             ]),
             'referredBy' => $affiliate?->name(),
             'online' => $paystack->configured(),
