@@ -7,8 +7,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-sans:
-        'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -86,95 +85,98 @@
 }
 
 /*
-  Wiifarm design tokens. Green for growth and the cooperative, a harvest gold
-  accent, warm neutral greys. Every colour in the app comes from these names,
-  so the whole look can change here in one place.
+  Wiifarm design tokens: "Leaf & Kraft" (chosen by the owner, 19 November
+  2026). The logo's leaf green and its darker green, on a warm cream like the
+  VitaActive kraft packaging, with wheat-gold highlights. Every colour in the
+  app comes from these names, so the whole look changes here in one place.
+  Text colours meet WCAG AA contrast (4.5:1) on the backgrounds they sit on.
 */
 :root {
-    --background: hsl(90, 20%, 98%);
-    --foreground: hsl(120, 20%, 12%);
-    --card: hsl(0, 0%, 100%);
-    --card-foreground: hsl(120, 20%, 12%);
-    --popover: hsl(0, 0%, 100%);
-    --popover-foreground: hsl(120, 20%, 12%);
-    --primary: hsl(123, 46%, 34%);
+    --background: hsl(40, 36%, 94%);
+    --foreground: hsl(140, 28%, 11%);
+    --card: hsl(42, 60%, 99%);
+    --card-foreground: hsl(140, 28%, 11%);
+    --popover: hsl(42, 60%, 99%);
+    --popover-foreground: hsl(140, 28%, 11%);
+    --primary: hsl(140, 64%, 28%);
     --primary-foreground: hsl(0, 0%, 100%);
-    --secondary: hsl(100, 18%, 93%);
-    --secondary-foreground: hsl(120, 20%, 14%);
-    --muted: hsl(90, 14%, 95%);
-    --muted-foreground: hsl(110, 8%, 38%);
-    --accent: hsl(39, 55%, 94%);
-    --accent-foreground: hsl(32, 60%, 28%);
-    --destructive: hsl(0, 70%, 48%);
+    --secondary: hsl(38, 32%, 89%);
+    --secondary-foreground: hsl(140, 28%, 13%);
+    --muted: hsl(38, 30%, 91%);
+    --muted-foreground: hsl(30, 12%, 34%);
+    --accent: hsl(38, 72%, 89%);
+    --accent-foreground: hsl(30, 66%, 25%);
+    --destructive: hsl(2, 68%, 44%);
     --destructive-foreground: hsl(0, 0%, 100%);
-    --success: hsl(123, 46%, 34%);
-    --success-soft: hsl(120, 40%, 93%);
-    --warning: hsl(32, 85%, 38%);
-    --warning-soft: hsl(40, 90%, 93%);
-    --info: hsl(205, 70%, 38%);
-    --info-soft: hsl(205, 75%, 94%);
-    --danger-soft: hsl(0, 80%, 95%);
-    --gold: hsl(37, 56%, 51%);
-    --border: hsl(95, 12%, 87%);
-    --input: hsl(95, 12%, 82%);
-    --ring: hsl(123, 46%, 34%);
-    --chart-1: hsl(123, 46%, 34%);
-    --chart-2: hsl(37, 56%, 51%);
-    --chart-3: hsl(205, 70%, 42%);
-    --chart-4: hsl(14, 70%, 50%);
+    --success: hsl(140, 64%, 28%);
+    --success-soft: hsl(130, 45%, 90%);
+    --warning: hsl(30, 80%, 34%);
+    --warning-soft: hsl(38, 85%, 90%);
+    --info: hsl(205, 70%, 34%);
+    --info-soft: hsl(205, 70%, 93%);
+    --danger-soft: hsl(4, 75%, 93%);
+    --gold: hsl(36, 62%, 48%);
+    --border: hsl(36, 24%, 83%);
+    --input: hsl(36, 20%, 77%);
+    --ring: hsl(140, 64%, 28%);
+    --chart-1: hsl(140, 64%, 28%);
+    --chart-2: hsl(36, 62%, 48%);
+    --chart-3: hsl(205, 70%, 40%);
+    --chart-4: hsl(14, 70%, 48%);
     --chart-5: hsl(270, 40%, 50%);
     --radius: 0.625rem;
-    --sidebar-background: hsl(123, 30%, 16%);
-    --sidebar-foreground: hsl(100, 20%, 88%);
-    --sidebar-primary: hsl(37, 56%, 51%);
-    --sidebar-primary-foreground: hsl(120, 30%, 10%);
-    --sidebar-accent: hsl(123, 28%, 22%);
+    --sidebar-background: hsl(142, 55%, 14%);
+    --sidebar-foreground: hsl(40, 40%, 90%);
+    --sidebar-primary: hsl(40, 72%, 60%);
+    --sidebar-primary-foreground: hsl(142, 55%, 10%);
+    --sidebar-accent: hsl(142, 46%, 20%);
     --sidebar-accent-foreground: hsl(0, 0%, 100%);
-    --sidebar-border: hsl(123, 24%, 24%);
-    --sidebar-ring: hsl(37, 56%, 51%);
+    --sidebar-border: hsl(142, 40%, 20%);
+    --sidebar-ring: hsl(40, 72%, 60%);
 }
 
+/* Dark mode: the same green and wheat gold, on a deep green-brown night. */
 .dark {
-    --background: hsl(120, 18%, 7%);
-    --foreground: hsl(100, 15%, 92%);
-    --card: hsl(120, 16%, 10%);
-    --card-foreground: hsl(100, 15%, 92%);
-    --popover: hsl(120, 16%, 10%);
-    --popover-foreground: hsl(100, 15%, 92%);
-    --primary: hsl(122, 39%, 58%);
-    --primary-foreground: hsl(120, 30%, 8%);
-    --secondary: hsl(120, 12%, 16%);
-    --secondary-foreground: hsl(100, 15%, 92%);
-    --muted: hsl(120, 12%, 14%);
-    --muted-foreground: hsl(100, 8%, 64%);
-    --accent: hsl(37, 30%, 18%);
-    --accent-foreground: hsl(39, 70%, 75%);
-    --destructive: hsl(0, 70%, 58%);
-    --destructive-foreground: hsl(0, 0%, 100%);
-    --success: hsl(122, 39%, 58%);
-    --success-soft: hsl(122, 30%, 15%);
+    --background: hsl(140, 20%, 7%);
+    --foreground: hsl(40, 30%, 92%);
+    --card: hsl(140, 16%, 10%);
+    --card-foreground: hsl(40, 30%, 92%);
+    --popover: hsl(140, 16%, 10%);
+    --popover-foreground: hsl(40, 30%, 92%);
+    --primary: hsl(138, 48%, 52%);
+    --primary-foreground: hsl(142, 55%, 8%);
+    --secondary: hsl(140, 12%, 16%);
+    --secondary-foreground: hsl(40, 30%, 92%);
+    --muted: hsl(140, 12%, 14%);
+    --muted-foreground: hsl(38, 14%, 68%);
+    --accent: hsl(36, 32%, 18%);
+    --accent-foreground: hsl(40, 72%, 74%);
+    --destructive: hsl(2, 75%, 66%);
+    --destructive-foreground: hsl(2, 60%, 8%);
+    --success: hsl(138, 48%, 56%);
+    --success-soft: hsl(138, 30%, 15%);
     --warning: hsl(38, 85%, 62%);
     --warning-soft: hsl(38, 50%, 15%);
-    --info: hsl(205, 75%, 65%);
+    --info: hsl(205, 75%, 66%);
     --info-soft: hsl(205, 45%, 16%);
-    --danger-soft: hsl(0, 45%, 17%);
-    --gold: hsl(39, 70%, 62%);
-    --border: hsl(120, 12%, 18%);
-    --input: hsl(120, 12%, 22%);
-    --ring: hsl(122, 39%, 58%);
-    --chart-1: hsl(122, 39%, 58%);
-    --chart-2: hsl(39, 70%, 62%);
-    --chart-3: hsl(205, 75%, 65%);
+    --danger-soft: hsl(2, 45%, 17%);
+    --gold: hsl(40, 72%, 62%);
+    --border: hsl(140, 12%, 19%);
+    --input: hsl(140, 12%, 23%);
+    --ring: hsl(138, 48%, 52%);
+    --chart-1: hsl(138, 48%, 52%);
+    --chart-2: hsl(40, 72%, 62%);
+    --chart-3: hsl(205, 75%, 66%);
     --chart-4: hsl(14, 75%, 62%);
     --chart-5: hsl(270, 50%, 70%);
-    --sidebar-background: hsl(120, 20%, 6%);
-    --sidebar-foreground: hsl(100, 15%, 85%);
-    --sidebar-primary: hsl(39, 70%, 62%);
-    --sidebar-primary-foreground: hsl(120, 30%, 8%);
-    --sidebar-accent: hsl(120, 14%, 13%);
+    --sidebar-background: hsl(142, 40%, 6%);
+    --sidebar-foreground: hsl(40, 30%, 86%);
+    --sidebar-primary: hsl(40, 72%, 62%);
+    --sidebar-primary-foreground: hsl(142, 55%, 8%);
+    --sidebar-accent: hsl(142, 30%, 13%);
     --sidebar-accent-foreground: hsl(0, 0%, 100%);
-    --sidebar-border: hsl(120, 12%, 14%);
-    --sidebar-ring: hsl(39, 70%, 62%);
+    --sidebar-border: hsl(142, 26%, 13%);
+    --sidebar-ring: hsl(40, 72%, 62%);
 }
 
 @layer base {

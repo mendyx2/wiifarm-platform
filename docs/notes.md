@@ -1704,3 +1704,42 @@ document's thresholds and the Revised Baseline Rules' repurchase schedule.
 **Next:** the rest of the Revised Baseline Rules (frozen matching for
 inactive members, real-time unilevel, leadership by rank, store stock), once
 the five questions in step 32 are answered.
+
+## Step 35: The "Leaf & Kraft" theme
+
+**What this is:** a new colour theme for the whole platform, chosen by the
+owner from three candidates on 19 November 2026.
+
+- **How it was chosen:** I restyled the running app with three palettes
+  taken from the brand in the owner's documents and screenshotted the same
+  four pages under each, next to the old look. The candidates were:
+    1. Forest & Champagne;
+    2. **Leaf & Kraft** (chosen);
+    3. Midnight & Gold.
+- **Leaf & Kraft:**
+    - the logo's leaf green for buttons and links;
+    - its darker green for the menu;
+    - a warm cream background, like the VitaActive kraft packaging;
+    - wheat-gold highlights;
+    - cream-white cards.
+- **Dark mode** has its own version: the same green and wheat gold on a
+  deep green-brown night.
+- **Easy to read:** every pair of text and background colour was measured
+  against the WCAG AA standard (4.5 to 1), in both light and dark mode.
+  Three colours were adjusted to pass:
+    - a warning shade;
+    - two reds in dark mode, so red buttons now have dark text.
+- **One place:** all the colours live in `resources/css/app.css`. Two spots
+  that had colours written into them directly now use the theme as well:
+    - the home page;
+    - the loading bar at the top of the screen.
+- **Checked in a browser:** the sign-in page, the home page, the shop, the
+  member dashboard, awards and package pages, and the admin awards page,
+  light and dark, and the dashboard on a phone.
+- **Tests:** 285 pass. Nothing else changed.
+
+Possible next steps for a more premium feel, if wanted:
+
+- the real product photos in the shop;
+- a heading typeface with more character;
+- softer card shadows.

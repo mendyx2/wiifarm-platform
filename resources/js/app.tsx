@@ -21,7 +21,7 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: '#4B5563',
+        color: '#1A7538', // the brand's leaf green (--primary)
     },
 });
 
