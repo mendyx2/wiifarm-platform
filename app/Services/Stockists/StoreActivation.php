@@ -18,8 +18,10 @@ use InvalidArgumentException;
  * Activating a store once its deposit is received (specification section 9).
  * In one step, once only:
  *
- *  - the deposit is split: 8% (Sub) or 6.5% (Mega) to Pool D, the rest to the
- *    manufacturing company for the products the store receives;
+ *  - the deposit is split: half to the manufacturing company for the
+ *    products the store receives (₦750 of every ₦1,500); from the other half,
+ *    8% (Sub) or 6.5% (Mega) of the deposit for the stockist sponsor bonus,
+ *    and the rest to Pool D's contingency fund;
  *  - the stockist sponsor bonus goes to 10 generations, starting with the
  *    store's sponsor. A share with nobody to receive it stays in Pool D's
  *    contingency fund;

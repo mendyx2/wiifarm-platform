@@ -16,7 +16,7 @@ use Tests\Feature\Network\NetworkTestCase;
 
 /**
  * The leadership bonus (specification section 5.7): 5% of the team's
- * matching for the month, to members with 480,000 repurchase PV.
+ * matching for the month, to members with 480,000 PV on the lesser leg.
  */
 class LeadershipTest extends NetworkTestCase
 {
@@ -31,15 +31,18 @@ class LeadershipTest extends NetworkTestCase
         $this->month = CarbonImmutable::now('Africa/Lagos')->format('Y-m');
     }
 
-    private function repurchasePv(User $member, int $wholePv): void
+    /** Lifetime PV on each leg, put straight on the member's leg accounts (a test shortcut for a big network). */
+    private function legs(User $member, int $left, int $right): void
     {
-        $this->ledger->transfer($this->ledger->systemAccount('pv.issued'), $this->ledger->repurchasePvAccount($member), $wholePv * 100, 'test.pv', 'test:rpv:'.$member->id.':'.$wholePv);
+        foreach (['L' => $left, 'R' => $right] as $leg => $wholePv) {
+            $this->ledger->transfer($this->ledger->systemAccount('pv.issued'), $this->ledger->pvAccount($member, $leg, 'lifetime'), $wholePv * 100, 'test.pv', "test:legs:{$member->id}:{$leg}");
+        }
     }
 
-    private function leader(string $name = 'the_leader', int $wholePv = 480_000): User
+    private function leader(string $name = 'the_leader', int $lesserLeg = 480_000): User
     {
         $leader = $this->join($name);
-        $this->repurchasePv($leader, $wholePv);
+        $this->legs($leader, 1_000_000, $lesserLeg);   // any amount on the other leg; the lesser leg decides
 
         return $leader;
     }
@@ -109,9 +112,9 @@ class LeadershipTest extends NetworkTestCase
         $this->assertSame('sponsor chain, no limit', LeadershipRun::sole()->team_rule);
     }
 
-    public function test_only_active_members_with_480000_repurchase_pv_qualify()
+    public function test_only_active_members_with_480000_pv_on_the_lesser_leg_qualify()
     {
-        $nearly = $this->leader('nearly_there', 479_999);
+        $nearly = $this->leader('nearly_there', 479_900);   // 1,000,000 PV on the other leg does not help (the later sign-ups below it add 15 PV each)
         $banned = $this->leader('banned_leader');
         $banned->forceFill(['status' => User::STATUS_BANNED])->save();
         $quiet = $this->leader('quiet_leader');                  // qualifies, but the team earned nothing
@@ -168,6 +171,6 @@ class LeadershipTest extends NetworkTestCase
         $this->get('/admin/leadership')->assertForbidden();
 
         $this->actingAs($leader)->get('/dashboard')->assertInertia(fn ($page) => $page
-            ->where('leadership.pv', 48_000_000)->where('leadership.needed', 48_000_000)->where('leadership.last.amount', 5_000));
+            ->where('leadership.pv', 48_000_000)->where('leadership.needed', 48_000_000)->where('leadership.last.amount', 5_000));   // the lesser leg
     }
 }

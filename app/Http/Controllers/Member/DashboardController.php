@@ -63,13 +63,13 @@ class DashboardController extends Controller
             ] : null,
             // This month's monthly purchase: it lifts the autoship hold and keeps the unilevel bonus (when those rules are on).
             'autoship' => Settings::get('matching.autoship_hold') || Settings::get('unilevel.activity_required') ? [
-                'bought' => $this->boughtThisMonth($ledger, $member),
+                'bought' => app(MonthlyActivity::class)->creditFor($member, MonthlyActivity::monthOf(CarbonImmutable::now())),
                 'needed' => MonthlyActivity::requiredPv(),
                 'hold' => (bool) Settings::get('matching.autoship_hold'),
                 'unilevel' => (bool) Settings::get('unilevel.activity_required'),
             ] : null,
             'leadership' => [
-                'pv' => $ledger->balance($ledger->repurchasePvAccount($member)),
+                'pv' => min(($pvLegs = $ledger->pvBalances($member))['L']['lifetime'], $pvLegs['R']['lifetime']),   // the lesser leg
                 'needed' => (int) config('compensation.leadership.qualifying_pv'),
                 'last' => ($l = LeadershipPayout::with('run:id,month')->where('user_id', $member->id)->latest('id')->first())
                     ? ['month' => $l->run->month, 'amount' => $l->amount, 'status' => $l->currentStatus()] : null,
@@ -82,14 +82,5 @@ class DashboardController extends Controller
                     'wallet' => config('ledger.member_wallets')[$e->account->kind] ?? $e->account->kind, 'memo' => $e->transaction->memo,
                 ]),
         ]);
-    }
-
-    /** Product PV the member bought this calendar month (Lagos time), in hundredths. */
-    private function boughtThisMonth(Ledger $ledger, User $member): int
-    {
-        $now = CarbonImmutable::now(config('wiifarm.business_timezone'));
-
-        return (int) Entry::where('account_id', $ledger->repurchasePvAccount($member)->id)->where('amount', '>', 0)
-            ->whereBetween('created_at', [$now->startOfMonth()->utc(), $now->endOfMonth()->utc()])->sum('amount');
     }
 }

@@ -78,12 +78,13 @@ class StockistsTest extends NetworkTestCase
         $store = $this->activeStore($owner, Store::MEGA);
 
         $this->assertSame(Store::ACTIVE, $store->status);
-        // 6.5% of ₦10M to Pool D; the rest is the manufacturer's, for the store's products.
-        $this->assertSame(935_000_000, $this->ledger->balance($this->ledger->manufacturerAccount(Manufacturer::firstOrFail())) - $makerBefore);
+        // Half (₦5M) to the manufacturing company for the store's products; the sponsor bonus (6.5%, ₦650,000) from the other half.
+        $this->assertSame(500_000_000, $this->ledger->balance($this->ledger->manufacturerAccount(Manufacturer::firstOrFail())) - $makerBefore);
         $this->assertSame(15_000_000, $this->ledger->balances($s1)['bonus.stockist_sponsor']);  // ₦150,000
         $this->assertSame(10_000_000, $this->ledger->balances($s2)['bonus.stockist_sponsor']);  // ₦100,000
-        // Generation 3 is the company account and 4 to 10 do not exist: ₦400,000 stays in Pool D's contingency fund.
-        $this->assertSame(40_000_000, $this->pool('D', 'contingency'));
+        // The rest of the cooperative's half (₦5M − ₦650,000 = ₦4,350,000) stays in Pool D's contingency fund, and so does
+        // the ₦400,000 nobody could receive (generation 3 is the company account; 4 to 10 do not exist).
+        $this->assertSame(435_000_000 + 40_000_000, $this->pool('D', 'contingency'));
         $this->assertSame(0, $this->pool('D', 'sponsor_bonus'));
         $this->assertDatabaseHas('audit_logs', ['action' => 'stockists.activate', 'subject_id' => $store->id]);
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();

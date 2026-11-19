@@ -37,11 +37,20 @@ class Unilevel
 {
     public const GENERATIONS = 15;
 
-    public function __construct(private readonly Ledger $ledger, private readonly PoolPayouts $payouts) {}
+    public function __construct(private readonly Ledger $ledger, private readonly PoolPayouts $payouts, private readonly MonthlyActivity $activity) {}
 
+    /**
+     * The latest month whose autoship can no longer be made: the month before
+     * last until the first week of this month has passed (so a month's
+     * autoship made in that week still counts for its unilevel).
+     */
     public static function lastClosedMonth(): string
     {
-        return Leadership::lastClosedMonth();
+        $last = Leadership::lastClosedMonth();
+
+        return CarbonImmutable::now()->lessThan(MonthlyActivity::graceEnds($last))
+            ? CarbonImmutable::createFromFormat('Y-m-d', $last.'-01')->subMonth()->format('Y-m')
+            : $last;
     }
 
     public function run(string $month): UnilevelRun
@@ -53,7 +62,7 @@ class Unilevel
         }
 
         $bought = $this->boughtIn($month);
-        [$earnings, $unpaid] = $this->shares($bought, $run->activity_required);
+        [$earnings, $unpaid] = $this->shares($bought, $run->activity_required, $month);
 
         foreach ($earnings as $userId => $byGeneration) {
             $this->payMember($run, $userId, $byGeneration);
@@ -102,13 +111,13 @@ class Unilevel
      * @param  array<int, int>  $bought
      * @return array{0: array<int, array<int, int>>, 1: int}
      */
-    private function shares(array $bought, bool $activityRequired): array
+    private function shares(array $bought, bool $activityRequired, string $month): array
     {
         $rates = config('compensation.unilevel');
         $members = $this->chainMembers(array_keys($bought));
         $depth = Package::pluck('unilevel_generations', 'id')->map(fn ($v) => (int) $v)->all();
         $company = User::company()?->id;
-        $active = fn (int $id) => ! $activityRequired || ($bought[$id] ?? 0) >= MonthlyActivity::requiredPv();
+        $active = fn (int $id) => ! $activityRequired || $this->activity->fulfilled(User::findOrFail($id), $month);
 
         $earnings = [];
         $unpaid = 0;

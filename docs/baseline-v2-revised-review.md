@@ -103,8 +103,16 @@ Nothing below is built yet except the 15-generation unilevel (notes step 31).
 | Step | What | Waits for |
 | --- | --- | --- |
 | 1 | Schedule version 2 (indirect 17.99%); the 10.5 PV setting | Done (notes step 33) |
-| 2 | Frozen matching for inactive members; the autoship hold switched off or removed | questions 1 and 2 |
+| 2 | ~~Frozen matching~~: replaced by the autoship hold, released or kept (owner's answers, 19 November) | Done (notes step 38) |
 | 3 | Unilevel in real time on each repurchase | question 3 |
 | 4 | Awards: rank detection with the PDF's thresholds and conditions, admin approval, cash or gift, UCB; repurchase awards with the incremental rule; both held when their pools are short | Done (notes step 34) |
-| 5 | Leadership qualified by rank | step 4, question 5 |
-| 6 | Store opening stock | question 4 |
+| 5 | Leadership on 480,000 PV on the lesser leg | Done (notes step 38) |
+| 6 | Store deposit: half to the manufacturer, the bonus from the other half | Done (notes step 38) |
+
+## The owner's answers (19 November 2026, after speaking with a leader)
+
+1. **No freezing.** The 10.5 PV is a check for fulfilment: 20% of daily matching is held until the month's autoship is made, then released; the previous month's autoship can be made in the first week of the next month; if it is not made, the system keeps the 20%. (Questions 1 and 2.)
+2. **Stores.** Products are supplied at their ₦750 face value; the 8% / 6.5% sponsor bonus is deducted from the other half of the ₦3M / ₦10M. (Question 4.)
+3. **Leadership.** 480,000 PV on the lesser leg is enough. (Question 5.)
+
+Question 3 (whether an upline needs their own 10.5 PV for unilevel) was not answered; it stays an admin switch, on (decision 4). The unilevel bonus stays monthly; paying it at the moment of each purchase (change 5 above) waits for that answer.

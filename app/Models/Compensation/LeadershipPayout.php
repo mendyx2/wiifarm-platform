@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $leadership_run_id
  * @property int $user_id
- * @property int $repurchase_pv
+ * @property int $lesser_leg_pv
  * @property int $team_members
  * @property int $team_matching
  * @property int $amount
@@ -32,7 +32,7 @@ class LeadershipPayout extends Model
 
     protected function casts(): array
     {
-        return ['repurchase_pv' => 'integer', 'team_members' => 'integer', 'team_matching' => 'integer', 'amount' => 'integer'];
+        return ['lesser_leg_pv' => 'integer', 'team_members' => 'integer', 'team_matching' => 'integer', 'amount' => 'integer'];
     }
 
     /** Paid, held, or nothing to pay; a held payout is paid later, when the line refills. */

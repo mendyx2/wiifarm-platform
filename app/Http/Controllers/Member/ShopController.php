@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
+use App\Services\Compensation\Autoship;
 use App\Services\Ledger\InsufficientFunds;
 use App\Services\Ledger\Ledger;
 use App\Services\Shop\Orders;
@@ -46,6 +47,9 @@ class ShopController extends Controller
         } catch (InvalidArgumentException $e) {
             return back()->withErrors(['quantities' => $e->getMessage()]);
         }
+
+        // A purchase may complete this month's (or, in the first week, last month's) autoship: release what was held.
+        app(Autoship::class)->settle($request->user());
 
         return to_route('orders.index')->with('status', "Order {$order->number} is paid. Show its pickup code at any stockist to collect it.");
     }

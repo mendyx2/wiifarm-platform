@@ -17,8 +17,8 @@ return [
     // (the plan's unilevel table; owner, 19 November 2026). 40% in all.
     'unilevel' => ['7.00', '5.00', '4.00', '4.00', '3.00', '3.00', '3.00', '2.00', '2.00', '2.00', '1.00', '1.00', '1.00', '1.00', '1.00'],
 
-    // Leadership (5.7): a leader has this much repurchase PV (hundredths:
-    // 480,000 PV), and earns this share of what their team earns from matching.
+    // Leadership (5.7): a leader has this much lifetime PV on their lesser leg
+    // (hundredths: 480,000 PV), and earns this share of their team's matching.
     'leadership' => ['qualifying_pv' => 48_000_000, 'share' => '5.00'],
     'upgrade' => ['25.00', '2.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00'],
 ];

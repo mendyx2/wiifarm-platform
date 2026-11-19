@@ -17,8 +17,10 @@ use Illuminate\Support\Facades\DB;
  * The leadership bonus (specification section 5.7), paid once a month for
  * the month just ended.
  *
- *  - A leader is a member with 480,000 PV on their repurchase PV log by the
- *    end of the month (Blueprint V3).
+ *  - A leader is a member with 480,000 PV of lifetime PV on their lesser leg
+ *    by the end of the month: the Executive Ambassador level. The other leg
+ *    can hold any amount; only the lesser leg counts (the owner, after
+ *    speaking with a leader, 19 November 2026).
  *  - They earn 5% of what their team earned from the matching bonus that
  *    month, from the registration ledger's leadership line (Pool A). When
  *    the line and its contingency fund are short, it is held until they
@@ -79,8 +81,8 @@ class Leadership
     }
 
     /**
-     * Members whose repurchase PV reached the leadership level by the end of
-     * the month: user id => PV in hundredths.
+     * Members whose lesser leg held the leadership level of lifetime PV by
+     * the end of the month: user id => their lesser leg's PV, in hundredths.
      *
      * @return array<int, int>
      */
@@ -88,13 +90,15 @@ class Leadership
     {
         return DB::table('ledger_entries')
             ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
-            ->where('ledger_accounts.kind', 'pv.repurchase')
+            ->whereIn('ledger_accounts.kind', ['pv.L.lifetime', 'pv.R.lifetime'])
             ->where('ledger_entries.created_at', '<=', $end->utc())
-            ->groupBy('ledger_accounts.user_id')
+            ->groupBy('ledger_accounts.user_id', 'ledger_accounts.kind')
             ->havingRaw('SUM(ledger_entries.amount) >= ?', [config('compensation.leadership.qualifying_pv')])
-            ->orderBy('ledger_accounts.user_id')
             ->selectRaw('ledger_accounts.user_id as user_id, SUM(ledger_entries.amount) as pv')
-            ->pluck('pv', 'user_id')->map(fn ($v) => (int) $v)->all();
+            ->get()->groupBy('user_id')
+            ->filter(fn ($legs) => $legs->count() === 2)   // both legs at the level: the lesser one is
+            ->map(fn ($legs) => (int) $legs->min('pv'))
+            ->sortKeys()->all();
     }
 
     private function payLeader(LeadershipRun $run, User $leader, int $pv, CarbonImmutable $start, CarbonImmutable $end): void
@@ -108,7 +112,7 @@ class Leadership
             $amount = Money::share($matching, config('compensation.leadership.share'));
 
             $line = LeadershipPayout::create([
-                'leadership_run_id' => $run->id, 'user_id' => $leader->id, 'repurchase_pv' => $pv,
+                'leadership_run_id' => $run->id, 'user_id' => $leader->id, 'lesser_leg_pv' => $pv,
                 'team_members' => $members, 'team_matching' => $matching, 'amount' => $amount,
                 'status' => $amount > 0 ? LeadershipPayout::PAID : LeadershipPayout::NONE,
             ]);

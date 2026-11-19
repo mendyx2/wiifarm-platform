@@ -20,8 +20,8 @@ export default function LeadershipRuns({ runs, rule, qualifyingPv }: { runs: Pag
             <Head title="Leadership" />
             <div className="space-y-4 p-4">
                 <p className="text-muted-foreground max-w-3xl text-sm">
-                    On the first day of each month, every member with {pv(qualifyingPv)} PV on their repurchase PV log earns 5% of what their team
-                    earned from matching in the month just ended, from the registration ledger’s leadership line. The team is counted through the{' '}
+                    On the first day of each month, every member with {pv(qualifyingPv)} PV on their lesser leg earns 5% of what their team earned
+                    from matching in the month just ended, from the registration ledger’s leadership line. The team is counted through the{' '}
                     <span className="text-foreground font-medium">{rule}</span>; this is a setting until the board decides (Settings page).
                 </p>
                 <DataTable

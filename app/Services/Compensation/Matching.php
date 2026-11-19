@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Matching
 {
-    public function __construct(private readonly Ledger $ledger, private readonly PoolPayouts $payouts) {}
+    public function __construct(private readonly Ledger $ledger, private readonly PoolPayouts $payouts, private readonly MonthlyActivity $activity) {}
 
     /** The business day that ended most recently (yesterday, Lagos time). */
     public static function lastClosedDay(): CarbonImmutable
@@ -143,21 +143,15 @@ class Matching
         });
     }
 
-    /** The share of a matching bonus held for autoship: none once the member has made this month's purchase. */
+    /**
+     * The share of a matching bonus held until the month's autoship (5.6):
+     * none once the member has made it. What is held is released when they
+     * make it, or kept by the cooperative after the next month's first week
+     * (the Autoship service).
+     */
     private function autoshipShare(User $member, CarbonImmutable $day, int $amount): int
     {
-        if (! Settings::get('matching.autoship_hold')) {
-            return 0;
-        }
-
-        $from = $day->startOfMonth()->utc();
-        $to = $day->endOfMonth()->utc();
-        $bought = (int) Entry::where('account_id', $this->ledger->repurchasePvAccount($member)->id)
-            ->where('amount', '>', 0)
-            ->whereBetween('created_at', [$from, $to])
-            ->sum('amount');
-
-        if ($bought >= MonthlyActivity::requiredPv()) {
+        if (! Settings::get('matching.autoship_hold') || $this->activity->fulfilled($member, $day->format('Y-m'))) {
             return 0;
         }
 

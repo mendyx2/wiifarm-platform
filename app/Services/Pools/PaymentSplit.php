@@ -70,15 +70,24 @@ class PaymentSplit
     }
 
     /**
-     * A store's activation deposit (section 9): 8% (Sub) or 6.5% (Mega) to
-     * Pool D for the stockist sponsor bonus; the rest is the manufacturer's,
-     * for the products the store receives.
+     * A store's activation deposit (section 9). The store receives products
+     * for the whole deposit; like any sale, half pays the manufacturing
+     * company for them (₦750 of every ₦1,500). The stockist sponsor bonus
+     * (8% of a Sub store's deposit, 6.5% of a Mega store's) comes out of the
+     * other half, and what is left of that half stays with the cooperative
+     * in Pool D's contingency fund (the owner, after speaking with a leader,
+     * 19 November 2026).
      */
     public function activation(int $deposit, string $storeKind, Manufacturer $manufacturer, string $key, ?Model $subject = null): Transaction
     {
-        $pool = Money::share($deposit, $this->schedule()->rates['activation'][$storeKind]);
+        $rates = $this->schedule()->rates;
+        $halves = Money::allocate($deposit, $rates['member_split'], 'cooperative');
+        $bonus = Money::share($deposit, $rates['activation'][$storeKind]);
 
-        return $this->post('split.activation', $key, $deposit, $manufacturer, $deposit - $pool, ['D.sponsor_bonus' => $pool], $subject);
+        return $this->post('split.activation', $key, $deposit, $manufacturer, $halves['manufacturer'], [
+            'D.sponsor_bonus' => $bonus,
+            'D.contingency' => $halves['cooperative'] - $bonus,
+        ], $subject);
     }
 
     private function member(string $kind, int $amount, Manufacturer $manufacturer, string $key, ?Model $subject): Transaction

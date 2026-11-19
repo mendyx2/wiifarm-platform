@@ -1810,3 +1810,81 @@ The owner asked for something simple: no extra command on the server.
 - `public/uploads` is left out of git, like other uploaded files.
 - Checked: the tests pass (287), and with the old link removed, the shop's
   photos still load.
+
+## Step 38: The leader's answers: autoship, stores and leadership
+
+The owner spoke with one of the leaders and passed on their answers to the
+questions in step 32. Three changes follow.
+
+**1. Autoship: a hold, never a freeze** (specification 5.6)
+
+- Every member is matched as usual; nobody's volume is frozen.
+- Until a member makes the month's autoship (10.5 PV of products), 20% of
+  each matching bonus they earn that month is **held** in their autoship
+  wallet, now called "Matching held until autoship". It cannot be spent or
+  withdrawn.
+- **Released:** as soon as they make the month's autoship, that month's held
+  amount moves to their matching bonus wallet. This happens straight after
+  they buy in the shop, and the check also runs every night.
+- **The first week:** the leader said the system "calls for the previous
+  month's autoship in the first week of the current month". So a month's
+  autoship can still be made in the first 7 days of the next month.
+    - A purchase in those days goes first to the previous month, if it was
+      short, and only the rest counts for the new month. One purchase never
+      covers two months.
+    - It only goes back to a month the member already belonged to: a
+      brand-new member's first purchase counts for their first month. A test
+      caught my first version getting that wrong.
+- **Kept:** if the first week ends without the month's autoship, the
+  cooperative keeps that month's held amount, in Pool A's contingency fund
+  (where the matching money came from).
+- Every release and keep is recorded once, with its month. A held share that
+  is paid late (after its pool refilled) is settled the same way.
+- **Unilevel** uses the same monthly check, so it now runs after the first
+  week of the month, once last month's autoship can no longer be made.
+- **The dashboard** says the 20% is "held, and released to you as soon as
+  you do", and the card is now "Held until autoship", with the deadline.
+- This settles decisions 7 (the hold stays) and 30 (what happens to unused
+  autoship money).
+
+**2. Store deposits** (specification section 9)
+
+- A store's ₦3M or ₦10M deposit buys its products at their face value. Like
+  any sale, half goes to the manufacturing company (₦750 of every ₦1,500).
+- The stockist sponsor bonus (8% of a Sub store's deposit, 6.5% of a Mega
+  store's) is paid from the other half, and the rest of that half stays with
+  the cooperative in Pool D's contingency fund.
+- For a ₦10M Mega store: ₦5M to the manufacturer, ₦650,000 for the sponsor
+  bonus, ₦4,350,000 to Pool D's contingency fund. Before, the manufacturer
+  received ₦9,350,000.
+- This settles decision 27.
+
+**3. Leadership bonus** (specification 5.7)
+
+- A leader qualifies with **480,000 PV on their lesser leg** (lifetime PV),
+  not 480,000 PV of repurchases. The other leg can hold any amount:
+  1,000,000 PV on the right and 479,999 on the left does not qualify.
+- The admin Leadership page and the dashboard card now show the lesser leg.
+
+**Tests:** 292 pass (5 new, for the autoship hold).
+
+- Released when the month's autoship is made, straight after the purchase.
+- Last month's autoship made in the first week, and not counted twice.
+- Kept by the cooperative once the first week has passed, and only once.
+- Nothing held once the month's autoship is made.
+- Unilevel waiting for the first week to end.
+- The leadership and store tests were updated for the new rules.
+
+Two faults in my new monthly calculation were caught by these tests before
+they shipped:
+
+- a month started at the current time of day, not midnight;
+- a member's first-week purchase could not reach back to their very first
+  month.
+
+**Still open:**
+
+- whether an upline needs their own 10.5 PV to earn unilevel (decision 4,
+  an admin switch, on), and so whether unilevel should be paid at the moment
+  of each purchase;
+- who counts as a leader's team (decision 3).

@@ -11,7 +11,7 @@ import { Head, Link } from '@inertiajs/react';
 type Run = { id: number; month: string; team_rule: string; leaders: number; amount: number; held: number };
 type Line = {
     id: number;
-    repurchase_pv: number;
+    lesser_leg_pv: number;
     team_members: number;
     team_matching: number;
     amount: number;
@@ -55,7 +55,7 @@ export default function LeadershipRun({ run, lines }: { run: Run; lines: Paginat
                             key: 'pv',
                             header: 'Repurchase PV',
                             align: 'right',
-                            cell: (l) => `${pv(l.repurchase_pv)} PV`,
+                            cell: (l) => `${pv(l.lesser_leg_pv)} PV`,
                             className: 'whitespace-nowrap',
                         },
                         { key: 'team', header: 'Team members', align: 'right', cell: (l) => l.team_members },

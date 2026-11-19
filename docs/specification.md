@@ -159,7 +159,7 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 - **PV used:** 50 PV per match is taken from each leg. **Everything left over carries forward** to the next days. Nothing is ever wiped.
 - **No sponsor is needed** on either leg. Only PV counts.
 - **Banned members:** they are not paid. Their pairing PV is left as it is.
-- **Autoship split:** if the member has not met this month's autoship (5.6), 80% goes to the matching wallet and 20% to the autoship wallet.
+- **Autoship hold:** if the member has not yet made this month's autoship (5.6), 80% goes to the matching wallet and 20% is held until they do.
 - **The run:** at 01:30 Lagos time it closes the day just ended, using the pairing PV each member holds at that moment (PV that arrives between midnight and the run counts that night). If a night is missed, the next run first closes the missed days one by one, each with its own cap, so nobody loses a day. A member is matched once per day, so a run started again pays nobody twice.
 - **When the line is short:** covered from Pool A's contingency fund; if that is short too, the payout is held and paid in full when money arrives, oldest first (section 7). The PV is used on the night either way: the payout is owed.
 - **The company account** earns no matching bonus; its PV stays where it is.
@@ -167,14 +167,18 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 
 ### 5.6 Autoship
 
-- **Rule:** a member meets autoship for a calendar month by making the monthly purchase (10.5 PV, section 4) in that month.
-- **Until then:** 20% of each matching bonus is held in their autoship wallet.
-- **Using it:** the autoship balance can only be spent on products.
-- **Month end:** an autoship balance not used by the end of the month goes to the cooperative, and the sweep is logged.
+The owner settled this after speaking with a leader (19 November 2026): the monthly purchase keeps members active on product purchases, and it is a check for fulfilment, never a freeze. Every member is matched as usual.
+
+- **Rule:** a member makes the month's autoship by buying the monthly purchase (10.5 PV, section 4) of products for that calendar month.
+- **Until then:** 20% of each matching bonus they earn that month is held in their autoship wallet ("Matching held until autoship"). It cannot be spent or withdrawn.
+- **Released:** as soon as the month's autoship is made, the month's held amount moves to their matching bonus wallet. It is checked when they buy, and every night.
+- **The first week:** "the system calls for the previous month's autoship in the first week of the current month". A month's autoship can still be made in the first 7 days of the next month. A purchase in those days goes first to the previous month, if it was short and the member already belonged that month; only the rest counts for the new month. One purchase never covers two months.
+- **Kept:** if the first week ends without the month's autoship, the cooperative keeps that month's held amount, in the registration ledger's (Pool A's) contingency fund, where the matching money came from.
+- **Records:** every release and keep is recorded, once, with the month it belongs to. A held share paid later, after its pool refilled, is settled the same way.
 
 ### 5.7 Leadership bonus
 
-- **Who qualifies:** a member who reaches **480,000 PV on their repurchase PV log** (Blueprint V3). The plan calls this the Executive Ambassador level; the binary rank of that name in 5.8 is 450,000 PV of lifetime binary volume, which is a different measure.
+- **Who qualifies:** a member with **480,000 PV of lifetime PV on their lesser leg** by the end of the month, the Executive Ambassador level (the owner, after speaking with a leader, 19 November 2026). The other leg can hold any amount: 1,000,000 PV on the right and 479,999 on the left does not qualify.
 - **Funded by:** the registration ledger's leadership line, 9.5% of the net (₦61.77 a unit, section 7).
 - **Amount:** **5%** of what their team earns from the matching bonus each month.
 - **Paid:** monthly, for the month just ended. Each month is paid once.
@@ -430,7 +434,7 @@ A stockist is a member who runs a store that holds Wiifarm stock and hands over 
 3. On activation, in one step that is paid once only:
    - the **stockist sponsor bonus** (Pool D) goes to 10 generations of the stockist's referral chain (generation 1 is the stockist's sponsor, or their referrer if none was named). This is the only stockist sponsor bonus; there is no ongoing share of the store's sales;
    - the store PV counts for awards only, never for matching, and reaches 10 steps, never more (board, November 2026). It counts **both ways**: up 10 levels of the stockist's binary tree as lifetime PV (binary awards), and up 10 generations of the referral chain;
-   - 8% (Sub) or 6.5% (Mega) of the deposit goes to the stockist activation ledger, Pool D (section 7).
+   - the deposit buys the store's products at their face value: like any sale, half goes to the manufacturing company (₦750 of every ₦1,500). The stockist sponsor bonus, 8% (Sub) or 6.5% (Mega) of the deposit, is paid from the other half, and the rest of that half stays with the cooperative in Pool D's contingency fund (the owner, after speaking with a leader, 19 November 2026).
 4. A banned upline is skipped, and the generation still counts.
 
 **Enrollment bonus by generation:**
@@ -558,7 +562,7 @@ The specification can be signed off once the board settles the points below.
 - [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus? *Built as an admin switch, on by default (section 4 says the 10 PV purchase keeps a member active for unilevel).*
 - [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
 - [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).
-- [ ] **7. Autoship hold.** The plan mentions the 10 PV authorship but not the 20% hold on matching bonuses (5.6). Should the hold stay? *Built as an admin switch, on by default as section 5.5 says, so the answer needs no new code.*
+- [x] **7. Autoship hold.** Settled (19 November 2026): the 20% hold stays, released when the month's autoship is made, kept by the cooperative if it is not made by the end of the next month's first week (5.6). It remains an admin switch, on.
 
 **From the current system:**
 
@@ -584,10 +588,10 @@ The specification can be signed off once the board settles the points below.
 - [x] **24. Global Share Pool and stockist sponsor bonus.** Settled: no Global Share Pool; the stockist sponsor bonus is Pool D.
 - [ ] **25. Collecting payments for two companies.** Settled in part: the manufacturing company allocates stock to the stores (section 9); there is one manufacturing partner for now, with more possible later (section 7). Still open: does each company have its own Paystack and bank account, so a payment is split at the gateway, or does one account collect and pass the other company its share, and if so how often?
 - [x] **26. Packs on upgrade.** Settled: an upgrade brings the higher package's extra packs, collected with a pickup code. The stockist's rebate for them comes from the upgrade pool's (Pool E's) own contingency fund, since that pool has no rebate share of its own.
-- [ ] **27. The rest of a store's deposit.** Pool D takes 8% (Sub) or 6.5% (Mega) of the deposit. The system sends the rest (₦2,760,000 or ₦9,350,000) to the manufacturing company, for the products the store receives. Is that right?
+- [x] **27. The rest of a store's deposit.** Settled (19 November 2026): half to the manufacturing company for the products; the sponsor bonus from the other half; the rest of that half to Pool D's contingency fund (section 9).
 - [ ] **28. Recording a Sub store's collection.** The system has the Mega stockist record what each of their Sub stores collects, moving the units from the Mega's stock to the Sub's. Should the manufacturing company record it instead, or should the Sub store confirm it too?
 - [ ] **29. Withdrawal charges and limits.** The system sets up "Bank transfer" from ₦1,000 to ₦5,000,000 with no charge, for an admin to change. What should each method's charge be (fixed and percentage), and is it right that charges go to the cooperative? Member withdrawals also need verified KYC (an admin switch, on by default); stockist withdrawals follow the stockist's own member account; affiliates have no KYC. Is that right?
-- [ ] **30. Unused autoship money.** At month end an autoship balance not spent goes to the cooperative (5.6). It comes from the registration ledger's matching line: should it go back to that ledger's (Pool A's) contingency fund? And what may it buy: any product in the shop, paid from the autoship wallet? Neither the spending nor the month-end sweep is built yet.
+- [x] **30. Unused autoship money.** Settled (19 November 2026): the held amount is not spent on products; it is released to the member when the autoship is made, or kept by the cooperative (Pool A's contingency fund) after the next month's first week (5.6).
 - [ ] **31. Paystack's fee and deposit limits.** Members pay exactly the price; Paystack takes its fee from what it sends on, so the company receiving the money bears it. Should members pay the fee on top instead (for deposits, packages, or both)? Deposits are set at ₦1,000 to ₦5,000,000: right? And a deposit is treated as the member's own money, not a sale, so nothing is split until it is spent (section 6): please confirm.
 - [ ] **32. E-pin rules.** (a) A pin worth more than the package chosen pays it, and the rest goes to the new member's main balance. Should the rest go back to the buyer instead, or should a pin only pay the package it was bought for? (b) A pin an admin creates is paid for by the cooperative: its value comes from the platform's adjustment account, and once used, it is split like any registration and pays the usual bonuses. Who may create them, and is there a limit? (c) Should members be able to cancel their own unused pins?
 - [ ] **33. Public shop details.** (a) The affiliate link is remembered for 30 days and an unpaid order waits 3 days: right? (Both are settings for now, not yet on an admin screen.) (b) Buyers must give an email, because Paystack needs one: is that acceptable, or should a placeholder be used for buyers without email? (c) Prices per state (section 8) are not built: the public price is the same everywhere. Are per-state prices still wanted?

@@ -116,7 +116,7 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                             You have bought {pv(autoship.bought)} of {pv(autoship.needed)} PV of products this month. Until you reach{' '}
                             {pv(autoship.needed)} PV,{' '}
                             {[
-                                autoship.hold && '20% of your matching bonus goes to your autoship wallet',
+                                autoship.hold && '20% of your matching bonus is held, and released to you as soon as you do',
                                 autoship.unilevel && 'you do not earn this month’s unilevel bonus',
                             ]
                                 .filter(Boolean)
@@ -144,7 +144,12 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                     />
                     <StatCard label="VISA wallet" value={formatKobo(money.visa)} icon={PiggyBank} hint="For Add distributor and e-pins" />
                     {money.autoship > 0 && (
-                        <StatCard label="Autoship wallet" value={formatKobo(money.autoship)} icon={ShoppingBasket} hint="For buying products only" />
+                        <StatCard
+                            label="Held until autoship"
+                            value={formatKobo(money.autoship)}
+                            icon={ShoppingBasket}
+                            hint="Released when you make the month's 10.5 PV purchase; you have until the 7th of the next month"
+                        />
                     )}
                 </div>
 
@@ -220,12 +225,12 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                                 {leadership.pv >= leadership.needed && <Badge variant="gold">You qualify</Badge>}
                             </div>
                             <p className="text-muted-foreground text-sm">
-                                Leaders earn 5% of what their team earns from matching each month. You qualify at {pv(leadership.needed)} PV of
-                                repurchases.
+                                Leaders earn 5% of what their team earns from matching each month. You qualify at {pv(leadership.needed)} PV on your
+                                lesser leg.
                             </p>
                             <div>
                                 <div className="flex justify-between text-sm">
-                                    <span>Your repurchase PV</span>
+                                    <span>Your lesser leg</span>
                                     <span className="tabular-nums">
                                         {pv(leadership.pv)} / {pv(leadership.needed)} PV
                                     </span>
@@ -233,7 +238,7 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                                 <div
                                     className="bg-muted mt-1 h-2 overflow-hidden rounded-full"
                                     role="progressbar"
-                                    aria-label="Repurchase PV towards the leadership bonus"
+                                    aria-label="Lesser leg PV towards the leadership bonus"
                                     aria-valuemin={0}
                                     aria-valuemax={leadership.needed}
                                     aria-valuenow={Math.min(leadership.pv, leadership.needed)}

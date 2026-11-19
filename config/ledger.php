@@ -15,7 +15,7 @@ return [
         'main' => 'Main balance',
         'visa' => 'VISA wallet',
         'product' => 'Product wallet',
-        'autoship' => 'Autoship',
+        'autoship' => 'Matching held until autoship',
         'savings' => 'Savings wallet',
         'bonus.direct' => 'Direct referral bonus',
         'bonus.indirect' => 'Indirect referral bonus',
