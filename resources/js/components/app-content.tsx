@@ -7,7 +7,12 @@ interface AppContentProps extends React.ComponentProps<'div'> {
 
 export function AppContent({ variant = 'header', children, ...props }: AppContentProps) {
     if (variant === 'sidebar') {
-        return <SidebarInset {...props}>{children}</SidebarInset>;
+        // min-w-0 lets the content shrink to the screen: a wide table then scrolls inside its own box instead of widening the page.
+        return (
+            <SidebarInset {...props} className={['min-w-0', props.className].filter(Boolean).join(' ')}>
+                {children}
+            </SidebarInset>
+        );
     }
 
     return (

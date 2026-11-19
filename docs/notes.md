@@ -1638,3 +1638,69 @@ The first two changes from the Revised Baseline Rules (step 32).
 Still waiting for the owner's answers (step 32): which month the 10.5 PV
 counts for, the autoship hold, unilevel activity, store stock, and the
 leadership rank. Next: the awards.
+
+## Step 34: The awards
+
+**What this is:** the recognition (rank) awards, the Upline Celebrated Bonus
+and the repurchase awards (specification 5.8, 5.9 and 5.11), with the plan
+document's thresholds and the Revised Baseline Rules' repurchase schedule.
+
+- **Recognition ranks,** Emerald (1,500 PV) to Global Mega (5,000,000 PV):
+    - a member earns each rank once, when the lifetime PV on their lesser
+      leg reaches it (store PV included) and their package is high enough
+      (Emerald Builder, Silver Booster, Jade Executive, Gold and up Mega);
+    - from Gold up, they must also have produced the rank below on both
+      sides: someone on their left and someone on their right holding that
+      rank or a higher one.
+- **Repurchase awards:** on the total repurchases of a member's 1st to 10th
+  generations (5,000 PV for ₦250,000 up to 100,000 PV for ₦5,000,000). Each
+  new tier pays only the difference from the last tier awarded; a member who
+  passes two tiers at once gets one award for the difference. This settles
+  decision 21.
+- **How it works:**
+    - a check every night (02:00 Lagos time) records who has newly
+      qualified;
+    - while an award waits, the member chooses the cash or, where one is
+      offered, the gift, on the new **Awards** page. The page also shows
+      their progress to the next rank and the next repurchase tier;
+    - an admin approves or refuses it on the new admin **Awards** page. A
+      refusal gives a reason the member sees;
+    - **cash** goes into the member's awards wallet;
+    - **a gift:** its cash value is set aside in a new cooperative account,
+      "Award gifts to buy" (decision 34), and the admin marks it delivered
+      when it is handed over;
+    - approving a recognition award also pays the **Upline Celebrated
+      Bonus**: 5%, 2% and 1% of it to the first three uplines. Under the
+      baseline that is for recognition awards only;
+    - money comes from the Strategic Reserve (recognition awards and UCB)
+      and from the repurchase ledger (repurchase awards). What a line
+      cannot cover is held until it refills.
+- **Permissions:** "See awards" and "Approve and refuse awards".
+- **Tests:** 285 pass (7 new). They cover:
+    - the package and PV conditions, and a rank recorded once;
+    - "the rank below on both sides" (and that a higher rank counts);
+    - cash and the UCB, including shares nobody can receive;
+    - choosing the gift, its value set aside and delivery;
+    - held then paid, and a refusal;
+    - repurchase tiers with the incremental rule, and the 11th generation
+      not counting;
+    - permissions and the member's page.
+- **Checked in a browser** on a computer and a phone. The phone showed a
+  fault on every page with a wide table: the table pushed the whole page
+  wider than the screen and cut text off. Fixed once in the shared layout;
+  tables now scroll sideways inside their own box. Also fixed "a Executive"
+  to "an Executive".
+- **Local demo data:** the demo shows Adaeze qualifying for the 100,000 PV
+  repurchase award. That comes from the PV I put in by hand for an earlier
+  demo, not from real purchases.
+
+**For the board (decision 34):**
+
+- When a member takes a gift, is setting its cash value aside right?
+- Should repurchase awards be paid without an admin's approval?
+- Recognition awards are far larger than what Pool B receives, so most will
+  wait a long time.
+
+**Next:** the rest of the Revised Baseline Rules (frozen matching for
+inactive members, real-time unilevel, leadership by rank, store stock), once
+the five questions in step 32 are answered.

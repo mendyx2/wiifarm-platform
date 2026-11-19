@@ -26,7 +26,7 @@ return [
         'bonus.keyin' => 'Key-in bonus',
         'bonus.awards' => 'Awards',
         'bonus.repurchase_award' => 'Repurchase award',
-        'bonus.acb' => 'Achievers / Upline Celebrated Bonus',
+        'bonus.acb' => 'Upline Celebrated Bonus',
         'bonus.stockist_sponsor' => 'Stockist sponsor bonus',
     ],
 
@@ -74,5 +74,7 @@ return [
      */
     'cooperative_accounts' => [
         'withdrawal_charges' => 'Withdrawal charges',
+        // A recognition award taken as a gift: its cash value, set aside to buy the gift.
+        'award_gifts' => 'Award gifts to buy',
     ],
 ];

@@ -192,6 +192,11 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 - **Package conditions:** Emerald needs the Builder package or higher, Silver needs Booster, and Jade needs Executive.
 - **From Gold upwards:** the member must hold the Mega package **and** have produced the rank just below on both their left and right genealogy. For example, Gold needs a Jade on the left and a Jade on the right.
 - **Paying it:** an admin approves each award. The member takes the cash or, where offered, the gift.
+- **Thresholds** are those of the plan document "Wiifarm Coop Binary System" (owner, 19 November 2026); five were raised from the earlier table (Diamond, Executive Diamond, Platinum, Ambassador, Executive Ambassador).
+- **How it is run** (built November 2026):
+  - A check every night (02:00 Lagos time) records each rank a member has newly qualified for, as waiting for approval. "Produced the rank below" means someone on that side holds that rank or a higher one, from an award not refused. A member who qualifies for several ranks at once gets each of them.
+  - While it waits, the member chooses the cash or the gift on their Awards page. Approving pays the cash into their awards wallet from the Strategic Reserve's recognition line, or, for a gift, moves the cash value from that line to the cooperative's "award gifts to buy" account (decision 34). An admin marks the gift delivered.
+  - What the line and Pool B's contingency fund cannot cover is held until they refill, oldest first (section 7). An admin can refuse an award with a reason the member sees.
 
 | Rank | PV on lesser leg | Cash award | Or gift |
 | --- | --- | --- | --- |
@@ -199,22 +204,23 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 | Silver | 3,000 | ₦150,000 | Cash only |
 | Jade | 6,000 | ₦300,000 | Cash only |
 | Gold | 12,500 | ₦550,000 | Laptop |
-| Diamond | 25,000 | ₦1,200,000 | Smart TV |
-| Executive Diamond | 35,000 | ₦1,500,000 | Solar freezer and washing machine |
-| Platinum | 80,000 | ₦4,000,000 | Complete solar system |
+| Diamond | 28,000 | ₦1,200,000 | Smart TV |
+| Executive Diamond | 40,000 | ₦1,500,000 | Solar freezer and washing machine |
+| Platinum | 85,000 | ₦4,000,000 | Complete solar system |
 | Premium Platinum | 150,000 | ₦10,000,000 | Small car |
-| Ambassador | 300,000 | ₦16,000,000 | International trip |
-| Executive Ambassador | 450,000 | ₦25,000,000 | Big car |
+| Ambassador | 350,000 | ₦16,000,000 | International trip |
+| Executive Ambassador | 480,000 | ₦25,000,000 | Big car |
 | Sapphire | 800,000 | ₦40,000,000 | Land |
 | Executive Sapphire | 2,500,000 | ₦100,000,000 | Small bungalow |
 | Global Mega | 5,000,000 | ₦180,000,000 | Duplex |
 
 This is the ladder the current system already holds, so the other ladder in Wiifarm's remediation notes (Sapphire Leader to Global Presidential) is dropped.
 
-### 5.9 Achievers Celebration Bonus (ACB)
+### 5.9 Upline Celebrated Bonus (UCB)
 
-- **When:** a member receives a binary award or a repurchase award.
-- **Who and how much:** their sponsor gets 5% of the award's value, generation 2 gets 2%, and generation 3 gets 1%.
+- **When:** a member's recognition award (5.8) is approved. The Revised Baseline Rules tie it to the recognition award only, not to repurchase awards.
+- **Who and how much:** the first upline (sponsor) gets 5% of the award's cash value, the second 2%, and the third 1%, from the Strategic Reserve's UCB line (30% of Pool B). It is paid whether the member takes the cash or the gift.
+- **Not paid** to a banned member, a member whose package is not paid or the company account; their share stays in Pool B's contingency fund.
 
 ### 5.10 Unilevel bonus (15 generations)
 
@@ -239,13 +245,17 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 
 ### 5.11 Repurchase awards
 
-- **Rule:** one-time cash awards on the repurchase PV accumulated from a member's **1st to 10th generation** downline (section 3).
+- **Rule:** cash awards on the cumulative repurchase PV of a member's **1st to 10th generation** downline (section 3), from the repurchase ledger's award line (10% of Pool C).
+- **Schedule** (Revised Baseline Rules and the plan document, 19 November 2026; this settles decision 21):
 
-| Repurchase PV | 750 | 1,500 | 3,000 | 6,000 | 10,000 | 15,000 | 20,000 | 25,000 | 30,000 | 45,000 |
+| Repurchase PV | 5,000 | 10,000 | 20,000 | 35,000 | 50,000 | 65,000 | 80,000 | 90,000 | 95,000 | 100,000 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Cash award (₦) | 50,000 | 100,000 | 250,000 | 350,000 | 1.25M | 1.5M | 2M | 2.5M | 3M | 5M |
+| Cumulative award (₦) | 250,000 | 500,000 | 1M | 1.75M | 2.5M | 3.25M | 4M | 4.5M | 4.75M | 5M |
+| Paid at this tier (₦) | 250,000 | 250,000 | 500,000 | 750,000 | 750,000 | 750,000 | 750,000 | 500,000 | 250,000 | 250,000 |
 
-- **Replaced:** the current system's amounts differ from the 3,000 PV level upwards, and it has a 35,000 PV level instead of 30,000. The plan's table replaces it.
+- **Incremental payout:** reaching a higher tier pays the difference between that tier's cumulative award and the cumulative award of the last tier already awarded. A member who passes two tiers at once gets one award for the difference.
+- **How it is run:** the same nightly check records it as waiting; an admin approves it (decision 34), and what the line and Pool C's contingency fund cannot cover is held until they refill.
+- **Replaced:** the earlier table (750 PV for ₦50,000 up to 45,000 PV for ₦5M).
 
 ### 5.12 Retail profit and the earnings described elsewhere
 
@@ -265,7 +275,7 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
 | Product wallet | Product credit | Shop purchases |
 | Autoship | The 20% autoship hold (5.6) | Product purchases only; swept at month end |
 | Savings wallet | Savings deposits | Savings products (section 10) |
-| Bonus wallets | One per bonus: direct, indirect, upgrade, matching, leadership, unilevel, key-in, awards, repurchase award, ACB, stockist sponsor | Moved to the main balance ("Bonus Transfer") |
+| Bonus wallets | One per bonus: direct, indirect, upgrade, matching, leadership, unilevel, key-in, awards, repurchase award, Upline Celebrated Bonus (UCB), stockist sponsor | Moved to the main balance ("Bonus Transfer") |
 | Stockist wallet | Rebates for units handed over | Withdrawals |
 | Affiliate wallet | Commissions on public-shop sales | Withdrawals |
 
@@ -523,7 +533,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Daily 01:30 | Matching bonus run (5.5) |
 | Daily 02:20, acts once a month | Unilevel bonus for the month just ended (5.10) |
 | Daily 02:30, acts once a month | Leadership bonus for the month just ended (5.7) |
-| Daily 02:00 | Check members for new binary awards |
+| Daily 02:00 | Record members newly qualified for a recognition or repurchase award (5.8, 5.11) |
 | Daily 03:00 | Full database backup, kept 30 days |
 | Daily | Expire unpaid or uncollected public orders (8). This is not scheduled in the current system, and should be |
 | Last day of the month, 23:00 | Autoship sweep (5.6) |
@@ -568,7 +578,7 @@ The specification can be signed off once the board settles the points below.
 - [x] **18. When a line runs short.** Settled: covered from the same ledger's contingency fund; if that is empty too, held until it refills, oldest first (section 7).
 - [x] **19. Contingency Reserve and safety nets.** Settled: every reserve and leftover goes into a contingency fund kept per ledger, used only for that ledger's shortfalls; unpaid shares stay with the cooperative, in that fund (section 7).
 - [x] **20. Unilevel depth.** Settled: 15 generations at the plan's rates (owner, 19 November 2026; sections 4 and 5.10). This replaces the earlier "10 generations, never 15"; the indirect referral bonus stays at 10 generations.
-- [ ] **21. Repurchase award schedule.** The milestone schedule the board refers to has not been received. Is it the table in 5.11? That table also costs more than its ₦75 a unit.
+- [x] **21. Repurchase award schedule.** Settled by the Revised Baseline Rules (19 November 2026): 5,000 PV for ₦250,000 up to 100,000 PV for ₦5,000,000, paid incrementally (5.11).
 - [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
 - [x] **23. Public shop split.** Settled: affiliate ₦100 (20% of the ₦500 margin), the stockist's usual ₦120 / ₦90, the rest to the manufacturing company; nothing to the cooperative, no PV. Anyone can be an affiliate, member or not (section 8).
 - [x] **24. Global Share Pool and stockist sponsor bonus.** Settled: no Global Share Pool; the stockist sponsor bonus is Pool D.
@@ -581,3 +591,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **31. Paystack's fee and deposit limits.** Members pay exactly the price; Paystack takes its fee from what it sends on, so the company receiving the money bears it. Should members pay the fee on top instead (for deposits, packages, or both)? Deposits are set at ₦1,000 to ₦5,000,000: right? And a deposit is treated as the member's own money, not a sale, so nothing is split until it is spent (section 6): please confirm.
 - [ ] **32. E-pin rules.** (a) A pin worth more than the package chosen pays it, and the rest goes to the new member's main balance. Should the rest go back to the buyer instead, or should a pin only pay the package it was bought for? (b) A pin an admin creates is paid for by the cooperative: its value comes from the platform's adjustment account, and once used, it is split like any registration and pays the usual bonuses. Who may create them, and is there a limit? (c) Should members be able to cancel their own unused pins?
 - [ ] **33. Public shop details.** (a) The affiliate link is remembered for 30 days and an unpaid order waits 3 days: right? (Both are settings for now, not yet on an admin screen.) (b) Buyers must give an email, because Paystack needs one: is that acceptable, or should a placeholder be used for buyers without email? (c) Prices per state (section 8) are not built: the public price is the same everywhere. Are per-state prices still wanted?
+- [ ] **34. Paying awards.** (a) When a member takes the gift instead of the cash, the system sets the cash value aside from the recognition line to buy the gift. Is that right, or does the gift cost something else? (b) Repurchase awards wait for an admin's approval like recognition awards. Should they be paid automatically instead? (c) Recognition awards are far larger than Pool B receives (₦5.25 a piece for recognition), so most will be held for a long time (decision 17).

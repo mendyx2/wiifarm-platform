@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Member\AwardsController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\EPinController;
 use App\Http\Controllers\Member\KeyInController;
@@ -34,6 +35,8 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('package', [PaymentController::class, 'package'])->name('package');
     Route::post('package', [PaymentController::class, 'payPackage'])->middleware('throttle:10,1')->name('package.pay');
     Route::post('package/epin', [PaymentController::class, 'redeemPin'])->middleware('throttle:10,1')->name('package.epin');
+    Route::get('awards', [AwardsController::class, 'index'])->name('awards');
+    Route::post('awards/{award}/choice', [AwardsController::class, 'choose'])->name('awards.choose');
     Route::get('epins', [EPinController::class, 'index'])->name('epins');
     Route::post('epins', [EPinController::class, 'buy'])->middleware('throttle:10,1')->name('epins.buy');
     Route::get('team/add', [KeyInController::class, 'create'])->name('team.add');

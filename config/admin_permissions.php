@@ -43,6 +43,8 @@ return [
         ],
         'Pools' => [
             'pools.view' => 'See the pool ledgers, contingency funds and held payouts',
+            'awards.view' => 'See awards and who qualified',
+            'awards.decide' => 'Approve and refuse awards, and mark gifts delivered',
             'matching.view' => 'See the matching, leadership and unilevel runs, and what each member earned',
         ],
         'Settings' => [

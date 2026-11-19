@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
+use App\Http\Controllers\Admin\AwardController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EPinController;
 use App\Http\Controllers\Admin\KycReviewController;
@@ -94,6 +95,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Pool ledgers, contingency funds and held payouts
         Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');
+        Route::get('awards', [AwardController::class, 'index'])->middleware('admin.can:awards.view')->name('awards.index');
+        Route::middleware('admin.can:awards.decide')->group(function () {
+            Route::post('awards/{award}/approve', [AwardController::class, 'approve'])->name('awards.approve');
+            Route::post('awards/{award}/reject', [AwardController::class, 'reject'])->name('awards.reject');
+            Route::post('awards/{award}/delivered', [AwardController::class, 'delivered'])->name('awards.delivered');
+        });
         Route::get('epins', [EPinController::class, 'index'])->middleware('admin.can:epins.view')->name('epins.index');
         Route::middleware('admin.can:epins.manage')->group(function () {
             Route::post('epins', [EPinController::class, 'store'])->name('epins.store');

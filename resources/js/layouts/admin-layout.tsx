@@ -17,6 +17,7 @@ import {
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
+    Award,
     Banknote,
     Boxes,
     Combine,
@@ -55,6 +56,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Stockists', url: '/admin/stockists', icon: Store, permission: 'stockists.view' },
     { title: 'Products', url: '/admin/products', icon: Package, permission: 'products.manage' },
     { title: 'Pools', url: '/admin/pools', icon: Landmark, permission: 'pools.view' },
+    { title: 'Awards', url: '/admin/awards', icon: Award, permission: 'awards.view' },
     { title: 'Matching', url: '/admin/matching', icon: Combine, permission: 'matching.view' },
     { title: 'Leadership', url: '/admin/leadership', icon: Crown, permission: 'matching.view' },
     { title: 'Unilevel', url: '/admin/unilevel', icon: Layers, permission: 'matching.view' },
