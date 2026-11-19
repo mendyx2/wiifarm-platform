@@ -45,6 +45,16 @@ return [
             'throw' => false,
         ],
 
+        // Product photos, saved straight into the public folder so the web
+        // server shows them with no extra setup step.
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+            'url' => '/uploads',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

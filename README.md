@@ -39,7 +39,6 @@ open-source tools.
 composer install && npm ci
 cp .env.example .env && php artisan key:generate
 touch database/database.sqlite && php artisan migrate
-php artisan storage:link   # product photos (once per server)
 npm run build      # or: npm run dev
 php artisan wiifarm:create-admin   # the first super-admin (asks for the details)
 php artisan wiifarm:demo-network   # optional: ten sample members (password123); never on the live site

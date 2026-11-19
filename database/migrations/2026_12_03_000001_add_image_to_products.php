@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-/* A product's photo, shown in the shop (stored on the public disk, under products/). */
+/* A product's photo, shown in the shop (saved under public/uploads/products/). */
 return new class extends Migration
 {
     public function up(): void

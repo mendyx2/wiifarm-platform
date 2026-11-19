@@ -1759,8 +1759,7 @@ the platform feel more premium.
       **Photo** card. It takes a JPEG, PNG or WebP of up to 3 MB and at
       least 200 pixels; a new photo replaces the old one (the old file is
       deleted), and a photo can be removed. Each change is recorded in the
-      audit log. Photos are stored on the server's public disk, so the
-      server needs `php artisan storage:link` once (now in the README).
+      audit log. (Where photos are saved: see step 37.)
     - **Where they show:** the public shop, the members' shop, and as small
       thumbnails in the admin product list. A product without a photo shows
       a tidy Wiifarm tile instead of a gap.
@@ -1798,3 +1797,16 @@ the platform feel more premium.
 and PV in the admin panel and upload each product's photo there. My local
 copy has a demo "VitaForce Male Vitality Beverage" product, at the same
 prices as the pack product; it exists only on my local copy.
+
+## Step 37: Product photos with no setup step
+
+The owner asked for something simple: no extra command on the server.
+
+- Uploaded product photos are now saved straight into the website's public
+  folder (`public/uploads/products/`), where the web server shows them as
+  they are. The `php artisan storage:link` step is gone from the README.
+- Nothing else changes: admins still upload, replace and remove photos on
+  the product's page.
+- `public/uploads` is left out of git, like other uploaded files.
+- Checked: the tests pass (287), and with the old link removed, the shop's
+  photos still load.

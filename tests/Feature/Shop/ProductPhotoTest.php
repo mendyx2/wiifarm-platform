@@ -18,7 +18,7 @@ class ProductPhotoTest extends NetworkTestCase
 
     public function test_an_admin_uploads_replaces_and_removes_a_photo_and_the_shops_show_it()
     {
-        Storage::fake('public');
+        Storage::fake('uploads');
         $product = $this->product();
         $this->actingAs(Admin::factory()->withPermissions(['products.manage'])->create(), 'admin');
 
@@ -28,26 +28,26 @@ class ProductPhotoTest extends NetworkTestCase
 
         $this->post("/admin/products/{$product->id}/photo", ['photo' => UploadedFile::fake()->image('vitaactive.jpg', 600, 800)])->assertSessionHasNoErrors();
         $first = $product->fresh()->image_path;
-        Storage::disk('public')->assertExists($first);
+        Storage::disk('uploads')->assertExists($first);
         $this->assertDatabaseHas('audit_logs', ['action' => 'products.photo']);
 
         $this->post("/admin/products/{$product->id}/photo", ['photo' => UploadedFile::fake()->image('better.png', 600, 800)]);
         $second = $product->fresh()->image_path;
-        Storage::disk('public')->assertMissing($first);   // the old photo is not left behind
-        Storage::disk('public')->assertExists($second);
+        Storage::disk('uploads')->assertMissing($first);   // the old photo is not left behind
+        Storage::disk('uploads')->assertExists($second);
 
-        $this->get('/products')->assertInertia(fn ($page) => $page->where('products.0.image', '/storage/'.$second));
-        $this->actingAs($this->join('a_member'))->get('/shop')->assertInertia(fn ($page) => $page->where('products.0.image', '/storage/'.$second));
+        $this->get('/products')->assertInertia(fn ($page) => $page->where('products.0.image', '/uploads/'.$second));
+        $this->actingAs($this->join('a_member'))->get('/shop')->assertInertia(fn ($page) => $page->where('products.0.image', '/uploads/'.$second));
 
         $this->actingAs(Admin::factory()->withPermissions(['products.manage'])->create(), 'admin');
         $this->delete("/admin/products/{$product->id}/photo");
         $this->assertNull($product->fresh()->image_path);
-        Storage::disk('public')->assertMissing($second);
+        Storage::disk('uploads')->assertMissing($second);
     }
 
     public function test_only_admins_who_manage_products_can_change_photos()
     {
-        Storage::fake('public');
+        Storage::fake('uploads');
         $product = $this->product();
         $this->actingAs(Admin::factory()->withPermissions(['orders.view'])->create(), 'admin');
 

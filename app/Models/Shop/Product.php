@@ -40,6 +40,6 @@ class Product extends Model
     /** The photo's web address, or null when the product has none. */
     public function imageUrl(): ?string
     {
-        return $this->image_path ? '/storage/'.$this->image_path : null;
+        return $this->image_path ? '/uploads/'.$this->image_path : null;
     }
 }

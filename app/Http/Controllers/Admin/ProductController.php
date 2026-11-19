@@ -84,10 +84,10 @@ class ProductController extends Controller
             'photo.dimensions' => 'Use a photo at least 200 pixels wide and high.',
         ]);
         $old = $product->image_path;
-        $path = $request->file('photo')->store('products', 'public');
+        $path = $request->file('photo')->store('products', 'uploads');
         $product->forceFill(['image_path' => $path])->save();
         if ($old) {
-            Storage::disk('public')->delete($old);
+            Storage::disk('uploads')->delete($old);
         }
         $audit->record($this->admin($request), 'products.photo', $product, ['image_path' => $old], ['image_path' => $path]);
 
@@ -97,7 +97,7 @@ class ProductController extends Controller
     public function removePhoto(Request $request, Product $product, Audit $audit): RedirectResponse
     {
         if ($product->image_path) {
-            Storage::disk('public')->delete($product->image_path);
+            Storage::disk('uploads')->delete($product->image_path);
             $audit->record($this->admin($request), 'products.photo', $product, ['image_path' => $product->image_path], ['image_path' => null]);
             $product->forceFill(['image_path' => null])->save();
         }
