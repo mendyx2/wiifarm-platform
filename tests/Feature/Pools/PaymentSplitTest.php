@@ -3,6 +3,7 @@
 namespace Tests\Feature\Pools;
 
 use App\Models\Ledger\Transaction;
+use App\Models\Pools\AllocationSchedule;
 use App\Models\Pools\Manufacturer;
 use App\Services\Ledger\Ledger;
 use App\Services\Pools\PaymentSplit;
@@ -53,13 +54,13 @@ class PaymentSplitTest extends TestCase
         $this->assertSame(75_000, $this->pool('L', 'held'));
         // ₦6,502.50 net, by its lines (each rounded down to the kobo).
         $this->assertSame(225_116, $this->pool('A', 'direct'));      // covers the plan's ₦2,250 direct bonus
-        $this->assertSame(117_045, $this->pool('A', 'indirect'));    // covers ₦1,170 (13%)
+        $this->assertSame(116_979, $this->pool('A', 'indirect'));    // 17.99%: ₦0.21 short of ₦1,170 (13%); the contingency fund covers it
         $this->assertSame(18_011, $this->pool('A', 'keyin'));        // covers ₦180 (2%)
         $this->assertSame(108_006, $this->pool('A', 'matching'));
         $this->assertSame(61_773, $this->pool('A', 'leadership'));
         $this->assertSame(120_296, $this->pool('A', 'stockist_rebate')); // covers 10 × ₦120
-        // The 2.3% plus what rounding left (3 kobo).
-        $this->assertSame(17_253, $this->pool('A', 'contingency'));
+        // The 2.3%, the 0.01% of the net (65 kobo) and what rounding left (4 kobo).
+        $this->assertSame(17_319, $this->pool('A', 'contingency'));
         $this->assertSame(-1_500_000, $this->ledger->balance($this->ledger->systemAccount('external')));
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();
     }
@@ -131,5 +132,18 @@ class PaymentSplitTest extends TestCase
             $this->assertSame(0, (int) $tx->entries()->sum('amount'));
         }
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();
+    }
+
+    public function test_an_existing_installation_gets_version_2_of_the_schedule_once()
+    {
+        $migration = include database_path('migrations/2026_12_01_000001_allocation_schedule_version_2.php');
+        $migration->up();
+        $migration->up();   // again: nothing more
+
+        $this->assertSame([1, 2], AllocationSchedule::orderBy('version')->pluck('version')->all());
+        $v2 = AllocationSchedule::current();
+        $this->assertSame(2, $v2->version);
+        $this->assertSame(['17.99', '0.01'], [$v2->rates['registration']['net']['A.indirect'], $v2->rates['registration']['net']['A.contingency']]);
+        $this->assertStringContainsString('Revised Baseline Rules', $v2->source);
     }
 }

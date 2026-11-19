@@ -1603,3 +1603,38 @@ built in this step.
     3. unilevel activity;
     4. store stock and who funds the sponsor bonus;
     5. the leadership rank.
+
+## Step 33: Allocation schedule version 2 and the 10.5 PV monthly purchase
+
+The first two changes from the Revised Baseline Rules (step 32).
+
+- **Indirect referral line: 17.99%** of Pool A's net, not 18%. This is
+  version 2 of the allocation schedule:
+    - it applies from the moment it was added; every split made before
+      keeps version 1, and each split records its version;
+    - the 0.01% left goes to Pool A's contingency fund.
+- **A point the baseline rounds away:**
+    - 17.99% of ₦650.25 is ₦116.98 a piece, while the indirect bonus can
+      pay up to 13% of ₦900, or ₦117.00. So the line is 2 kobo short a
+      piece when every generation is paid, and Pool A's contingency fund
+      covers it;
+    - when a share has nobody to receive it, only what the line actually
+      holds now moves to the contingency fund. Before, the move would have
+      failed. All four places that do this (joining bonuses, unilevel,
+      stockist sponsor bonus, rebates) use the same rule.
+- **The monthly purchase is 10.5 PV** (₦10,500), and it is now an admin
+  setting under Settings, "Monthly purchase requirement". Changing it is
+  recorded in the audit log. It is the amount that:
+    - lifts the autoship hold on matching;
+    - keeps the unilevel bonus (while that switch is on);
+    - the dashboard reminder counts towards.
+
+  It was a fixed 10 PV.
+- **Tests:** 278 pass (2 new): the setting (permission, wrong input, audit
+  log) and the schedule change on an existing installation (version 2
+  added once). Four tests were updated for the new amounts. For example, a
+  Pre Starter's ₦6,502.50 net now gives the indirect line ₦1,169.79.
+
+Still waiting for the owner's answers (step 32): which month the 10.5 PV
+counts for, the autoship hold, unilevel activity, store stock, and the
+leadership rank. Next: the awards.

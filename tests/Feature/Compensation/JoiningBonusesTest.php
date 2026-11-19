@@ -68,8 +68,9 @@ class JoiningBonusesTest extends NetworkTestCase
 
         $this->assertSame(225_000, $this->wallet($sponsor, 'bonus.direct'));     // 25%: ₦2,250
         // Indirect generation 1 is the company account and 2 to 10 do not exist; a self sign-up has no key-in.
-        // All of it (₦1,170 + ₦180) stays in Pool A's contingency fund, beside the 2.3% (₦172.50) and 3 kobo of rounding.
-        $this->assertSame(117_000 + 18_000 + 17_250 + 3, $this->pool('A', 'contingency') - $contingencyBefore);
+        // What the indirect line holds (₦1,169.79 of the ₦1,170) and the ₦180 key-in stay in Pool A's contingency fund,
+        // beside the 2.3% (₦172.50), the 0.01% of the net (65 kobo) and 4 kobo of rounding.
+        $this->assertSame(116_979 + 18_000 + 17_250 + 65 + 4, $this->pool('A', 'contingency') - $contingencyBefore);
     }
 
     public function test_the_member_who_keys_someone_in_earns_the_key_in_bonus()

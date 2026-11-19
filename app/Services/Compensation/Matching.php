@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\DB;
  *
  * Banned members, members whose package is not paid and the company account
  * are not paid, and their pairing PV is left as it is. Until a member buys
- * 10 PV of products in the month, 20% of the bonus goes to their autoship
+ * the monthly purchase (10.5 PV), 20% of the bonus goes to their autoship
  * wallet (5.6), while the admin switch for it is on.
  *
  * A member is matched once per day: running a day again pays nobody twice.
@@ -143,7 +143,7 @@ class Matching
         });
     }
 
-    /** The share of a matching bonus held for autoship: none once the member has bought 10 PV of products this month. */
+    /** The share of a matching bonus held for autoship: none once the member has made this month's purchase. */
     private function autoshipShare(User $member, CarbonImmutable $day, int $amount): int
     {
         if (! Settings::get('matching.autoship_hold')) {
@@ -157,7 +157,7 @@ class Matching
             ->whereBetween('created_at', [$from, $to])
             ->sum('amount');
 
-        if ($bought >= config('compensation.matching.autoship_month_pv')) {
+        if ($bought >= MonthlyActivity::requiredPv()) {
             return 0;
         }
 

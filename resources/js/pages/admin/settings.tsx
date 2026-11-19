@@ -23,7 +23,7 @@ const titles: Record<string, string> = {
     'verification.mobile_required': 'Phone confirmation required',
     'withdrawals.kyc_required': 'Identity check (KYC) before withdrawing',
     'matching.autoship_hold': 'Autoship hold on matching bonuses',
-    'unilevel.activity_required': '10 PV a month to earn the unilevel bonus',
+    'unilevel.activity_required': 'Monthly purchase needed to earn the unilevel bonus',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */
@@ -78,7 +78,50 @@ function LeadershipTeam({ value, editable }: { value: { team: string; levels: nu
     );
 }
 
-export default function AdminSettings({ switches, leadership }: { switches: Switch[]; leadership: { team: string; levels: number } }) {
+function MonthlyPurchase({ value, editable }: { value: number; editable: boolean }) {
+    const form = useForm({ monthly_pv: String(value) });
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        form.put(route('admin.settings.activity'), { preserveScroll: true, onSuccess: () => form.setDefaults() });
+    };
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-base">Monthly purchase requirement</CardTitle>
+                <CardDescription>
+                    The PV of products a member buys each calendar month to stay active (Revised Baseline Rules: 10.5 PV, ₦10,500). It lifts the
+                    autoship hold and, while that switch is on, keeps the unilevel bonus. Changes are saved in the audit log.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={submit} className="flex flex-wrap items-end gap-4">
+                    <FormField id="a-monthly" label="PV a month" error={form.errors.monthly_pv}>
+                        <Input
+                            id="a-monthly"
+                            inputMode="decimal"
+                            className="w-32"
+                            disabled={!editable}
+                            value={form.data.monthly_pv}
+                            onChange={(e) => form.setData('monthly_pv', e.target.value)}
+                        />
+                    </FormField>
+                    {editable && <Button disabled={form.processing || !form.isDirty}>Save</Button>}
+                </form>
+            </CardContent>
+        </Card>
+    );
+}
+
+export default function AdminSettings({
+    switches,
+    leadership,
+    monthlyPv,
+}: {
+    switches: Switch[];
+    leadership: { team: string; levels: number };
+    monthlyPv: number;
+}) {
     const can = useAdminCan();
     const editable = can('settings.edit');
     const form = useForm<Record<string, boolean>>(Object.fromEntries(switches.map((s) => [field(s.key), s.value])));
@@ -126,6 +169,7 @@ export default function AdminSettings({ switches, leadership }: { switches: Swit
                         </form>
                     </CardContent>
                 </Card>
+                <MonthlyPurchase value={monthlyPv} editable={editable} />
                 <LeadershipTeam value={leadership} editable={editable} />
             </div>
         </AdminLayout>

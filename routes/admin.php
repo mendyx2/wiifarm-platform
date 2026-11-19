@@ -119,6 +119,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('admin.can:settings.view')->name('settings.edit');
         Route::put('settings', [SettingsController::class, 'update'])->middleware('admin.can:settings.edit')->name('settings.update');
         Route::put('settings/leadership', [SettingsController::class, 'updateLeadership'])->middleware('admin.can:settings.edit')->name('settings.leadership');
+        Route::put('settings/activity', [SettingsController::class, 'updateActivity'])->middleware('admin.can:settings.edit')->name('settings.activity');
 
         // Admins and roles (super-admin only)
         Route::middleware('admin.can:admins.manage')->group(function () {

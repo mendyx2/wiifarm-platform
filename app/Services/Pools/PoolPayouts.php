@@ -56,10 +56,24 @@ class PoolPayouts
         });
     }
 
-    /** A share with nobody to receive it stays with the cooperative, in that pool's contingency fund. */
-    public function toContingency(string $pool, string $line, int $amount, string $key, ?string $memo = null, ?Model $subject = null): Transaction
+    /**
+     * A share with nobody to receive it stays with the cooperative, in that
+     * pool's contingency fund. Only what the line holds can move: a line can
+     * hold slightly less than its shares (Pool A's indirect line is 17.99% of
+     * the net, ₦116.98 a piece, against shares of up to ₦117.00), and what it
+     * lacks was never there. Returns null when the line is empty.
+     */
+    public function toContingency(string $pool, string $line, int $amount, string $key, ?string $memo = null, ?Model $subject = null): ?Transaction
     {
-        return $this->ledger->transfer($this->ledger->poolAccount($pool, $line), $this->ledger->poolAccount($pool, Ledger::CONTINGENCY), $amount, 'unpaid_share', 'unpaid:'.$key, $memo, $subject);
+        return DB::transaction(function () use ($pool, $line, $amount, $key, $memo, $subject) {
+            if ($done = Transaction::where('idempotency_key', 'unpaid:'.$key)->first()) {
+                return $done;
+            }
+            [$lineAccount, $contingency] = $this->lock($pool, $line);
+            $move = min($amount, $this->ledger->balance($lineAccount));
+
+            return $move > 0 ? $this->ledger->transfer($lineAccount, $contingency, $move, 'unpaid_share', 'unpaid:'.$key, $memo, $subject) : null;
+        });
     }
 
     /** Pays held payouts on one line, oldest first, until one cannot be covered. Returns how many were paid. */

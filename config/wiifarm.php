@@ -25,13 +25,17 @@ return [
         // Members must have their identity verified (KYC) before they can withdraw.
         'withdrawals.kyc_required' => true,
 
-        // Until a member buys 10 PV of products in the month, 20% of each
+        // Until a member makes the monthly purchase below, 20% of each
         // matching bonus goes to their autoship wallet (sections 5.5 and 5.6;
         // open decision 7 asks whether this hold stays).
         'matching.autoship_hold' => true,
 
+        // The monthly purchase that keeps a member active, in PV (Revised
+        // Baseline Rules, 19 November 2026: 10.5 PV, ₦10,500).
+        'activity.monthly_pv' => 10.5,
+
         // A member earns the unilevel bonus for a month only if they bought
-        // 10 PV of products themselves that month (section 4; open decision 4).
+        // the monthly purchase themselves that month (section 4; open decision 4).
         'unilevel.activity_required' => true,
 
         // Who counts as a leader's "team" for the leadership bonus (section

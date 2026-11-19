@@ -24,8 +24,8 @@ class SettingsController extends Controller
         'verification.email_required' => 'Members must confirm their email address before they can use their dashboard.',
         'verification.mobile_required' => 'Members must confirm their phone number with an SMS code before they can use their dashboard.',
         'withdrawals.kyc_required' => 'Members must have their identity verified (KYC) before they can withdraw.',
-        'matching.autoship_hold' => 'Until a member buys 10 PV of products in the month, 20% of each matching bonus goes to their autoship wallet.',
-        'unilevel.activity_required' => 'A member earns the month\'s unilevel bonus only if they bought 10 PV of products themselves that month (open decision 4).',
+        'matching.autoship_hold' => 'Until a member makes their monthly purchase, 20% of each matching bonus goes to their autoship wallet.',
+        'unilevel.activity_required' => 'A member earns unilevel only if they made their monthly purchase that month (open decision 4).',
     ];
 
     public function edit(): Response
@@ -37,7 +37,27 @@ class SettingsController extends Controller
                 'value' => (bool) Settings::get($key),
             ])->values(),
             'leadership' => ['team' => Settings::get('leadership.team'), 'levels' => (int) Settings::get('leadership.levels')],
+            'monthlyPv' => (float) Settings::get('activity.monthly_pv'),
         ]);
+    }
+
+    /** The monthly purchase that keeps a member active (Revised Baseline Rules: 10.5 PV). */
+    public function updateActivity(Request $request, Audit $audit): RedirectResponse
+    {
+        $data = $request->validate(['monthly_pv' => ['required', 'numeric', 'min:0', 'max:1000', 'decimal:0,2']]);
+        /** @var Admin $admin */
+        $admin = $request->user('admin');
+        $old = (float) Settings::get('activity.monthly_pv');
+        $new = round((float) $data['monthly_pv'], 2);
+
+        if ($old !== $new) {
+            DB::transaction(function () use ($admin, $audit, $old, $new) {
+                Settings::set('activity.monthly_pv', $new, $admin->id);
+                $audit->record($admin, 'settings.edit', null, ['activity.monthly_pv' => $old], ['activity.monthly_pv' => $new], 'Monthly purchase requirement');
+            });
+        }
+
+        return back()->with('status', 'Monthly purchase requirement saved.');
     }
 
     /** Who counts as a leader's team for the leadership bonus (open decision 3). */

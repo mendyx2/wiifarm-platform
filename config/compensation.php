@@ -10,8 +10,8 @@ return [
     'indirect' => ['3.00', '2.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00'],
     'keyin' => '2.00',
     // Matching (5.5 and 5.6): the share held in the autoship wallet until the
-    // member buys this much PV of products in the month (hundredths of a PV).
-    'matching' => ['autoship_share' => '20.00', 'autoship_month_pv' => 1_000],
+    // member makes their monthly purchase (the "activity.monthly_pv" setting).
+    'matching' => ['autoship_share' => '20.00'],
     // Unilevel (5.10): shares of the PV value of each downline member's
     // repurchase PV that month, generation 1 to 15 up the referral chain
     // (the plan's unilevel table; owner, 19 November 2026). 40% in all.

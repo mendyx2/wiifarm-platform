@@ -8,7 +8,7 @@
  * contingency fund. Money never moves from one pool to pay another pool's
  * bonuses. Amounts are whole kobo; percentages are text with two decimals.
  *
- * The "schedule" below is version 1 of the allocation schedule. It is copied
+ * The "schedule" below is the allocation schedule a new installation starts with. It is copied
  * into the database when the app is installed, and every split records which
  * version it used, so a later change applies from then on, never backwards.
  */
@@ -84,8 +84,9 @@ return [
         'registration' => [
             'top' => ['B' => '1.00', 'A.contingency' => '2.30', 'L' => '10.00', 'net' => '86.70'],
             'net' => [
-                'A.direct' => '34.62', 'A.keyin' => '2.77', 'A.indirect' => '18.00',
-                'A.matching' => '16.61', 'A.leadership' => '9.50', 'A.stockist_rebate' => '18.50',
+                // Indirect at 17.99% (Revised Baseline Rules, 19 November 2026); the 0.01% left goes to the contingency fund.
+                'A.direct' => '34.62', 'A.keyin' => '2.77', 'A.indirect' => '17.99',
+                'A.matching' => '16.61', 'A.leadership' => '9.50', 'A.stockist_rebate' => '18.50', 'A.contingency' => '0.01',
             ],
         ],
         'upgrade' => [

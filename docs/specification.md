@@ -95,11 +95,11 @@ Every member has one place in a binary tree: one parent, and at most one child o
 | Product purchase | The product's PV × quantity | Matching and awards |
 | Stockist store activation | The store's PV (section 9) | **Awards only.** The plan says store PV "will only be counted for the award", so it goes to lifetime PV and never to pairing PV |
 
-**Repurchase PV** is a separate counter, used for the unilevel bonus (5.10) and repurchase awards (5.11). It is the PV of products a member buys after joining, including their monthly 10 PV authorship. Repurchase awards count the repurchase PV of a member's **1st to 10th generation** downline (the referral chain). The current system instead shares it with up to 50 tree uplines, and that is replaced.
+**Repurchase PV** is a separate counter, used for the unilevel bonus (5.10) and repurchase awards (5.11). It is the PV of products a member buys after joining, including their monthly purchase (10.5 PV, an admin setting; Revised Baseline Rules). Repurchase awards count the repurchase PV of a member's **1st to 10th generation** downline (the referral chain). The current system instead shares it with up to 50 tree uplines, and that is replaced.
 
 ## 4. Packages
 
-Every member holds one package. Its price is its PV × ₦1,000, while bonuses are worked out on PV × ₦600 (its "PV value", 60% of the price). It comes with a number of product packs. The package decides the direct bonus, the matching rate, the daily matching cap and how many unilevel generations the member is paid on. To stay active for the unilevel bonus, a member makes a **monthly authorship purchase of 10 PV**.
+Every member holds one package. Its price is its PV × ₦1,000, while bonuses are worked out on PV × ₦600 (its "PV value", 60% of the price). It comes with a number of product packs. The package decides the direct bonus, the matching rate, the daily matching cap and how many unilevel generations the member is paid on. To stay active, a member makes a **monthly purchase of 10.5 PV** (₦10,500; Revised Baseline Rules, 19 November 2026). The amount is an admin setting.
 
 | Package | Price | PV | Product packs | Direct bonus (25% of PV value) | Paid per match | Daily cap (matches) | Daily cap (₦) | Unilevel generations |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -167,7 +167,7 @@ The plan lists thirteen ways of earning. They are retail profit, the key-in, dir
 
 ### 5.6 Autoship
 
-- **Rule:** a member meets autoship for a calendar month by buying at least **10 PV** of products in that month.
+- **Rule:** a member meets autoship for a calendar month by making the monthly purchase (10.5 PV, section 4) in that month.
 - **Until then:** 20% of each matching bonus is held in their autoship wallet.
 - **Using it:** the autoship balance can only be spent on products.
 - **Month end:** an autoship balance not used by the end of the month goes to the cooperative, and the sweep is logged.
@@ -218,7 +218,7 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 
 ### 5.10 Unilevel bonus (15 generations)
 
-- **When:** each month, on the repurchase PV of a member's downline, including each downline member's 10 PV monthly authorship.
+- **When:** each month, on the repurchase PV of a member's downline, including each downline member's monthly purchase.
 - **Who:** up the referral chain. Each member is paid only on the generations their package unlocks (section 4).
 - **Rates (share of the PV value):**
 
@@ -232,7 +232,7 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 - **Example:** one 1st-generation member's 10 PV authorship (₦6,000) pays ₦420 (7%); the plan's own table shows 3 members' 10 PV paying ₦1,260.
 - **How it is run** (built November 2026):
   - On the first of each month (02:20 Lagos time), for every member who bought products in the month just ended, the 10 generations above them share in the PV value of what they bought. Each member's shares for the month are paid together, once. A missed month is caught up by the next run.
-  - A share is not paid to a banned member, a member whose package is not paid, the company account, a member whose package does not reach that generation or, while the admin switch is on (decision 4), a member who did not buy 10 PV of products themselves that month. Such a share is not passed on, and the generation still counts.
+  - A share is not paid to a banned member, a member whose package is not paid, the company account, a member whose package does not reach that generation or, while the admin switch is on (decision 4), a member who did not make the monthly purchase themselves that month. Such a share is not passed on, and the generation still counts.
   - What is left in the unilevel line after paying goes to the repurchase ledger's contingency fund. The line receives 49% of the cooperative's half of the price (₦367.50 a unit), more than the most the 15 generations can take (40% of the PV value, ₦360 a unit).
   - When the line and the contingency fund are short, a payout is held until they refill (section 7).
 - **Replaced:** the current system uses different rates (6%, 5%, 4%, 3%, 2%, then 1% and 0.5%) and different package depths. Both are replaced by the plan's.
@@ -317,7 +317,7 @@ The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xls
 
 | Ledger | Funded by | Taken off the top (of ₦750) | Shared out (of what is left) |
 | --- | --- | --- | --- |
-| **Registration (Pool A)** | First purchase: a new member's package | Strategic Reserve 1% (₦7.50), Contingency Reserve 2.3% (₦17.25), Executive Leaders 10% (₦75) | ₦650.25 (86.7%): direct 34.62% (₦225.12), indirect 18% (₦117.05), key-in 2.77% (₦18.01), binary matching 16.61% (₦108.01), leadership 9.5% (₦61.77), stockist rebate 18.5% (₦120.30). Adds up to 100%. |
+| **Registration (Pool A)** | First purchase: a new member's package | Strategic Reserve 1% (₦7.50), Contingency Reserve 2.3% (₦17.25), Executive Leaders 10% (₦75) | ₦650.25 (86.7%): direct 34.62% (₦225.12), indirect 17.99% (₦116.98; allocation schedule version 2, Revised Baseline Rules, 19 November 2026: the 0.01% left goes to the contingency fund, and the contingency fund covers the 2 kobo a piece the line is short of the ₦117 the bonus can pay), key-in 2.77% (₦18.01), binary matching 16.61% (₦108.01), leadership 9.5% (₦61.77), stockist rebate 18.5% (₦120.30). Adds up to 100%. |
 | **Repurchase (Pool C, Commerce)** | Members' repurchases | Nothing: the full ₦750 | Unilevel 49% (₦367.50), repurchase awards 10% (₦75), Sub-leaders 10% (₦75), stockist rebate 16% (₦120). The other 15% (₦112.50) goes to its contingency fund. |
 | **Upgrade (Pool E)** | The price difference of an upgrade | Strategic Reserve 1% (₦7.50), Executive Leaders 10% (₦75) | ₦667.50: upgrade bonuses 52.5% (₦350.44). The other ₦317.06 goes to its contingency fund. |
 | **Stockist activation (Pool D)** | A store's activation deposit | | Sub store (₦3M): 8% = ₦240,000. Mega store (₦10M): 6.5% = ₦650,000. Paid to 10 sponsor generations (section 9). |

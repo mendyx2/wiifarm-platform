@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\DB;
  * (PV × ₦600) of what they bought: 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%, 2%,
  * then 1% for generations 11 to 15 (40% in all).
  * A member is paid only on the generations their package unlocks (section 4)
- * and, while the admin switch is on, only if they bought 10 PV of products
+ * and, while the admin switch is on, only if they made the monthly purchase (10.5 PV) of products
  * themselves that month (open decision 4). Banned members, members whose
  * package is not paid and the company account are not paid either.
  *
@@ -108,7 +108,7 @@ class Unilevel
         $members = $this->chainMembers(array_keys($bought));
         $depth = Package::pluck('unilevel_generations', 'id')->map(fn ($v) => (int) $v)->all();
         $company = User::company()?->id;
-        $active = fn (int $id) => ! $activityRequired || ($bought[$id] ?? 0) >= (int) config('compensation.matching.autoship_month_pv');
+        $active = fn (int $id) => ! $activityRequired || ($bought[$id] ?? 0) >= MonthlyActivity::requiredPv();
 
         $earnings = [];
         $unpaid = 0;

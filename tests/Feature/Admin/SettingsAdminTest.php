@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Admin;
+use App\Services\Compensation\MonthlyActivity;
 use App\Support\Settings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -34,5 +35,20 @@ class SettingsAdminTest extends TestCase
         $this->put('/admin/settings', ['verification_email_required' => true, 'verification_mobile_required' => true, 'withdrawals_kyc_required' => true, 'matching_autoship_hold' => true, 'unilevel_activity_required' => true])->assertForbidden();
 
         $this->assertFalse(Settings::get('verification.email_required'));
+    }
+
+    public function test_the_monthly_purchase_requirement_is_a_setting_and_is_logged()
+    {
+        $this->assertSame(1_050, MonthlyActivity::requiredPv());   // 10.5 PV by default (Revised Baseline Rules)
+
+        $this->actingAs(Admin::factory()->withPermissions(['settings.view'])->create(), 'admin');
+        $this->put('/admin/settings/activity', ['monthly_pv' => '12'])->assertForbidden();
+
+        $this->actingAs(Admin::factory()->super()->create(), 'admin');
+        $this->put('/admin/settings/activity', ['monthly_pv' => 'a lot'])->assertSessionHasErrors('monthly_pv');
+        $this->put('/admin/settings/activity', ['monthly_pv' => '12.25'])->assertSessionHasNoErrors();
+
+        $this->assertSame(1_225, MonthlyActivity::requiredPv());
+        $this->assertDatabaseHas('audit_logs', ['action' => 'settings.edit', 'note' => 'Monthly purchase requirement']);
     }
 }

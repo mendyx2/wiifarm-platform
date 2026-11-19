@@ -102,7 +102,7 @@ Nothing below is built yet except the 15-generation unilevel (notes step 31).
 
 | Step | What | Waits for |
 | --- | --- | --- |
-| 1 | Schedule version 2 (indirect 17.99%); the 10.5 PV setting | nothing |
+| 1 | Schedule version 2 (indirect 17.99%); the 10.5 PV setting | Done (notes step 33) |
 | 2 | Frozen matching for inactive members; the autoship hold switched off or removed | questions 1 and 2 |
 | 3 | Unilevel in real time on each repurchase | question 3 |
 | 4 | Awards: rank detection with the PDF's thresholds and conditions, admin approval, cash or gift, UCB; repurchase awards with the incremental rule; both held when their pools are short | nothing |

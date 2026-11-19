@@ -101,10 +101,10 @@ class MatchingTest extends NetworkTestCase
         $this->assertSame(0, MemberMatch::count());   // the company account at the top has PV on both legs too
     }
 
-    public function test_no_autoship_share_once_the_month_has_10_pv_of_purchases_or_with_the_switch_off()
+    public function test_no_autoship_share_once_the_monthly_purchase_is_made_or_with_the_switch_off()
     {
         $bought = $this->withLegs('bought', 100, 100);
-        $this->ledger->transfer($this->ledger->systemAccount('pv.issued'), $this->ledger->repurchasePvAccount($bought), 1_000, 'test.pv', 'test:bought');
+        $this->ledger->transfer($this->ledger->systemAccount('pv.issued'), $this->ledger->repurchasePvAccount($bought), 1_050, 'test.pv', 'test:bought');   // the 10.5 PV monthly purchase
 
         $this->runDay(CarbonImmutable::now('Africa/Lagos')->toDateString());
         $this->assertSame([720_000, 0], [$this->wallet($bought, 'bonus.matching'), $this->wallet($bought, 'autoship')]);   // 2 × ₦3,600

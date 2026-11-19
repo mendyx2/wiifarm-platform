@@ -35,7 +35,7 @@ class DashboardTest extends NetworkTestCase
             ->where('team.waiting', 1)
             ->where('team.size', ['L' => 1, 'R' => 0])
             ->where('toCollect', 1)                                           // their own Starter packs
-            ->where('autoship', ['bought' => 0, 'needed' => 1_000, 'hold' => true, 'unilevel' => true])
+            ->where('autoship', ['bought' => 0, 'needed' => 1_050, 'hold' => true, 'unilevel' => true])
             ->where('recent.0.wallet', 'Direct referral bonus')
             ->where('recent.0.amount', 225_000)
             ->where('lastMatch', null));
