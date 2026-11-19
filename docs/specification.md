@@ -228,7 +228,7 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 
 ### 5.10 Unilevel bonus (15 generations)
 
-- **When:** each month, on the repurchase PV of a member's downline, including each downline member's monthly purchase.
+- **When:** at once, on every product repurchase by a member of the downline, including each one's monthly purchase (Revised Baseline Rules: "calculated in real-time on every member repurchase").
 - **Who:** up the referral chain. Each member is paid only on the generations their package unlocks (section 4).
 - **Rates (share of the PV value):**
 
@@ -237,14 +237,14 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 | Rate | 7% | 5% | 4% | 4% | 3% | 3% | 3% | 2% | 2% | 2% | 1% | 1% | 1% | 1% | 1% |
 
 40% in all, from the plan's unilevel table (owner, 19 November 2026). Each package reaches the generations in section 4: Pre Starter 4, Starter 6, Builder and Booster 10, Executive 12, Advance 13, Mega 15.
-- **Funded by:** the repurchase ledger's unilevel line (₦367.50 a unit, section 7). A unit pays at most ₦360 when all 15 uplines qualify, so the line covers it; what is left goes to the repurchase ledger's contingency fund.
+- **Funded by:** the repurchase ledger's unilevel line (₦367.50 a unit, section 7). A unit pays at most ₦360 when all 15 uplines qualify, so the line covers it.
 
 - **Example:** one 1st-generation member's 10 PV authorship (₦6,000) pays ₦420 (7%); the plan's own table shows 3 members' 10 PV paying ₦1,260.
 - **How it is run** (built November 2026):
-  - On the first of each month (02:20 Lagos time), for every member who bought products in the month just ended, the 10 generations above them share in the PV value of what they bought. Each member's shares for the month are paid together, once. A missed month is caught up by the next run.
-  - A share is not paid to a banned member, a member whose package is not paid, the company account, a member whose package does not reach that generation or, while the admin switch is on (decision 4), a member who did not make the monthly purchase themselves that month. Such a share is not passed on, and the generation still counts.
-  - What is left in the unilevel line after paying goes to the repurchase ledger's contingency fund. The line receives 49% of the cooperative's half of the price (₦367.50 a unit), more than the most the 15 generations can take (40% of the PV value, ₦360 a unit).
-  - When the line and the contingency fund are short, a payout is held until they refill (section 7).
+  - The moment a member's repurchase is paid, each of the 15 generations above them is paid their share of its PV value into their unilevel wallet, once per order.
+  - A share is not paid to a banned member, a member whose package is not paid, the company account or a member whose package does not reach that generation. Such a share is not passed on, and the generation still counts.
+  - An upline does not need to have made their own monthly purchase to earn unilevel: the monthly purchase decides the autoship hold on matching (5.6), and the baseline bases unilevel on "the upline's active package" (decision 4).
+  - When the line and the contingency fund are short, a share is held until they refill (section 7).
 - **Replaced:** the current system uses different rates (6%, 5%, 4%, 3%, 2%, then 1% and 0.5%) and different package depths. Both are replaced by the plan's.
 
 ### 5.11 Repurchase awards
@@ -535,7 +535,6 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Hourly | Pay any ACB and leadership bonuses still due; qualify new leaders |
 | Daily 00:00 | Savings contributions and loan repayments due today |
 | Daily 01:30 | Matching bonus run (5.5) |
-| Daily 02:20, acts once a month | Unilevel bonus for the month just ended (5.10) |
 | Daily 02:30, acts once a month | Leadership bonus for the month just ended (5.7) |
 | Daily 02:00 | Record members newly qualified for a recognition or repurchase award (5.8, 5.11) |
 | Daily 03:00 | Full database backup, kept 30 days |
@@ -559,7 +558,7 @@ The specification can be signed off once the board settles the points below.
 - [x] **1. Plan versus budget.** Settled for the direct, indirect, key-in, upgrade and stockist lines by Blueprint V3 (section 7): each line now holds what the plan pays. Still open for matching, unilevel and awards (17 and 18 below). *Earlier question:* Several plan payouts are larger than their blueprint budget lines. Direct is 25% of package value against a 6% line, and unilevel can reach 49% across 15 generations against 9%. When a payout would overrun its line, should it be paid in full and reported, capped at the line, or should the plan or the budget be revised?
 - [x] **2. Funding between engines.** Settled by Blueprint V3: each kind of purchase funds its own ledger (section 7). *Earlier question:* Does revenue from registrations fund only the Consumer Rewards Pool and commerce revenue only the Commerce Pool? Or is every payment split across all three pools in the 22 / 24.75 / 8.25 ratio?
 - [ ] **3. Leadership bonus team.** Does "5% of what your team members earn from matching" cover the whole downline, or a set number of levels or generations? Is it counted through the tree or the referral chain? *Built as an admin setting, starting with the whole binary-tree downline (5.7). Also: when one leader is in another leader's team, should both earn on the same matching (as built), or should the upper leader skip the lower leader's team?*
-- [ ] **4. Unilevel activity.** Must the earner make their own 10 PV authorship in a month to receive that month's unilevel bonus? *Built as an admin switch, on by default (section 4 says the 10 PV purchase keeps a member active for unilevel).*
+- [x] **4. Unilevel activity.** Settled from the Revised Baseline Rules and the leader's answers (19 November 2026): unilevel is paid at each repurchase on the upline's active package; the monthly purchase decides the autoship hold on matching, not unilevel. Please confirm.
 - [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
 - [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).
 - [x] **7. Autoship hold.** Settled (19 November 2026): the 20% hold stays, released when the month's autoship is made, kept by the cooperative if it is not made by the end of the next month's first week (5.6). It remains an admin switch, on.

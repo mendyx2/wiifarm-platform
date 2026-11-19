@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 /**
  * The monthly purchase ("autoship"): 10.5 PV (₦10,500) of products a
  * calendar month, an admin setting (Revised Baseline Rules; the owner, after
- * speaking with a leader, 19 November 2026).
+ * speaking with a leader, 19 November 2026). It releases the matching held
+ * until autoship (the Autoship service).
  *
  * A month's autoship can still be made in the first week of the next month
  * ("the system calls for the previous month's autoship in the first week").

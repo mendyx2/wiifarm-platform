@@ -1888,3 +1888,38 @@ they shipped:
   an admin switch, on), and so whether unilevel should be paid at the moment
   of each purchase;
 - who counts as a leader's team (decision 3).
+
+## Step 39: The unilevel bonus is paid at each repurchase
+
+The Revised Baseline Rules say unilevel is "calculated in real-time on every
+member repurchase ... based on the upline's active package". This change was
+written in an earlier session that ended before it was committed; the owner
+asked me to keep it if it fits the current decisions. I reviewed it: it
+does, and it passes every check.
+
+- **When a member's repurchase is paid,** the 15 generations above them are
+  paid their shares (7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%, 2%, then 1% for
+  generations 11 to 15) at once, into their unilevel wallets, once per
+  order. There is no monthly unilevel run any more.
+- **Who is not paid** is unchanged:
+    - a banned member;
+    - a member whose package is not paid;
+    - the company account;
+    - a package that does not reach that generation.
+
+  The generation still counts.
+- **No monthly purchase needed for unilevel:**
+    - the leader said the 10.5 PV decides the 20% autoship hold on matching;
+    - the baseline bases unilevel on the upline's active package.
+
+  So the "Monthly purchase needed to earn the unilevel bonus" switch is
+  removed. This settles decision 4; the owner is asked to confirm.
+- **Removed:** the monthly run's command, tables (a migration drops them),
+  admin pages and menu item. Every unilevel payment is in the ledger, with
+  the order it came from.
+- **Tests:** 289 pass. The monthly-run tests went with the monthly run; the
+  unilevel tests now cover:
+    - 15 generations paid at once and only once;
+    - package depth;
+    - an upline without a monthly purchase still being paid;
+    - banned and company uplines.

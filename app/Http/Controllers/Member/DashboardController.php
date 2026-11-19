@@ -61,12 +61,10 @@ class DashboardController extends Controller
                 'day' => $lastMatch->run->day, 'matches' => $lastMatch->matches, 'amount' => $lastMatch->amount,
                 'capped' => $lastMatch->capped, 'status' => $lastMatch->currentStatus(),
             ] : null,
-            // This month's monthly purchase: it lifts the autoship hold and keeps the unilevel bonus (when those rules are on).
-            'autoship' => Settings::get('matching.autoship_hold') || Settings::get('unilevel.activity_required') ? [
+            // This month's autoship purchase: it releases the matching held until autoship (while that rule is on).
+            'autoship' => Settings::get('matching.autoship_hold') ? [
                 'bought' => app(MonthlyActivity::class)->creditFor($member, MonthlyActivity::monthOf(CarbonImmutable::now())),
                 'needed' => MonthlyActivity::requiredPv(),
-                'hold' => (bool) Settings::get('matching.autoship_hold'),
-                'unilevel' => (bool) Settings::get('unilevel.activity_required'),
             ] : null,
             'leadership' => [
                 'pv' => min(($pvLegs = $ledger->pvBalances($member))['L']['lifetime'], $pvLegs['R']['lifetime']),   // the lesser leg

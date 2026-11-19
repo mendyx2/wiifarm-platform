@@ -35,7 +35,7 @@ class DashboardTest extends NetworkTestCase
             ->where('team.waiting', 1)
             ->where('team.size', ['L' => 1, 'R' => 0])
             ->where('toCollect', 1)                                           // their own Starter packs
-            ->where('autoship', ['bought' => 0, 'needed' => 1_050, 'hold' => true, 'unilevel' => true])
+            ->where('autoship', ['bought' => 0, 'needed' => 1_050])
             ->where('recent.0.wallet', 'Direct referral bonus')
             ->where('recent.0.amount', 225_000)
             ->where('lastMatch', null));
@@ -43,7 +43,6 @@ class DashboardTest extends NetworkTestCase
         // Moving the bonus to the main balance does not change what was earned.
         $this->post('/wallet/transfer', ['wallet' => 'bonus.direct', 'amount' => '2250', 'form_id' => (string) Str::uuid()]);
         Settings::set('matching.autoship_hold', false);
-        Settings::set('unilevel.activity_required', false);
         $this->get('/dashboard')->assertInertia(fn ($page) => $page
             ->where('money.bonuses', 0)->where('money.earned', 225_000)->where('money.main', 225_000)->where('autoship', null));
     }

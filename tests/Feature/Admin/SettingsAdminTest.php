@@ -17,7 +17,7 @@ class SettingsAdminTest extends TestCase
         $admin = Admin::factory()->super()->create();
 
         $this->actingAs($admin, 'admin')->get('/admin/settings')->assertOk();
-        $this->put('/admin/settings', ['verification_email_required' => true, 'verification_mobile_required' => false, 'withdrawals_kyc_required' => true, 'matching_autoship_hold' => true, 'unilevel_activity_required' => true])->assertSessionHasNoErrors();
+        $this->put('/admin/settings', ['verification_email_required' => true, 'verification_mobile_required' => false, 'withdrawals_kyc_required' => true, 'matching_autoship_hold' => true])->assertSessionHasNoErrors();
 
         $this->assertTrue(Settings::get('verification.email_required'));
         $this->assertFalse(Settings::get('verification.mobile_required'));
@@ -32,7 +32,7 @@ class SettingsAdminTest extends TestCase
         $this->actingAs(Admin::factory()->withPermissions(['settings.view'])->create(), 'admin');
 
         $this->get('/admin/settings')->assertOk();
-        $this->put('/admin/settings', ['verification_email_required' => true, 'verification_mobile_required' => true, 'withdrawals_kyc_required' => true, 'matching_autoship_hold' => true, 'unilevel_activity_required' => true])->assertForbidden();
+        $this->put('/admin/settings', ['verification_email_required' => true, 'verification_mobile_required' => true, 'withdrawals_kyc_required' => true, 'matching_autoship_hold' => true])->assertForbidden();
 
         $this->assertFalse(Settings::get('verification.email_required'));
     }

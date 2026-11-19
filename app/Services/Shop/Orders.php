@@ -9,6 +9,7 @@ use App\Models\Pools\Manufacturer;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use App\Models\User;
+use App\Services\Compensation\Unilevel;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\PvClimb;
 use App\Services\Pools\PaymentSplit;
@@ -36,6 +37,7 @@ class Orders
         private readonly Ledger $ledger,
         private readonly PaymentSplit $split,
         private readonly PvClimb $climb,
+        private readonly Unilevel $unilevel,
     ) {}
 
     /** The packs that come with a package; created when the package is paid. */
@@ -122,6 +124,9 @@ class Orders
                 [$this->ledger->systemAccount('pv.issued'), -$order->pv],
                 [$this->ledger->repurchasePvAccount($member), $order->pv],
             ], "Order {$order->number}", $order);
+
+            // 4. The unilevel bonus, at once, to 15 generations of the buyer's referral chain (5.10).
+            $this->unilevel->forOrder($order, $member);
 
             return $this->markPaid($order, $wallet, $key);
         });

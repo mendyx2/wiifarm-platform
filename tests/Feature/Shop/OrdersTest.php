@@ -73,7 +73,10 @@ class OrdersTest extends NetworkTestCase
         $this->assertSame([Order::REPURCHASE, Order::PAID, 1_500_000, 1500], [$order->kind, $order->status, $order->amount, $order->pv]);
         $this->assertSame(1_500_000, $ledger->balances($buyer)['main']);                                     // ₦15,000 paid
         $this->assertSame(750_000, $ledger->balance($ledger->manufacturerAccount(Manufacturer::firstOrFail())) - $makerBefore);
-        $this->assertSame(367_500, $ledger->balance($ledger->poolAccount('C', 'unilevel')));                // 49% of ₦7,500
+        // Pool C's unilevel line received ₦3,675 (49% of ₦7,500) and paid the unilevel bonus at once: 7% of the ₦9,000
+        // PV value (₦630) to the sponsor; the rest of the 40% (₦2,970) had nobody to receive it and went to the contingency fund.
+        $this->assertSame(63_000, $ledger->balances($sponsor)['bonus.unilevel']);
+        $this->assertSame(7_500, $ledger->balance($ledger->poolAccount('C', 'unilevel')));
         $this->assertSame(15.0 + 15.0, $this->pv($sponsor, 'L'));                                            // joining + the purchase
         $this->assertSame(1500, $ledger->balance($ledger->repurchasePvAccount($buyer)));                    // 15 PV on their own log
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();

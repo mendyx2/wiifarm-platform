@@ -104,7 +104,7 @@ Nothing below is built yet except the 15-generation unilevel (notes step 31).
 | --- | --- | --- |
 | 1 | Schedule version 2 (indirect 17.99%); the 10.5 PV setting | Done (notes step 33) |
 | 2 | ~~Frozen matching~~: replaced by the autoship hold, released or kept (owner's answers, 19 November) | Done (notes step 38) |
-| 3 | Unilevel in real time on each repurchase | question 3 |
+| 3 | Unilevel in real time on each repurchase | Done (notes step 39) |
 | 4 | Awards: rank detection with the PDF's thresholds and conditions, admin approval, cash or gift, UCB; repurchase awards with the incremental rule; both held when their pools are short | Done (notes step 34) |
 | 5 | Leadership on 480,000 PV on the lesser leg | Done (notes step 38) |
 | 6 | Store deposit: half to the manufacturer, the bonus from the other half | Done (notes step 38) |
@@ -115,4 +115,4 @@ Nothing below is built yet except the 15-generation unilevel (notes step 31).
 2. **Stores.** Products are supplied at their ₦750 face value; the 8% / 6.5% sponsor bonus is deducted from the other half of the ₦3M / ₦10M. (Question 4.)
 3. **Leadership.** 480,000 PV on the lesser leg is enough. (Question 5.)
 
-Question 3 (whether an upline needs their own 10.5 PV for unilevel) was not answered; it stays an admin switch, on (decision 4). The unilevel bonus stays monthly; paying it at the moment of each purchase (change 5 above) waits for that answer.
+Question 3 (whether an upline needs their own 10.5 PV for unilevel): read from the baseline ("based on the upline's active package") and the leader's answer (the 10.5 PV decides the matching hold): no. Unilevel is now paid at each repurchase (notes step 39).

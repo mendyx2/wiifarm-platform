@@ -34,10 +34,6 @@ return [
         // Baseline Rules, 19 November 2026: 10.5 PV, ₦10,500).
         'activity.monthly_pv' => 10.5,
 
-        // A member earns the unilevel bonus for a month only if they bought
-        // the monthly purchase themselves that month (section 4; open decision 4).
-        'unilevel.activity_required' => true,
-
         // Who counts as a leader's "team" for the leadership bonus (section
         // 5.7; open decision 3): "tree" (everyone below them in the binary
         // tree) or "sponsor" (everyone down their sponsor chain), to this many

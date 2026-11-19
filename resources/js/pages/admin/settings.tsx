@@ -23,7 +23,6 @@ const titles: Record<string, string> = {
     'verification.mobile_required': 'Phone confirmation required',
     'withdrawals.kyc_required': 'Identity check (KYC) before withdrawing',
     'matching.autoship_hold': 'Autoship hold on matching bonuses',
-    'unilevel.activity_required': 'Monthly purchase needed to earn the unilevel bonus',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */
@@ -90,8 +89,8 @@ function MonthlyPurchase({ value, editable }: { value: number; editable: boolean
             <CardHeader>
                 <CardTitle className="text-base">Monthly purchase requirement</CardTitle>
                 <CardDescription>
-                    The PV of products a member buys each calendar month to stay active (Revised Baseline Rules: 10.5 PV, ₦10,500). It lifts the
-                    autoship hold and, while that switch is on, keeps the unilevel bonus. Changes are saved in the audit log.
+                    The PV of products a member buys each calendar month to stay active (Revised Baseline Rules: 10.5 PV, ₦10,500). It decides the
+                    autoship hold on matching. Changes are saved in the audit log.
                 </CardDescription>
             </CardHeader>
             <CardContent>

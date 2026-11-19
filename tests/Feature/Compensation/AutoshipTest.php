@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Services\Compensation\Autoship;
 use App\Services\Compensation\Matching;
 use App\Services\Compensation\MonthlyActivity;
-use App\Services\Compensation\Unilevel;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\PvClimb;
 use App\Services\Shop\Orders;
@@ -134,13 +133,5 @@ class AutoshipTest extends NetworkTestCase
         app(Matching::class)->run(CarbonImmutable::parse('2026-10-01'));
 
         $this->assertSame([720_000, 0], $this->wallets($member));
-    }
-
-    public function test_unilevel_waits_for_the_first_week_to_end()
-    {
-        $this->at('2026-11-05 10:00');
-        $this->assertSame('2026-09', Unilevel::lastClosedMonth());   // October's autoship can still be made
-        $this->at('2026-11-08 10:00');
-        $this->assertSame('2026-10', Unilevel::lastClosedMonth());
     }
 }

@@ -20,7 +20,6 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockistController;
-use App\Http\Controllers\Admin\UnilevelController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
@@ -115,8 +114,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::middleware('admin.can:matching.view')->group(function () {
             Route::get('leadership', [LeadershipController::class, 'index'])->name('leadership.index');
             Route::get('leadership/{run}', [LeadershipController::class, 'show'])->name('leadership.show');
-            Route::get('unilevel', [UnilevelController::class, 'index'])->name('unilevel.index');
-            Route::get('unilevel/{run}', [UnilevelController::class, 'show'])->name('unilevel.show');
             Route::get('matching', [MatchingController::class, 'index'])->name('matching.index');
             Route::get('matching/{run}', [MatchingController::class, 'show'])->name('matching.show');
         });
