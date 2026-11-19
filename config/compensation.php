@@ -13,8 +13,9 @@ return [
     // member buys this much PV of products in the month (hundredths of a PV).
     'matching' => ['autoship_share' => '20.00', 'autoship_month_pv' => 1_000],
     // Unilevel (5.10): shares of the PV value of each downline member's
-    // repurchase PV that month, generation 1 to 10 up the referral chain.
-    'unilevel' => ['10.00', '7.00', '5.00', '4.00', '4.00', '3.00', '3.00', '3.00', '2.00', '2.00'],
+    // repurchase PV that month, generation 1 to 15 up the referral chain
+    // (the plan's unilevel table; owner, 19 November 2026). 40% in all.
+    'unilevel' => ['7.00', '5.00', '4.00', '4.00', '3.00', '3.00', '3.00', '2.00', '2.00', '2.00', '1.00', '1.00', '1.00', '1.00', '1.00'],
 
     // Leadership (5.7): a leader has this much repurchase PV (hundredths:
     // 480,000 PV), and earns this share of what their team earns from matching.

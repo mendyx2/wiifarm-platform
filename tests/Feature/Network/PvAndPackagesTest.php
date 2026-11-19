@@ -26,9 +26,8 @@ class PvAndPackagesTest extends NetworkTestCase
         $this->assertSame(30, $mega->product_packs);
         $this->assertSame(120, $mega->daily_cap_matches);
         $this->assertSame(7, Package::count());
-        // Unilevel never goes beyond the 10th generation (board, November 2026).
-        $this->assertSame(10, $mega->unilevel_generations);
-        $this->assertSame(10, (int) Package::max('unilevel_generations'));
+        // Unilevel reaches 4, 6, 10, 10, 12, 13 and 15 generations (the plan's table; owner, 19 November 2026).
+        $this->assertSame([4, 6, 10, 10, 12, 13, 15], Package::orderBy('sort')->pluck('unilevel_generations')->map(fn ($g) => (int) $g)->all());
     }
 
     public function test_pv_climbs_to_every_upline_on_the_leg_the_member_sits_under()

@@ -18,9 +18,10 @@ use Illuminate\Support\Facades\DB;
  * The unilevel bonus (specification section 5.10), paid once a month for
  * the month just ended.
  *
- * For every member who bought products that month, each of the 10
+ * For every member who bought products that month, each of the 15
  * generations above them in the referral chain earns a share of the PV value
- * (PV × ₦600) of what they bought: 10%, 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%.
+ * (PV × ₦600) of what they bought: 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%, 2%,
+ * then 1% for generations 11 to 15 (40% in all).
  * A member is paid only on the generations their package unlocks (section 4)
  * and, while the admin switch is on, only if they bought 10 PV of products
  * themselves that month (open decision 4). Banned members, members whose
@@ -34,7 +35,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Unilevel
 {
-    public const GENERATIONS = 10;
+    public const GENERATIONS = 15;
 
     public function __construct(private readonly Ledger $ledger, private readonly PoolPayouts $payouts) {}
 
@@ -67,8 +68,7 @@ class Unilevel
 
         $totals = $run->lines()->selectRaw('COUNT(*) as earners, COALESCE(SUM(amount), 0) as amount')->first();
         $run->forceFill([
-            // What was actually moved: what is left in the line. The line holds 49% of the cooperative's half of the price,
-            // a little less than 43% of the PV value, so unpaid shares can be worth more than the line still holds.
+            // What was actually moved: what is left in the line, never more than the line holds.
             'status' => UnilevelRun::DONE, 'finished_at' => now(), 'repurchase_pv' => array_sum($bought), 'unpaid' => max(0, $move),
             'earners' => (int) $totals->earners, 'amount' => (int) $totals->amount,
         ])->save();
@@ -136,7 +136,7 @@ class Unilevel
     }
 
     /**
-     * The buyers and the 10 generations above them, loaded a generation at a time.
+     * The buyers and the 15 generations above them, loaded a generation at a time.
      *
      * @param  list<int>  $buyerIds
      * @return array<int, User>

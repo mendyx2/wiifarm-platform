@@ -30,7 +30,7 @@ export default function UnilevelRuns({ runs, rates }: { runs: Paginated<Run>; ra
             <Head title="Unilevel" />
             <div className="space-y-4 p-4">
                 <p className="text-muted-foreground max-w-3xl text-sm">
-                    On the first of each month, the 10 generations above every member who bought products earn a share of its PV value:{' '}
+                    On the first of each month, the 15 generations above every member who bought products earn a share of its PV value:{' '}
                     {rates.map((r) => `${Number(r)}%`).join(', ')}, each only as deep as their package reaches. Paid from the repurchase ledger’s
                     unilevel line; shares nobody can receive go to its contingency fund.
                 </p>

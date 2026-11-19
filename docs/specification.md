@@ -105,13 +105,13 @@ Every member holds one package. Its price is its PV × ₦1,000, while bonuses a
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Pre Starter | ₦15,000 | 15 | 1 | ₦2,250 | ₦900 (3%) | 5 | ₦4,500 | 1–4 |
 | Starter | ₦30,000 | 30 | 2 | ₦4,500 | ₦1,500 (5%) | 7 | ₦10,500 | 1–6 |
-| Builder | ₦60,000 | 60 | 4 | ₦9,000 | ₦2,100 (7%) | 10 | ₦21,000 | 1–8 |
+| Builder | ₦60,000 | 60 | 4 | ₦9,000 | ₦2,100 (7%) | 10 | ₦21,000 | 1–10 |
 | Booster | ₦105,000 | 105 | 7 | ₦15,750 | ₦2,400 (8%) | 30 | ₦72,000 | 1–10 |
-| Executive | ₦150,000 | 150 | 10 | ₦22,500 | ₦2,700 (9%) | 60 | ₦162,000 | 1–10 |
-| Advance | ₦255,000 | 255 | 17 | ₦38,250 | ₦3,000 (10%) | 90 | ₦270,000 | 1–10 |
-| Mega | ₦450,000 | 450 | 30 | ₦67,500 | ₦3,600 (12%) | 120 | ₦432,000 | 1–10 |
+| Executive | ₦150,000 | 150 | 10 | ₦22,500 | ₦2,700 (9%) | 60 | ₦162,000 | 1–12 |
+| Advance | ₦255,000 | 255 | 17 | ₦38,250 | ₦3,000 (10%) | 90 | ₦270,000 | 1–13 |
+| Mega | ₦450,000 | 450 | 30 | ₦67,500 | ₦3,600 (12%) | 120 | ₦432,000 | 1–15 |
 
-Generations never go beyond the 10th (board, November 2026), so Booster and every package above it reach all 10 unilevel generations.
+The unilevel generations follow the plan's unilevel table, up to the 15th (owner, 19 November 2026, from the plan document "Wiifarm Coop Binary System"). The indirect referral bonus, the upgrade bonus, store PV and the stockist sponsor bonus stay at 10 generations.
 
 "Paid per match" is a percentage of one match's value: 50 PV × ₦600 = ₦30,000.
 
@@ -216,24 +216,24 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 - **When:** a member receives a binary award or a repurchase award.
 - **Who and how much:** their sponsor gets 5% of the award's value, generation 2 gets 2%, and generation 3 gets 1%.
 
-### 5.10 Unilevel bonus (10 generations)
+### 5.10 Unilevel bonus (15 generations)
 
 - **When:** each month, on the repurchase PV of a member's downline, including each downline member's 10 PV monthly authorship.
 - **Who:** up the referral chain. Each member is paid only on the generations their package unlocks (section 4).
 - **Rates (share of the PV value):**
 
-| Generation | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Rate | 10% | 7% | 5% | 4% | 4% | 3% | 3% | 3% | 2% | 2% |
+| Generation | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Rate | 7% | 5% | 4% | 4% | 3% | 3% | 3% | 2% | 2% | 2% | 1% | 1% | 1% | 1% | 1% |
 
-43% in all. The plan's 11th to 15th generations are dropped (board, November 2026).
-- **Funded by:** the repurchase ledger's unilevel line (₦367.50 a unit, section 7). A unit can pay up to ₦387 when all 10 uplines qualify; the difference comes from the repurchase ledger's own contingency fund (section 7).
+40% in all, from the plan's unilevel table (owner, 19 November 2026). Each package reaches the generations in section 4: Pre Starter 4, Starter 6, Builder and Booster 10, Executive 12, Advance 13, Mega 15.
+- **Funded by:** the repurchase ledger's unilevel line (₦367.50 a unit, section 7). A unit pays at most ₦360 when all 15 uplines qualify, so the line covers it; what is left goes to the repurchase ledger's contingency fund.
 
-- **Example:** one 1st-generation member's 10 PV authorship (₦6,000) pays ₦600.
+- **Example:** one 1st-generation member's 10 PV authorship (₦6,000) pays ₦420 (7%); the plan's own table shows 3 members' 10 PV paying ₦1,260.
 - **How it is run** (built November 2026):
   - On the first of each month (02:20 Lagos time), for every member who bought products in the month just ended, the 10 generations above them share in the PV value of what they bought. Each member's shares for the month are paid together, once. A missed month is caught up by the next run.
   - A share is not paid to a banned member, a member whose package is not paid, the company account, a member whose package does not reach that generation or, while the admin switch is on (decision 4), a member who did not buy 10 PV of products themselves that month. Such a share is not passed on, and the generation still counts.
-  - What is left in the unilevel line after paying goes to the repurchase ledger's contingency fund. The line receives 49% of the cooperative's half of the price, which is a little less than 43% of the PV value, so when all 10 generations are paid the contingency fund covers the gap.
+  - What is left in the unilevel line after paying goes to the repurchase ledger's contingency fund. The line receives 49% of the cooperative's half of the price (₦367.50 a unit), more than the most the 15 generations can take (40% of the PV value, ₦360 a unit).
   - When the line and the contingency fund are short, a payout is held until they refill (section 7).
 - **Replaced:** the current system uses different rates (6%, 5%, 4%, 3%, 2%, then 1% and 0.5%) and different package depths. Both are replaced by the plan's.
 
@@ -567,7 +567,7 @@ The specification can be signed off once the board settles the points below.
 - [x] **17. Recognition awards.** Settled: the Strategic Reserve is 1%, so recognition awards receive ₦5.25 a unit (section 7). Awards the pool cannot cover yet are held until it refills, oldest first. At that rate an ₦80,000 Emerald award needs the reserve from about 15,200 registration units, so awards will often wait.
 - [x] **18. When a line runs short.** Settled: covered from the same ledger's contingency fund; if that is empty too, held until it refills, oldest first (section 7).
 - [x] **19. Contingency Reserve and safety nets.** Settled: every reserve and leftover goes into a contingency fund kept per ledger, used only for that ledger's shortfalls; unpaid shares stay with the cooperative, in that fund (section 7).
-- [x] **20. Unilevel depth.** Settled: 10 generations, never 15 (sections 4 and 5.10).
+- [x] **20. Unilevel depth.** Settled: 15 generations at the plan's rates (owner, 19 November 2026; sections 4 and 5.10). This replaces the earlier "10 generations, never 15"; the indirect referral bonus stays at 10 generations.
 - [ ] **21. Repurchase award schedule.** The milestone schedule the board refers to has not been received. Is it the table in 5.11? That table also costs more than its ₦75 a unit.
 - [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
 - [x] **23. Public shop split.** Settled: affiliate ₦100 (20% of the ₦500 margin), the stockist's usual ₦120 / ₦90, the rest to the manufacturing company; nothing to the cooperative, no PV. Anyone can be an affiliate, member or not (section 8).

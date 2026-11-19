@@ -25,8 +25,8 @@ class UnilevelTest extends NetworkTestCase
 
     private string $month;
 
-    /** The shares of ₦6,300 (10.5 PV) for generations 1 to 10: 10%, 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%. */
-    private const SHARES = [63_000, 44_100, 31_500, 25_200, 25_200, 18_900, 18_900, 18_900, 12_600, 12_600];
+    /** The shares of ₦6,300 (10.5 PV) for generations 1 to 15: 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%, 2%, then 1% for 11 to 15. */
+    private const SHARES = [44_100, 31_500, 25_200, 25_200, 18_900, 18_900, 18_900, 12_600, 12_600, 12_600, 6_300, 6_300, 6_300, 6_300, 6_300];
 
     protected function setUp(): void
     {
@@ -66,10 +66,10 @@ class UnilevelTest extends NetworkTestCase
         return app(Unilevel::class)->run($this->month);
     }
 
-    public function test_ten_generations_share_the_pv_value_of_a_purchase_once()
+    public function test_fifteen_generations_share_the_pv_value_of_a_purchase_once()
     {
         Settings::set('unilevel.activity_required', false);
-        $gens = $this->chain(11);                              // the 11th earns nothing
+        $gens = $this->chain(16);                              // the 16th earns nothing
         $buyer = $this->join('the_buyer', sponsor: $gens[0]);
         $this->buys($buyer);
 
@@ -79,9 +79,11 @@ class UnilevelTest extends NetworkTestCase
         foreach (self::SHARES as $i => $share) {
             $this->assertSame($share, $this->wallet($gens[$i]), 'generation '.($i + 1));
         }
-        $this->assertSame(0, $this->wallet($gens[10]));
-        $this->assertSame([10, 270_900, 1_050], [$run->earners, $run->amount, $run->repurchase_pv]);   // 43% of ₦6,300
-        $this->assertSame([1 => 63_000], UnilevelPayout::where('user_id', $gens[0]->id)->sole()->by_generation);
+        $this->assertSame(0, $this->wallet($gens[15]));
+        $this->assertSame([15, 252_000, 1_050], [$run->earners, $run->amount, $run->repurchase_pv]);   // 40% of ₦6,300
+        $this->assertSame([1 => 44_100], UnilevelPayout::where('user_id', $gens[0]->id)->sole()->by_generation);
+        // The line received ₦2,572.50 (49% of the cooperative's ₦5,250): enough for all 15 generations (₦2,520).
+        $this->assertSame(5_250, $this->ledger->balance($this->ledger->poolAccount('C', 'unilevel')));
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();
     }
 
@@ -98,10 +100,9 @@ class UnilevelTest extends NetworkTestCase
 
         $this->assertSame(0, $this->wallet($gens[4]));
         $this->assertSame(self::SHARES[5], $this->wallet($gens[5]));            // generation 6 is still paid the 6th rate
-        // Generation 5, and 7 to 10 (missing), stay with the cooperative: ₦882 of shares. The line received ₦2,572.50
-        // (49% of the cooperative's ₦5,250) and paid ₦1,827, so the ₦745.50 left in it moves to the contingency fund.
-        $this->assertSame(74_550, $run->unpaid);
-        $this->assertSame(0, $this->ledger->balance($this->ledger->poolAccount('C', 'unilevel')));
+        // Generation 5, and 7 to 15 (missing), stay with the cooperative: ₦1,071 moves to the contingency fund.
+        $this->assertSame(18_900 + 18_900 + 12_600 * 3 + 6_300 * 5, $run->unpaid);
+        $this->assertSame(5_250, $this->ledger->balance($this->ledger->poolAccount('C', 'unilevel')));   // what is never paid out
         $this->assertGreaterThan($before, $this->ledger->balance($this->ledger->poolAccount('C', 'contingency')));
     }
 
@@ -146,7 +147,7 @@ class UnilevelTest extends NetworkTestCase
 
         $this->assertSame(0, $this->wallet($gens[0]));
         $this->assertSame(UnilevelPayout::HELD, $run->lines()->sole()->status);
-        $this->assertSame(63_000, $run->stillHeld());
+        $this->assertSame(44_100, $run->stillHeld());
     }
 
     public function test_the_command_and_the_admin_pages()
@@ -165,6 +166,6 @@ class UnilevelTest extends NetworkTestCase
         $this->actingAs(Admin::factory()->withPermissions(['matching.view'])->create(), 'admin');
         $this->get('/admin/unilevel')->assertInertia(fn ($page) => $page->where('runs.data.0.month', $this->month));
         $this->get("/admin/unilevel/{$run->id}")->assertInertia(fn ($page) => $page
-            ->where('lines.data.0.member.username', 'gen_1')->where('lines.data.0.by_generation.0', ['generation' => 1, 'amount' => 63_000]));
+            ->where('lines.data.0.member.username', 'gen_1')->where('lines.data.0.by_generation.0', ['generation' => 1, 'amount' => 44_100]));
     }
 }

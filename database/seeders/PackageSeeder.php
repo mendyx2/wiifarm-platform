@@ -11,15 +11,15 @@ use Illuminate\Database\Seeder;
  */
 class PackageSeeder extends Seeder
 {
-    /** name, price in naira, PV, packs, direct %, match %, daily cap (matches), unilevel generations (never more than 10) */
+    /** name, price in naira, PV, packs, direct %, match %, daily cap (matches), unilevel generations (up to 15, as in the compensation plan) */
     public const PACKAGES = [
         ['Pre Starter', 15_000, 15, 1, '25.00', '3.00', 5, 4],
         ['Starter', 30_000, 30, 2, '25.00', '5.00', 7, 6],
-        ['Builder', 60_000, 60, 4, '25.00', '7.00', 10, 8],
+        ['Builder', 60_000, 60, 4, '25.00', '7.00', 10, 10],
         ['Booster', 105_000, 105, 7, '25.00', '8.00', 30, 10],
-        ['Executive', 150_000, 150, 10, '25.00', '9.00', 60, 10],
-        ['Advance', 255_000, 255, 17, '25.00', '10.00', 90, 10],
-        ['Mega', 450_000, 450, 30, '25.00', '12.00', 120, 10],
+        ['Executive', 150_000, 150, 10, '25.00', '9.00', 60, 12],
+        ['Advance', 255_000, 255, 17, '25.00', '10.00', 90, 13],
+        ['Mega', 450_000, 450, 30, '25.00', '12.00', 120, 15],
     ];
 
     public function run(): void

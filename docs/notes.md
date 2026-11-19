@@ -1542,3 +1542,38 @@ is a click.
 **Next:** the awards (specification 5.8, 5.9 and 5.11): the binary rank
 awards, the Upline Celebrated Bonus, and the repurchase awards. Decision 21
 (the repurchase award schedule) is still open.
+
+## Step 31: The unilevel bonus goes to 15 generations
+
+**What changed:** on 19 November 2026 the owner shared the plan document
+"Wiifarm Coop Binary System" and decided that the unilevel bonus follows it:
+**15 generations**. The indirect referral bonus stays at the 1st to the 10th
+generation.
+
+- **The new rates** (a share of the PV value, PV × ₦600, of what each
+  downline member buys):
+
+  | Generation | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 to 15 |
+  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+  | Rate | 7% | 5% | 4% | 4% | 3% | 3% | 3% | 2% | 2% | 2% | 1% each |
+
+  That is 40% in all. They were 10%, 7%, 5%, 4%, 4%, 3%, 3%, 3%, 2%, 2%
+  (43%) over 10 generations.
+- **How deep each package reaches,** from the plan's table: Pre Starter 4,
+  Starter 6, Builder 10 (was 8), Booster 10, Executive 12, Advance 13,
+  Mega 15. A database change sets this on the existing packages and undoes
+  the earlier cap at 10.
+- **The money now fits:** the repurchase pool's unilevel line receives
+  ₦367.50 a unit, and the most the 15 generations can take is 40% of ₦900,
+  or ₦360. So the contingency fund no longer has to make up a gap.
+- **Not changed:** the indirect referral bonus, the upgrade bonus, the
+  stockist sponsor bonus and store PV all stay at 10 generations.
+- **Tests:** 276 pass, updated for the new rates. They now check all 15
+  shares, nothing for a 16th generation, and each package's depth.
+- **Specification:** sections 4 and 5.10 and decision 20 are updated, and
+  record that this replaces the earlier "10 generations, never 15".
+
+The rest of the plan document is compared with what is built in my reply of
+19 November. Its other differences (the award thresholds, the 10.5 PV
+monthly purchase, the leadership qualification, the new repurchase award
+table, and store stock) wait for the baseline rules.
