@@ -1577,3 +1577,29 @@ The rest of the plan document is compared with what is built in my reply of
 19 November. Its other differences (the award thresholds, the 10.5 PV
 monthly purchase, the leadership qualification, the new repurchase award
 table, and store stock) wait for the baseline rules.
+
+## Step 32: Review of the Revised Baseline Rules (V2 Revised)
+
+The owner shared the revised baseline rules on 19 November 2026. I compared
+them line by line with what is built and with the plan PDF they refer to.
+The full review is in `docs/baseline-v2-revised-review.md`; nothing was
+built in this step.
+
+- **Already the same:** the product and PV rates, the packages, the Pool A,
+  C, D and E splits, the direct, key-in, indirect, matching, upgrade and
+  stockist figures, and UCB.
+- **Changes asked for:**
+    1. the indirect line at 17.99%;
+    2. 10.5 PV a month, as a setting;
+    3. inactive members' matching frozen;
+    4. leadership by the Executive Ambassador rank;
+    5. unilevel paid at once on each repurchase;
+    6. the repurchase award schedule (which settles decision 21);
+    7. five higher recognition thresholds;
+    8. stores receiving products worth their whole deposit.
+- **Five questions** for the owner, about:
+    1. which month the 10.5 PV rule counts;
+    2. the autoship hold;
+    3. unilevel activity;
+    4. store stock and who funds the sponsor bonus;
+    5. the leadership rank.
