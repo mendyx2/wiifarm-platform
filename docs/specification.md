@@ -173,8 +173,14 @@ The owner settled this after speaking with a leader (19 November 2026): the mont
 - **Until then:** 20% of each matching bonus they earn that month is held in their autoship wallet ("Matching held until autoship"). It cannot be spent or withdrawn.
 - **Released:** as soon as the month's autoship is made, the month's held amount moves to their matching bonus wallet. It is checked when they buy, and every night.
 - **The first week:** "the system calls for the previous month's autoship in the first week of the current month". A month's autoship can still be made in the first 7 days of the next month. A purchase in those days goes first to the previous month, if it was short and the member already belonged that month; only the rest counts for the new month. One purchase never covers two months.
-- **Kept:** if the first week ends without the month's autoship, the cooperative keeps that month's held amount, in the registration ledger's (Pool A's) contingency fund, where the matching money came from.
-- **Records:** every release and keep is recorded, once, with the month it belongs to. A held share paid later, after its pool refilled, is settled the same way.
+- **The month a member joins counts** (owner, 20 November 2026): a new member must make the autoship for the month they joined, by the 7th of the next month. Their registration is not an autoship.
+- **Missed:** a month whose first week has passed without its autoship is missed. Its held amount **stays held** (owner, 20 November 2026). It is released when the member makes a later month's autoship (decision 36).
+- **Flushed after 3 missed months:** when a member misses 3 months in a row, the held amount of each of those months is moved to the registration ledger's (Pool A's) **Unclaimed Bonus Reserve** (section 7), where the matching money came from. A further month missed in the same run is flushed too, once its first week has passed. Each flush is recorded in the reserve's report against the member and the month.
+- **Reminders** (owner, 20 November 2026): from the 4th week of a month (the 22nd) to the end of the next month's first week (the 7th), a member who has not made that month's autoship is reminded:
+  - on the dashboard, every day of that window, with what they have bought and the deadline;
+  - by email, three times, once each: on the 22nd, on the 1st of the next month and on the 7th (decision 36).
+  - The dashboard also warns a member who has missed months in a row.
+- **Records:** every release and flush is recorded, once, with the month it belongs to, and every reminder sent. A held share paid later, after its pool refilled, is settled the same way.
 
 ### 5.7 Leadership bonus
 
@@ -547,7 +553,8 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Daily 02:00 | Record members newly qualified for a recognition or repurchase award (5.8, 5.11) |
 | Daily 03:00 | Full database backup, kept 30 days |
 | Daily | Expire unpaid or uncollected public orders (8). This is not scheduled in the current system, and should be |
-| Last day of the month, 23:00 | Autoship sweep (5.6) |
+| Daily 03:10 | Autoship: release held matching where an autoship is made; flush it after 3 missed months in a row (5.6) |
+| Daily 09:20, from the 22nd to the 7th | Autoship reminder emails, once per stage (5.6) |
 
 Every job can run again safely: a second run never pays twice. Each run is logged with what it did.
 
@@ -569,7 +576,7 @@ The specification can be signed off once the board settles the points below.
 - [x] **4. Unilevel activity.** Settled from the Revised Baseline Rules and the leader's answers (19 November 2026): unilevel is paid at each repurchase on the upline's active package; the monthly purchase decides the autoship hold on matching, not unilevel. Please confirm.
 - [x] **5. Store PV reach.** Settled: 10 steps, counted both up the binary tree and up the referral chain (section 9).
 - [x] **6. Global Share Pool.** Settled: there is no Global Share Pool (board, November 2026).
-- [x] **7. Autoship hold.** Settled (19 November 2026): the 20% hold stays, released when the month's autoship is made, kept by the cooperative if it is not made by the end of the next month's first week (5.6). It remains an admin switch, on.
+- [x] **7. Autoship hold.** Settled (19 and 20 November 2026): the 20% hold stays, released when the month's autoship is made; a missed month stays held, and after 3 missed months in a row their holds go to Pool A's Unclaimed Bonus Reserve (5.6). It remains an admin switch, on.
 
 **From the current system:**
 
@@ -598,9 +605,10 @@ The specification can be signed off once the board settles the points below.
 - [x] **27. The rest of a store's deposit.** Settled (19 November 2026): half to the manufacturing company for the products; the sponsor bonus from the other half; the rest of that half to Pool D's contingency fund (section 9).
 - [ ] **28. Recording a Sub store's collection.** The system has the Mega stockist record what each of their Sub stores collects, moving the units from the Mega's stock to the Sub's. Should the manufacturing company record it instead, or should the Sub store confirm it too?
 - [ ] **29. Withdrawal charges and limits.** The system sets up "Bank transfer" from ₦1,000 to ₦5,000,000 with no charge, for an admin to change. What should each method's charge be (fixed and percentage), and is it right that charges go to the cooperative? Member withdrawals also need verified KYC (an admin switch, on by default); stockist withdrawals follow the stockist's own member account; affiliates have no KYC. Is that right?
-- [x] **30. Unused autoship money.** Settled (19 November 2026): the held amount is not spent on products; it is released to the member when the autoship is made, or kept by the cooperative (Pool A's contingency fund) after the next month's first week (5.6).
+- [x] **30. Unused autoship money.** Settled (19 and 20 November 2026): the held amount is not spent on products; it is released to the member when an autoship is made, or flushed to Pool A's Unclaimed Bonus Reserve after 3 missed months in a row (5.6).
 - [ ] **31. Paystack's fee and deposit limits.** Members pay exactly the price; Paystack takes its fee from what it sends on, so the company receiving the money bears it. Should members pay the fee on top instead (for deposits, packages, or both)? Deposits are set at ₦1,000 to ₦5,000,000: right? And a deposit is treated as the member's own money, not a sale, so nothing is split until it is spent (section 6): please confirm.
 - [ ] **32. E-pin rules.** (a) A pin worth more than the package chosen pays it, and the rest goes to the new member's main balance. Should the rest go back to the buyer instead, or should a pin only pay the package it was bought for? (b) A pin an admin creates is paid for by the cooperative: its value comes from the platform's adjustment account, and once used, it is split like any registration and pays the usual bonuses. Who may create them, and is there a limit? (c) Should members be able to cancel their own unused pins?
 - [ ] **33. Public shop details.** (a) The affiliate link is remembered for 30 days and an unpaid order waits 3 days: right? (Both are settings for now, not yet on an admin screen.) (b) Buyers must give an email, because Paystack needs one: is that acceptable, or should a placeholder be used for buyers without email? (c) Prices per state (section 8) are not built: the public price is the same everywhere. Are per-state prices still wanted?
 - [ ] **34. Paying awards.** (a) When a member takes the gift instead of the cash, the system sets the cash value aside from the recognition line to buy the gift. Is that right, or does the gift cost something else? (b) Repurchase awards wait for an admin's approval like recognition awards. Should they be paid automatically instead? (c) Recognition awards are far larger than Pool B receives (₦5.25 a piece for recognition), so most will be held for a long time (decision 17).
 - [ ] **35. Using the Unclaimed Bonus Reserve.** Unclaimed shares are kept per ledger and reported (section 7), but nothing spends them yet. (a) Should the reserve also help cover a shortfall in its own ledger after the contingency fund, before a payout is held? (b) Or is it kept for another use the board decides, for example a transfer to the company? Until the board says, it is only kept and reported.
+- [ ] **36. Autoship details** (built as below until the board says otherwise). (a) A missed month's hold is released when the member makes **any later** month's autoship, if 3 in a row have not been missed yet. Or should a missed month's hold only be flushed or kept, never released? (b) After 3 missed months, a 4th missed month in the same run is flushed as soon as its first week passes (the count does not start again at 0). Right? (c) Reminder emails go three times: the 22nd, the 1st and the 7th. Should they go every day of the window instead? (d) "The company reserves" is read as Pool A's Unclaimed Bonus Reserve, not the contingency fund. Right?

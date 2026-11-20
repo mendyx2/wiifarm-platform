@@ -68,6 +68,23 @@ class MonthlyActivity
     }
 
     /**
+     * The PV that counts for each month with any, worked out in one pass.
+     *
+     * @return array<string, int>
+     */
+    public function credits(User $member): array
+    {
+        [$own, $toPrevious] = $this->allocate($member);
+        $credits = [];
+        foreach ($own as $month => $pv) {
+            $next = CarbonImmutable::createFromFormat('Y-m-d', $month.'-01')->addMonth()->format('Y-m');
+            $credits[$month] = $pv + ($toPrevious[$next] ?? 0);
+        }
+
+        return $credits;
+    }
+
+    /**
      * Each month's own credit and what its first week gave the month before.
      *
      * @return array{0: array<string, int>, 1: array<string, int>}

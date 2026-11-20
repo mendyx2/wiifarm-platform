@@ -1968,3 +1968,53 @@ longer mixed with the contingency fund, but kept in its own reserve, the
   It does not cover shortfalls (the line and the contingency fund still do).
   Should it also help cover a shortfall in its own pool, or be kept for
   another use?
+
+## Step 41: Autoship: missed months stay held, 3 in a row are flushed, reminders
+
+The owner's instructions (20 November 2026, after the leader's answers):
+a member must make the autoship for the month they join; the system checks
+it in the first week of the next month; reminders run from the 4th week of
+a month into the first week of the next; after 3 months in a row without
+autoship, the 20% held for each of those months goes to the company's
+reserve.
+
+- **A missed month stays held.** Before this step, a month whose first week
+  passed without its autoship was kept by the cooperative at once. Now its
+  20% stays held in the member's autoship wallet.
+- **Released when the member makes autoship again.** If the member makes a
+  later month's autoship before 3 months in a row are missed, the earlier
+  held months are released to them too.
+- **Flushed after 3 missed months in a row.** When a member misses 3 months
+  in a row, the held amount of each of those months moves to Pool A's
+  Unclaimed Bonus Reserve (step 40), where the matching money came from.
+  Each one shows on the "Unclaimed bonuses" report as "Matching held for
+  autoship", reason "Autoship not made for 3 months in a row", with the
+  member and the month. A further month missed in the same run is flushed
+  as soon as its first week passes.
+- **The month a member joins counts.** It is checked like any other month;
+  the registration itself is not an autoship (a test checks both).
+- **Reminders.**
+  - On the dashboard, from the 22nd of a month to the 7th of the next, a
+    member who has not made that month's autoship sees "Make your autoship
+    for October 2026 by 7 November", with what they have bought so far.
+  - A member who has missed months in a row sees a warning saying how
+    many, and what happens after 3.
+  - By email, three reminders, each sent once: on the 22nd, on the 1st and
+    on the 7th (a new daily job, `wiifarm:autoship-reminders`, at 09:20
+    Lagos time). Every reminder sent is recorded in a new table
+    (`autoship_reminders`), so none is sent twice. Banned members, members
+    who have not paid their package and the company account get none.
+    While the server's mail is set to "log" (as it is locally), the emails
+    are written to the log file instead of being sent.
+- **Faster check.** Working out which months are made now takes one pass
+  over a member's purchases instead of one per month.
+- **Tests.** Six autoship tests: release on purchase, the first-week
+  catch-up, a missed month released by a later autoship, the 3-month flush
+  (once only, to the right reserve, with its report rows), the joining
+  month, and the reminders (window, once per stage, not after the member
+  buys, the dashboard notice). All 293 tests pass.
+- **For the board (decision 36).** I built these readings and listed them
+  to confirm: (a) a missed month's hold is released by a later autoship;
+  (b) a 4th missed month in the same run is flushed too; (c) three
+  reminder emails, not one every day; (d) "company reserves" means Pool A's
+  Unclaimed Bonus Reserve.

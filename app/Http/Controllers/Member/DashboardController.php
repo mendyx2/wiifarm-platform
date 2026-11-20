@@ -8,6 +8,8 @@ use App\Models\Compensation\MemberMatch;
 use App\Models\Ledger\Entry;
 use App\Models\Shop\Order;
 use App\Models\User;
+use App\Services\Compensation\Autoship;
+use App\Services\Compensation\AutoshipReminders;
 use App\Services\Compensation\MonthlyActivity;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\Genealogy;
@@ -65,6 +67,14 @@ class DashboardController extends Controller
             'autoship' => Settings::get('matching.autoship_hold') ? [
                 'bought' => app(MonthlyActivity::class)->creditFor($member, MonthlyActivity::monthOf(CarbonImmutable::now())),
                 'needed' => MonthlyActivity::requiredPv(),
+                // From the 22nd to the 7th of the next month, while the month's autoship is not made (5.6).
+                'reminder' => ($window = AutoshipReminders::window()) && app(AutoshipReminders::class)->due($member, $window['month']) ? [
+                    'month' => CarbonImmutable::createFromFormat('Y-m-d', $window['month'].'-01')->format('F Y'),
+                    'deadline' => $window['deadline']->format('j F'),
+                    'bought' => app(MonthlyActivity::class)->creditFor($member, $window['month']),
+                ] : null,
+                'missed' => app(Autoship::class)->missedInARow($member),
+                'flushAfter' => Autoship::FLUSH_AFTER,
             ] : null,
             'leadership' => [
                 'pv' => min(($pvLegs = $ledger->pvBalances($member))['L']['lifetime'], $pvLegs['R']['lifetime']),   // the lesser leg

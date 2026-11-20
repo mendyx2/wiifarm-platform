@@ -29,5 +29,8 @@ Schedule::command('wiifarm:leadership')->dailyAt('02:30')->timezone('Africa/Lago
 // Every night: who qualifies for a recognition or repurchase award (specification section 5.8).
 Schedule::command('wiifarm:awards')->dailyAt('02:00')->timezone('Africa/Lagos')->withoutOverlapping();
 
-// Every night: release held matching to members who made their autoship, or keep it after the grace week (5.6).
+// Every night: release held matching to members who made their autoship, or flush it after 3 missed months (5.6).
 Schedule::command('wiifarm:autoship')->dailyAt('03:10')->timezone('Africa/Lagos')->withoutOverlapping();
+
+// Every morning from the 22nd to the 7th: remind members who have not made the month's autoship (5.6).
+Schedule::command('wiifarm:autoship-reminders')->dailyAt('09:20')->timezone('Africa/Lagos')->withoutOverlapping();

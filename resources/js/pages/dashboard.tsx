@@ -25,7 +25,13 @@ type Props = {
     pv?: PvTotals | null;
     team?: { direct: number; waiting: number; size: { L: number; R: number } };
     lastMatch?: { day: string; matches: number; amount: number; capped: boolean; status: string } | null;
-    autoship?: { bought: number; needed: number } | null;
+    autoship?: {
+        bought: number;
+        needed: number;
+        reminder: { month: string; deadline: string; bought: number } | null;
+        missed: number;
+        flushAfter: number;
+    } | null;
     leadership?: { pv: number; needed: number; last: { month: string; amount: number; status: string } | null };
     toCollect?: number;
     recent?: { id: number; at: string; amount: number; wallet: string; memo: string | null }[];
@@ -111,11 +117,28 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                                 : 'Verify your identity (KYC) to be able to withdraw.'}
                         </Notice>
                     )}
-                    {autoshipShort && (
+                    {autoship?.reminder ? (
                         <Notice href={route('shop')} action="Shop">
-                            You have bought {pv(autoship.bought)} of {pv(autoship.needed)} PV of products this month. Until you reach{' '}
-                            {pv(autoship.needed)} PV, 20% of your matching bonus is held, and released to you as soon as you do.
+                            <span className="font-medium">
+                                Make your autoship for {autoship.reminder.month} by {autoship.reminder.deadline}.
+                            </span>{' '}
+                            You have bought {pv(autoship.reminder.bought)} of {pv(autoship.needed)} PV of products for that month. Until you make it,
+                            20% of that month's matching bonus stays held.
                         </Notice>
+                    ) : (
+                        autoshipShort && (
+                            <Notice href={route('shop')} action="Shop">
+                                You have bought {pv(autoship.bought)} of {pv(autoship.needed)} PV of products this month. Until you reach{' '}
+                                {pv(autoship.needed)} PV, 20% of your matching bonus is held, and released to you as soon as you do.
+                            </Notice>
+                        )
+                    )}
+                    {autoship && autoship.missed > 0 && (
+                        <p className="bg-warning-soft text-warning rounded-xl p-4 text-sm">
+                            You missed your autoship {autoship.missed === 1 ? 'last month' : `in each of the last ${autoship.missed} months`}. Your
+                            held matching is released when you make an autoship again. If autoship is missed {autoship.flushAfter} months in a row,
+                            the matching held for those months goes to the cooperative's reserve.
+                        </p>
                     )}
                 </div>
 
@@ -141,7 +164,7 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                             label="Held until autoship"
                             value={formatKobo(money.autoship)}
                             icon={ShoppingBasket}
-                            hint="Released when you make the month's 10.5 PV purchase; you have until the 7th of the next month"
+                            hint="Released when you make your autoship (you have until the 7th of the next month); kept by the cooperative after 3 missed months in a row"
                         />
                     )}
                 </div>
