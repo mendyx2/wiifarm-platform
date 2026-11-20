@@ -13,6 +13,7 @@ use App\Models\Payments\Withdrawal;
 use App\Models\Pools\HeldPayout;
 use App\Models\Shop\Order;
 use App\Models\Stockists\Store;
+use App\Models\Support\SupportTicket;
 use App\Models\User;
 use App\Services\Pools\PoolReport;
 use Carbon\CarbonImmutable;
@@ -50,6 +51,7 @@ class DashboardController extends Controller
             $can('stockists.view') ? ['label' => 'Stores waiting to be activated', 'count' => Store::where('status', Store::PENDING)->count(), 'amount' => null, 'href' => route('admin.stockists.index')] : null,
             $can('payments.view') ? ['label' => 'Online payments that did not match', 'count' => OnlinePayment::where('status', OnlinePayment::MISMATCH)->count(), 'amount' => null, 'href' => route('admin.payments.index')] : null,
             $can('pools.view') ? ['label' => 'Payouts held until a pool refills', 'count' => HeldPayout::where('status', HeldPayout::HELD)->count(), 'amount' => (int) HeldPayout::where('status', HeldPayout::HELD)->sum('amount'), 'href' => route('admin.pools')] : null,
+            $can('support.view') ? ['label' => 'Support tickets waiting for a reply', 'count' => SupportTicket::where('status', SupportTicket::OPEN)->count(), 'amount' => null, 'href' => route('admin.support.index')] : null,
             $can('messages.view') ? ['label' => 'Emails that failed (last 7 days)', 'count' => DB::table('message_log')->where('status', 'failed')->where('created_at', '>=', now()->subDays(7))->count(), 'amount' => null, 'href' => route('admin.messages.index')] : null,
         ]));
 

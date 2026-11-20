@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockistController;
+use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\UnclaimedBonusController;
 use App\Http\Controllers\Admin\UsdtController;
 use App\Http\Controllers\Admin\WithdrawalController;
@@ -149,6 +150,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('announcements/{announcement}', [ContentController::class, 'saveAnnouncement'])->name('announcements.update');
             Route::delete('announcements/{announcement}', [ContentController::class, 'deleteAnnouncement'])->name('announcements.destroy');
         });
+
+        // Support tickets (section 11)
+        Route::get('support', [SupportController::class, 'index'])->middleware('admin.can:support.view')->name('support.index');
+        Route::get('support/{ticket}', [SupportController::class, 'show'])->middleware('admin.can:support.view')->name('support.show');
+        Route::get('support/{ticket}/files/{message}', [SupportController::class, 'file'])->middleware('admin.can:support.view')->name('support.file');
+        Route::post('support/{ticket}/reply', [SupportController::class, 'reply'])->middleware('admin.can:support.reply')->name('support.reply');
+        Route::post('support/{ticket}/close', [SupportController::class, 'close'])->middleware('admin.can:support.reply')->name('support.close');
 
         // Member messages (section 12)
         Route::get('messages', [MessageController::class, 'index'])->middleware('admin.can:messages.view')->name('messages.index');

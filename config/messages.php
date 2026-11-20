@@ -51,6 +51,14 @@ return [
             'body' => '{{sender}} sent you {{amount}}. It is in your main balance.',
             'action' => ['label' => 'See my wallet', 'route' => 'wallet'],
         ],
+        'support.replied' => [
+            'name' => 'Reply to a support ticket',
+            'who' => 'The member who opened the ticket',
+            'placeholders' => ['name', 'subject'],
+            'subject' => 'We replied: {{subject}}',
+            'body' => 'Wiifarm support has replied to your ticket "{{subject}}".',
+            'action' => ['label' => 'Read the reply', 'route' => 'support.index'],
+        ],
         'withdrawal.paid' => [
             'name' => 'Withdrawal paid',
             'who' => 'Whoever asked: the member, the store owner (stockist) or the affiliate',

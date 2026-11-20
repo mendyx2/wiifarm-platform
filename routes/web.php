@@ -8,6 +8,7 @@ use App\Http\Controllers\Member\NoticeController;
 use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\StoreController;
+use App\Http\Controllers\Member\SupportController;
 use App\Http\Controllers\Member\TeamController;
 use App\Http\Controllers\Member\UsdtController;
 use App\Http\Controllers\Member\WalletController;
@@ -39,6 +40,12 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
 
     Route::get('wallet', WalletController::class)->name('wallet');
     Route::get('notices', [NoticeController::class, 'index'])->name('notices');
+    Route::get('support', [SupportController::class, 'index'])->name('support.index');
+    Route::post('support', [SupportController::class, 'store'])->middleware('throttle:10,1')->name('support.store');
+    Route::get('support/{ticket}', [SupportController::class, 'show'])->name('support.show');
+    Route::post('support/{ticket}/reply', [SupportController::class, 'reply'])->middleware('throttle:20,1')->name('support.reply');
+    Route::post('support/{ticket}/close', [SupportController::class, 'close'])->name('support.close');
+    Route::get('support/{ticket}/files/{message}', [SupportController::class, 'file'])->name('support.file');
     Route::get('package', [PaymentController::class, 'package'])->name('package');
     Route::post('package', [PaymentController::class, 'payPackage'])->middleware('throttle:10,1')->name('package.pay');
     Route::post('package/epin', [PaymentController::class, 'redeemPin'])->middleware('throttle:10,1')->name('package.epin');

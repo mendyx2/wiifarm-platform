@@ -523,7 +523,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Commerce | Products, categories, state prices, orders, stockists and their requests, the Ad Center, affiliate settings, Welcome Back Packages |
 | Finance | Investment plans and dividend batches, farm cycles, savings and loan products, loan approvals |
 | Content | Website pages and sections, SEO, cookie notice, languages, notices and announcements to members. *Built (November 2026): the pages and SEO, the cookie notice, and announcements (title, message, information or important, from and until dates, on/off) shown at the top of every member's dashboard while they run. Languages: not yet.* |
-| Support | Support tickets with private attachments; reply, close |
+| Support | Support tickets with private attachments; reply, close. *Built (November 2026): members open a ticket (subject, message, optional photo or PDF) from "Support" in their menu and follow the conversation there; admins with the Support permissions reply (optionally closing it) or close it; the member is told on their dashboard (and by email). A member closing it, or writing again to reopen it, is allowed. Attachments are private: only the member and admins allowed to see support can open them.* |
 | Reports | Transactions, PV log, login history, financial report (income, payouts and pools by period), admin action log |
 | Settings | Site name and currency, registration on/off, verification switches, charges, maintenance mode, message templates |
 

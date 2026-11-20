@@ -2353,3 +2353,31 @@ The fourth item on the owner's list (specification sections 11 and 12).
 - **Tests:** four new tests (pages and their search details, editing with
   a picture, announcements by date and on/off, maintenance mode). All 320
   tests pass.
+
+## Step 51: Support tickets
+
+The fifth item on the owner's list (specification section 11: "support
+tickets with private attachments; reply, close").
+
+- **For the member:** a new "Support" item in their menu.
+  - They write a subject and a message, and can attach a photo or PDF (up
+    to 5 MB).
+  - Their tickets are listed with their state: "Waiting for Wiifarm",
+    "Answered" or "Closed".
+  - Each ticket shows the conversation, their messages on one side and
+    Wiifarm's on the other, and a box to reply.
+  - They can close it once answered; writing again reopens it.
+- **For the admin:** a new "Support" page (and a line on the dashboard).
+  - The tickets needing a reply, oldest first, then the ones waiting for the
+    member, and the closed ones.
+  - Each ticket's conversation, a reply box with an optional attachment, and
+    "close the ticket with this reply" or "close without replying".
+  - When an admin replies, the member gets a notice on their dashboard (and
+    an email once ZeptoMail is set up), with a link to the ticket.
+- **Privacy:** members see only their own tickets (another member's gives
+  "not found"); attachments are private files that only the ticket's member
+  and admins allowed to see support can open. Members see replies as from
+  "Wiifarm support"; admins also see which admin wrote each one.
+- **Permissions:** see support (and attachments); reply and close.
+- **Tests:** two new tests (the whole conversation with permissions,
+  attachment and notice; members seeing only their own). All 322 tests pass.
