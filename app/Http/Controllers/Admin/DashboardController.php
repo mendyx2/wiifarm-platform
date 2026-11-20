@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Compensation\Award;
 use App\Models\KycSubmission;
+use App\Models\Payments\ManualDeposit;
 use App\Models\Payments\OnlinePayment;
 use App\Models\Payments\Withdrawal;
 use App\Models\Pools\HeldPayout;
@@ -40,6 +41,7 @@ class DashboardController extends Controller
         // Things waiting for an admin, with where to deal with them.
         $todo = array_values(array_filter([
             $can('kyc.view') ? ['label' => 'Identity checks to review', 'count' => KycSubmission::where('status', KycSubmission::PENDING)->count(), 'amount' => null, 'href' => route('admin.kyc.index')] : null,
+            $can('deposits.view') ? ['label' => 'Bank-transfer deposits to check', 'count' => ManualDeposit::where('status', ManualDeposit::PENDING)->count(), 'amount' => (int) ManualDeposit::where('status', ManualDeposit::PENDING)->sum('amount'), 'href' => route('admin.deposits.index')] : null,
             $can('withdrawals.view') ? ['label' => 'Withdrawals to pay or refuse', 'count' => Withdrawal::where('status', Withdrawal::PENDING)->count(), 'amount' => (int) Withdrawal::where('status', Withdrawal::PENDING)->sum('payable'), 'href' => route('admin.withdrawals.index')] : null,
             $can('awards.view') ? ['label' => 'Awards to approve', 'count' => Award::where('status', Award::PENDING)->count(), 'amount' => null, 'href' => route('admin.awards.index')] : null,
             $can('awards.view') ? ['label' => 'Gifts to deliver', 'count' => Award::where('status', Award::GIFT)->count(), 'amount' => null, 'href' => route('admin.awards.index')] : null,

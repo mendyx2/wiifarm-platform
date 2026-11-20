@@ -298,6 +298,7 @@ Each member has a main balance, four special-purpose wallets, and one wallet per
   - The Paystack secret key is kept in the server's settings, not on an admin screen, so it never passes through the admin panel.
 - **USDT (TRC20):** Wiifarm uses one wallet address. The member sends the money and enters the transaction ID. The system checks it on the Tron network (amount, address, confirmations) and credits once. A scheduled scan also finds transfers that nobody reported. A transaction ID can never be credited twice.
 - **Manual methods** (for example a bank transfer): the member fills in the method's form and uploads proof. An admin approves or rejects with a reason. Proof files are private.
+  - *Built (November 2026):* admins set up each method (where to pay, minimum and maximum, on or off; a "Bank transfer" method starts switched off until Wiifarm's bank details are entered). The member pays, then sends the amount, their payment reference and a photo or PDF of the receipt. An admin sees it on the Deposits page and the admin dashboard, opens the proof (private, only for admins allowed to see deposits), and approves (the amount goes to the main balance, once) or refuses with a reason; the member is told either way.
 - A deposit is not a sale: it goes to the main balance and is split only when it is spent on a package, an upgrade or products, by the ledger of that purchase (section 7).
 
 **Withdrawals:**

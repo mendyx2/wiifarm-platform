@@ -2195,3 +2195,40 @@ site on Railway (where the old system's demo was hosted).
   pages all opened with no errors; a restart kept everything without
   doubling; and the secret key was kept between starts. The image build
   itself is first proven on Railway.
+
+## Step 47: Deposits by bank transfer
+
+The first item on the owner's list (20 November 2026). Until now members
+could only deposit through Paystack. Specification section 6 also asks for
+manual methods such as a bank transfer, checked by an admin.
+
+- **For the member,** the Deposit page now has "Or pay by bank transfer":
+  1. it shows where to pay (Wiifarm's bank, account number and name, as the
+     admin wrote them);
+  2. the member pays, then enters the amount, their payment reference, and
+     a photo or PDF of the receipt (up to 5 MB);
+  3. a list shows each bank-transfer deposit as "Being checked", "Added"
+     or "Not approved" with the reason.
+  Sending the same form twice records it once.
+- **For the admin,** a new **Deposits** page (menu and dashboard):
+  - the deposits waiting, oldest first, and the ones approved or refused;
+  - each one with the member, amount, reference and the receipt shown on
+    the page (a PDF opens inside it);
+  - **Approve** adds the amount to the member's main balance, once (a
+    ledger entry from outside the platform, as for Paystack deposits);
+  - **Refuse** needs a reason; nothing is added.
+  The member gets the "deposit received" or the new "deposit not approved"
+  message (dashboard notice, and email once ZeptoMail is set up).
+- **Deposit methods:** admins set the instructions, the minimum and maximum,
+  and switch each method on or off. A "Bank transfer" method is created
+  **switched off**, because Wiifarm's real bank details must be entered
+  first.
+- **Permissions:** see deposits and their receipts; approve and refuse;
+  set up methods. Receipts are private files that only admins allowed to
+  see deposits can open. Every decision and method change is in the audit
+  log.
+- **Preview site:** private files (receipts and identity documents) are
+  now kept on the preview site's volume, so they survive restarts.
+- **Tests:** four new tests (send and approve once, with permissions;
+  refuse with a reason; limits, file type, the same form twice and the
+  on/off switch; setting up the bank details). All 306 tests pass.

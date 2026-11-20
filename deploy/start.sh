@@ -13,6 +13,12 @@ if [ -z "$APP_KEY" ]; then
     export APP_KEY="$(cat "$DATA_DIR/app.key")"
 fi
 [ -e public/uploads ] || ln -s "$DATA_DIR/uploads" public/uploads
+# Private files (identity documents, deposit proofs) live on the volume too.
+if [ ! -L storage/app ]; then
+    mkdir -p "$DATA_DIR/storage-app"
+    cp -an storage/app/. "$DATA_DIR/storage-app/" 2>/dev/null || true
+    rm -rf storage/app && ln -s "$DATA_DIR/storage-app" storage/app
+fi
 [ -f "$DB_DATABASE" ] || touch "$DB_DATABASE"
 
 php artisan migrate --force

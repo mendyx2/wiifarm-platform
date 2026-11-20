@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\Package;
+use App\Models\Payments\DepositMethod;
+use App\Models\Payments\ManualDeposit;
 use App\Models\Payments\OnlinePayment;
 use App\Services\Network\PlacementException;
 use App\Services\Payments\EPins;
+use App\Services\Payments\ManualDeposits;
 use App\Services\Payments\OnlinePayments;
 use App\Services\Payments\PaymentException;
 use App\Services\Payments\Paystack;
@@ -78,7 +81,36 @@ class PaymentController extends Controller
             'min' => config('payments.deposit_min'),
             'max' => config('payments.deposit_max'),
             'payments' => $this->recent($request->user()->id, [OnlinePayment::DEPOSIT]),
+            // Bank transfer and other manual methods (section 6).
+            'methods' => DepositMethod::where('is_active', true)->orderBy('name')->get()
+                ->map(fn (DepositMethod $m) => ['id' => $m->id, 'name' => $m->name, 'instructions' => $m->instructions, 'min' => $m->min_amount, 'max' => $m->max_amount]),
+            'manual' => ManualDeposit::with('method:id,name')->where('user_id', $request->user()->id)->latest('id')->limit(10)->get()
+                ->map(fn (ManualDeposit $d) => [
+                    'id' => $d->id, 'method' => $d->method->name, 'amount' => $d->amount, 'reference' => $d->reference,
+                    'status' => $d->status, 'reason' => $d->reject_reason, 'at' => $d->created_at->toDateTimeString(),
+                ]),
         ]);
+    }
+
+    /** A deposit by bank transfer (or another manual method), with proof, for an admin to check (section 6). */
+    public function depositManual(Request $request, ManualDeposits $deposits): RedirectResponse
+    {
+        $data = $request->validate([
+            'method_id' => ['required', 'integer', 'exists:deposit_methods,id'],
+            'amount' => ['required', 'string', 'max:20'],
+            'reference' => ['required', 'string', 'max:120'],
+            'proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
+            'form_id' => ['required', 'uuid'],
+        ], ['proof.mimes' => 'Upload a photo (JPG, PNG) or a PDF of the receipt.', 'proof.max' => 'The file can be up to 5 MB.']);
+
+        try {
+            $amount = Money::parseNaira($data['amount']);
+            $deposits->submit($request->user(), DepositMethod::findOrFail($data['method_id']), $amount, $data['reference'], $request->file('proof'), $data['form_id']);
+        } catch (InvalidArgumentException $e) {
+            throw ValidationException::withMessages(['amount' => $e->getMessage()]);
+        }
+
+        return to_route('deposit')->with('status', 'Thank you. Your deposit will be added to your main balance once an admin has checked the payment.');
     }
 
     public function payDeposit(Request $request, OnlinePayments $payments): HttpResponse

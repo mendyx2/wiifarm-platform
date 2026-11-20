@@ -35,6 +35,14 @@ return [
             'body' => 'We received your deposit of {{amount}}. It is in your main balance.',
             'action' => ['label' => 'See my wallet', 'route' => 'wallet'],
         ],
+        'deposit.rejected' => [
+            'name' => 'Deposit not approved',
+            'who' => 'The member (bank transfer and other manual deposits)',
+            'placeholders' => ['name', 'amount', 'reason'],
+            'subject' => 'Your deposit of {{amount}} was not approved',
+            'body' => "We could not approve your deposit of {{amount}}.\n\nThe reason: {{reason}}\n\nIf you did pay, please send it again with the right proof or reference.",
+            'action' => ['label' => 'Go to deposits', 'route' => 'deposit'],
+        ],
         'withdrawal.paid' => [
             'name' => 'Withdrawal paid',
             'who' => 'Whoever asked: the member, the store owner (stockist) or the affiliate',

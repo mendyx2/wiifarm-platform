@@ -26,8 +26,8 @@ class AdminDashboardTest extends NetworkTestCase
 
         $this->actingAs(Admin::factory()->super()->create(), 'admin')->get('/admin')->assertInertia(fn ($page) => $page
             ->component('admin/dashboard')
-            ->where('todo.1.label', 'Withdrawals to pay or refuse')
-            ->where('todo.1.count', 1)
+            ->where('todo.2.label', 'Withdrawals to pay or refuse')
+            ->where('todo.2.count', 1)
             ->where('money.2.label', 'Bonuses paid to members')
             ->where('money.2.today', fn ($kobo) => $kobo >= 900_000)
             ->where('members.joinedToday', 3)                               // the test's company account is set up today too

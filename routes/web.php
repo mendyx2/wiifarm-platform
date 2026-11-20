@@ -44,6 +44,7 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('team/add', [KeyInController::class, 'create'])->name('team.add');
     Route::post('team/add', [KeyInController::class, 'store'])->middleware('throttle:10,1')->name('team.add.store');
     Route::get('deposit', [PaymentController::class, 'deposit'])->name('deposit');
+    Route::post('deposit/manual', [PaymentController::class, 'depositManual'])->middleware('throttle:10,1')->name('deposit.manual');
     Route::post('deposit', [PaymentController::class, 'payDeposit'])->middleware('throttle:10,1')->name('deposit.pay');
     Route::get('payments/return', [PaymentController::class, 'return'])->name('payments.return');
     Route::post('wallet/transfer', [WithdrawController::class, 'bonusTransfer'])->name('wallet.transfer');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\AwardController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\EPinController;
 use App\Http\Controllers\Admin\KycReviewController;
 use App\Http\Controllers\Admin\LeadershipController;
@@ -75,6 +76,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // Withdrawals
+        Route::get('deposits', [DepositController::class, 'index'])->middleware('admin.can:deposits.view')->name('deposits.index');
+        Route::get('deposits/methods', [DepositController::class, 'methods'])->middleware('admin.can:deposits.methods')->name('deposits.methods');
+        Route::post('deposits/methods', [DepositController::class, 'saveMethod'])->middleware('admin.can:deposits.methods')->name('deposits.methods.store');
+        Route::put('deposits/methods/{method}', [DepositController::class, 'saveMethod'])->middleware('admin.can:deposits.methods')->name('deposits.methods.update');
+        Route::get('deposits/{deposit}', [DepositController::class, 'show'])->middleware('admin.can:deposits.view')->name('deposits.show');
+        Route::get('deposits/{deposit}/proof', [DepositController::class, 'proof'])->middleware('admin.can:deposits.view')->name('deposits.proof');
+        Route::post('deposits/{deposit}/approve', [DepositController::class, 'approve'])->middleware('admin.can:deposits.decide')->name('deposits.approve');
+        Route::post('deposits/{deposit}/reject', [DepositController::class, 'reject'])->middleware('admin.can:deposits.decide')->name('deposits.reject');
         Route::get('withdrawals', [WithdrawalController::class, 'index'])->middleware('admin.can:withdrawals.view')->name('withdrawals.index');
         Route::get('withdrawals/methods', [WithdrawalController::class, 'methods'])->middleware('admin.can:withdrawals.methods')->name('withdrawals.methods');
         Route::post('withdrawals/methods', [WithdrawalController::class, 'saveMethod'])->middleware('admin.can:withdrawals.methods')->name('withdrawals.methods.store');
