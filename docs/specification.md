@@ -513,7 +513,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 
 | Area | Actions |
 | --- | --- |
-| Dashboard | Members, deposits, withdrawals, orders, stockists and pins at a glance; the four pool balances |
+| Dashboard | Built (November 2026): what is waiting for an admin (identity checks, withdrawals, awards and gifts, stores to activate, online payments that did not match, held payouts, failed emails), each linked to its page; money paid online, withdrawals paid and bonuses paid, today and this month; members (paid, joined, banned) and orders to collect; each pool's balance. An admin sees only the parts their role allows. |
 | Members | Search and filter (active, banned, KYC state, with balance, paid/free); view a member's details, tree and wallets; edit details; add or subtract from a wallet with a reason; ban or unban; block withdrawals; change a sponsor; review KYC; sign in as the member to help them; send a notification |
 | Money | Approve or reject deposits and withdrawals; manage gateways and withdrawal methods; create e-pins |
 | Plan | Packages, awards (approve and pay), unilevel levels, repurchase awards, leadership settings, pool ledgers and their contingency funds, held payouts |

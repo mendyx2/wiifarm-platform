@@ -2125,3 +2125,36 @@ one.
   the server's settings, never into this repository.
 - **`.env.example`** describes the same settings, with no secret in it.
 - **Locally nothing changes:** emails are still written to the log file.
+
+## Step 45: The admin dashboard
+
+The admin home page only showed member counts; it said money, orders,
+stockists and pools would join "as those parts are built". They are all
+built now, so it shows them.
+
+- **"Waiting for you":** each thing an admin must act on, with how many,
+  and a link to the page where it is done:
+  - identity checks to review;
+  - withdrawals to pay or refuse (with the total to send);
+  - awards to approve, and gifts to deliver;
+  - stores waiting to be activated;
+  - online payments that did not match what Paystack reported;
+  - payouts held until a pool refills (with the total);
+  - emails that failed in the last 7 days.
+
+  Only lines with something waiting are shown; when nothing is waiting, it
+  says "All clear".
+- **Money, today and this month** (Lagos time): money paid online through
+  Paystack, withdrawals paid, and bonuses paid to members.
+- **Members and orders:** paid members (and all accounts), members who
+  joined this month and today, banned members, and orders waiting to be
+  collected.
+- **Pools:** each pool's balance, with a link to the pool ledgers.
+- **By permission:** each part shows only to an admin whose role allows
+  that area. An admin who may only review identity checks sees only that
+  line.
+- **Tests.** Two new tests: a full admin sees the waiting withdrawal, the
+  bonuses paid today, the new members, the orders to collect and the
+  pools; an admin with only the identity-check permission sees nothing
+  else. All 302 tests pass.
+- The README's status section is brought up to date.
