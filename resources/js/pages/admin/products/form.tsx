@@ -16,6 +16,7 @@ type Editing = {
     name: string;
     sku: string;
     manufacturer_id: number;
+    category_id: number | null;
     description: string;
     member_price: string;
     public_price: string;
@@ -69,12 +70,21 @@ function ProductPhoto({ product }: { product: Editing }) {
     );
 }
 
-export default function ProductForm({ product, manufacturers }: { product: Editing | null; manufacturers: { id: number; name: string }[] }) {
+export default function ProductForm({
+    product,
+    manufacturers,
+    categories,
+}: {
+    product: Editing | null;
+    manufacturers: { id: number; name: string }[];
+    categories: { id: number; name: string }[];
+}) {
     const isNew = product === null;
     const form = useForm({
         name: product?.name ?? '',
         sku: product?.sku ?? '',
         manufacturer_id: product?.manufacturer_id ?? manufacturers[0]?.id ?? 0,
+        category_id: product?.category_id ?? null,
         description: product?.description ?? '',
         member_price: product?.member_price ?? '1500.00',
         public_price: product?.public_price ?? '2000.00',
@@ -112,6 +122,23 @@ export default function ProductForm({ product, manufacturers }: { product: Editi
                     <CardContent className="grid gap-4 pt-6 sm:grid-cols-2">
                         {field('name', 'Product name')}
                         {field('sku', 'Product code (SKU)', 'Letters, digits and dashes')}
+                        <div className="grid gap-1.5 sm:col-span-2">
+                            <Label htmlFor="category_id">Category</Label>
+                            <select
+                                id="category_id"
+                                className="border-input bg-background h-10 rounded-md border px-3 text-sm"
+                                value={form.data.category_id ?? ''}
+                                onChange={(e) => form.setData('category_id', e.target.value ? Number(e.target.value) : null)}
+                            >
+                                <option value="">No category</option>
+                                {categories.map((c) => (
+                                    <option key={c.id} value={c.id}>
+                                        {c.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <InputError message={form.errors.category_id} />
+                        </div>
                         <div className="grid gap-1.5 sm:col-span-2">
                             <Label htmlFor="manufacturer_id">Manufacturer</Label>
                             <select

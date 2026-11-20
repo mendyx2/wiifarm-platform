@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Pools\Manufacturer;
 use App\Models\Shop\Product;
+use App\Models\Shop\ProductCategory;
 use App\Services\Admin\Audit;
 use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
@@ -23,19 +24,45 @@ class ProductController extends Controller
     public function index(): Response
     {
         return Inertia::render('admin/products/index', [
-            'products' => Product::with('manufacturer:id,name')->orderBy('name')->get()->map(fn (Product $p) => [
-                'id' => $p->id, 'name' => $p->name, 'sku' => $p->sku, 'manufacturer' => $p->manufacturer->name,
+            'products' => Product::with('manufacturer:id,name', 'category:id,name')->orderBy('name')->get()->map(fn (Product $p) => [
+                'id' => $p->id, 'name' => $p->name, 'sku' => $p->sku, 'manufacturer' => $p->manufacturer->name, 'category' => $p->category?->name,
                 'member_price' => $p->member_price, 'public_price' => $p->public_price, 'pv' => $p->pv,
                 'units_per_pack' => $p->units_per_pack, 'is_active' => $p->is_active,
                 'is_pack_product' => $p->sku === config('wiifarm.registration_product_sku'),
                 'image' => $p->imageUrl(),
             ]),
+            'categories' => ProductCategory::withCount('products')->orderBy('sort')->orderBy('name')->get()
+                ->map(fn (ProductCategory $c) => ['id' => $c->id, 'name' => $c->name, 'sort' => $c->sort, 'products' => $c->products_count]),
         ]);
+    }
+
+    /** Adds or renames a category, and sets its place in the list. */
+    public function saveCategory(Request $request, Audit $audit, ?ProductCategory $category = null): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:80', Rule::unique('product_categories', 'name')->ignore($category?->id)],
+            'sort' => ['nullable', 'integer', 'min:0', 'max:999'],
+        ]);
+        $category ??= new ProductCategory;
+        $old = $category->exists ? $category->only(['name', 'sort']) : null;
+        $category->fill(['name' => trim($data['name']), 'sort' => (int) ($data['sort'] ?? 0)])->save();
+        $audit->record($this->admin($request), $old ? 'products.category_edit' : 'products.category_create', $category, $old, $category->only(['name', 'sort']));
+
+        return back()->with('status', 'Category saved.');
+    }
+
+    /** Deletes a category; its products stay, without a category. */
+    public function deleteCategory(Request $request, ProductCategory $category, Audit $audit): RedirectResponse
+    {
+        $audit->record($this->admin($request), 'products.category_delete', $category, $category->only(['name']), null);
+        $category->delete();
+
+        return back()->with('status', 'Category deleted. Its products are now without a category.');
     }
 
     public function create(): Response
     {
-        return Inertia::render('admin/products/form', ['product' => null, 'manufacturers' => $this->manufacturers()]);
+        return Inertia::render('admin/products/form', ['product' => null, 'manufacturers' => $this->manufacturers(), 'categories' => ProductCategory::forShop()]);
     }
 
     public function store(Request $request, Audit $audit): RedirectResponse
@@ -51,7 +78,7 @@ class ProductController extends Controller
     {
         return Inertia::render('admin/products/form', [
             'product' => [
-                'id' => $product->id, 'name' => $product->name, 'sku' => $product->sku, 'manufacturer_id' => $product->manufacturer_id,
+                'id' => $product->id, 'name' => $product->name, 'sku' => $product->sku, 'manufacturer_id' => $product->manufacturer_id, 'category_id' => $product->category_id,
                 'description' => $product->description ?? '',
                 'member_price' => number_format($product->member_price / 100, 2, '.', ''),
                 'public_price' => number_format($product->public_price / 100, 2, '.', ''),
@@ -60,6 +87,7 @@ class ProductController extends Controller
                 'image' => $product->imageUrl(),
             ],
             'manufacturers' => $this->manufacturers(),
+            'categories' => ProductCategory::forShop(),
         ]);
     }
 
@@ -112,6 +140,7 @@ class ProductController extends Controller
             'name' => ['required', 'string', 'max:120'],
             'sku' => ['required', 'string', 'max:40', 'regex:/^[A-Za-z0-9-]+$/', Rule::unique('products', 'sku')->ignore($product?->id)],
             'manufacturer_id' => ['required', 'integer', 'exists:manufacturers,id'],
+            'category_id' => ['nullable', 'integer', 'exists:product_categories,id'],
             'description' => ['nullable', 'string', 'max:2000'],
             'member_price' => ['required', 'string'],
             'public_price' => ['required', 'string'],

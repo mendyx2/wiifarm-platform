@@ -2430,3 +2430,26 @@ The rest of the last item on the owner's list.
   so copying the backups to a second place is set up with the live hosting.
 - **Tests:** three new tests (sign-ups closed, the site name, a backup made
   and old ones removed).
+
+## Step 54: Product categories; no prices per state
+
+The owner asked for shop categories and state prices (20 November 2026).
+Asked how state prices should work, the owner answered that there are **no
+differences between states**: members pay ₦1,500 and the public ₦2,000 a
+piece everywhere. They also asked where the per-state stockist bonuses came
+from: not from any of their documents, but from the first draft of the
+specification, which listed what the current (old) system does. The
+specification now records the decision, and nothing per state is built.
+
+- **Categories:**
+  - on the admin Products page, a "Categories" box: add a category, rename
+    it, set its place in the list (lowest number first), or delete it (its
+    products stay, without a category); each change is in the audit log;
+  - on a product's page, a "Category" choice ("No category" is allowed);
+  - in the members' shop and the public shop, buttons above the products
+    ("All", then each category that has products) to show one category at
+    a time. They only appear once a category has products, so nothing
+    changes for buyers until the admins create categories.
+- **Tests:** one new test (managing categories with permissions, a product's
+  category, both shops offering it, deleting keeping the products). All 329
+  tests pass.

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $public_price
  * @property int $pv
  * @property int $units_per_pack
+ * @property ?int $category_id
  * @property bool $is_active
  */
 class Product extends Model
@@ -32,6 +33,11 @@ class Product extends Model
     }
 
     /** @return BelongsTo<Manufacturer, $this> */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id');
+    }
+
     public function manufacturer(): BelongsTo
     {
         return $this->belongsTo(Manufacturer::class);

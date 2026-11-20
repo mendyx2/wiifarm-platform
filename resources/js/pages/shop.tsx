@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { CategoryFilter, type Category } from '@/components/wf/category-filter';
 import { ProductImage } from '@/components/wf/product-image';
 import AppLayout from '@/layouts/app-layout';
 import { formatKobo } from '@/lib/money';
@@ -12,19 +13,22 @@ import { cn } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { Clock } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
-type Product = { id: number; name: string; description: string | null; price: number; pv: number; image: string | null };
+type Product = { id: number; name: string; description: string | null; price: number; pv: number; image: string | null; category_id: number | null };
 
 interface ShopProps {
     products: Product[];
+    categories: Category[];
     wallets: { main: number; product: number };
     canBuy: boolean;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Shop', href: '/shop' }];
 
-export default function Shop({ products, wallets, canBuy }: ShopProps) {
+export default function Shop({ products, categories, wallets, canBuy }: ShopProps) {
+    const [category, setCategory] = useState<number | null>(null);
+    const shown = category === null ? products : products.filter((p) => p.category_id === category);
     const form = useForm<{ quantities: Record<number, number>; wallet: 'main' | 'product'; form_id: string }>({
         quantities: Object.fromEntries(products.map((p) => [p.id, 0])),
         wallet: wallets.product > 0 ? 'product' : 'main',
@@ -62,8 +66,9 @@ export default function Shop({ products, wallets, canBuy }: ShopProps) {
                     whole order is handed over at once.
                 </p>
 
+                <CategoryFilter categories={categories} used={products.map((p) => p.category_id)} value={category} onChange={setCategory} />
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {products.map((p) => (
+                    {shown.map((p) => (
                         <Card key={p.id} className="overflow-hidden py-0">
                             <ProductImage src={p.image} name={p.name} className="rounded-none border-b" />
                             <CardContent className="grid gap-3 p-5">

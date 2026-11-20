@@ -1,6 +1,7 @@
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CategoryFilter, type Category } from '@/components/wf/category-filter';
 import { FormField } from '@/components/wf/form-field';
 import { OfflineNotice } from '@/components/wf/payment-history';
 import { ProductImage } from '@/components/wf/product-image';
@@ -8,11 +9,23 @@ import PublicLayout from '@/layouts/public-layout';
 import { formatKobo } from '@/lib/money';
 import { Head, useForm } from '@inertiajs/react';
 import { Minus, Plus } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
-type Product = { id: number; name: string; description: string | null; price: number; image: string | null };
+type Product = { id: number; name: string; description: string | null; price: number; image: string | null; category_id: number | null };
 
-export default function PublicShop({ products, referredBy, online }: { products: Product[]; referredBy: string | null; online: boolean }) {
+export default function PublicShop({
+    products,
+    categories,
+    referredBy,
+    online,
+}: {
+    products: Product[];
+    categories: Category[];
+    referredBy: string | null;
+    online: boolean;
+}) {
+    const [category, setCategory] = useState<number | null>(null);
+    const shown = category === null ? products : products.filter((p) => p.category_id === category);
     const form = useForm({ name: '', phone: '', email: '', quantities: {} as Record<number, number> });
     const qty = (id: number) => form.data.quantities[id] ?? 0;
     const setQty = (id: number, n: number) => form.setData('quantities', { ...form.data.quantities, [id]: Math.max(0, Math.min(500, n)) });
@@ -44,9 +57,10 @@ export default function PublicShop({ products, referredBy, online }: { products:
                     />
                 </section>
                 {!online && <OfflineNotice />}
+                <CategoryFilter categories={categories} used={products.map((p) => p.category_id)} value={category} onChange={setCategory} />
                 <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[2fr_1fr]">
                     <section className="grid content-start gap-3 sm:grid-cols-2" aria-label="Products">
-                        {products.map((p) => (
+                        {shown.map((p) => (
                             <div key={p.id} className="bg-card shadow-soft flex flex-col justify-between gap-3 overflow-hidden rounded-xl border p-4">
                                 <ProductImage src={p.image} name={p.name} className="-mx-4 -mt-4 rounded-none border-b" />
                                 <div>

@@ -7,6 +7,7 @@ use App\Models\Affiliate;
 use App\Models\Payments\OnlinePayment;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
+use App\Models\Shop\ProductCategory;
 use App\Models\Stockists\Store;
 use App\Services\Payments\OnlinePayments;
 use App\Services\Payments\PaymentException;
@@ -47,7 +48,9 @@ class PublicShopController extends Controller
         return Inertia::render('public/shop', [
             'products' => Product::where('is_active', true)->orderBy('name')->get()->map(fn (Product $p) => [
                 'id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->public_price, 'image' => $p->imageUrl(),
+                'category_id' => $p->category_id,
             ]),
+            'categories' => ProductCategory::forShop(),
             'referredBy' => $affiliate?->name(),
             'online' => $paystack->configured(),
         ]);

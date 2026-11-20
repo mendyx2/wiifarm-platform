@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
+use App\Models\Shop\ProductCategory;
 use App\Services\Compensation\Autoship;
 use App\Services\Ledger\InsufficientFunds;
 use App\Services\Ledger\Ledger;
@@ -25,7 +26,8 @@ class ShopController extends Controller
 
         return Inertia::render('shop', [
             'products' => Product::where('is_active', true)->orderBy('name')->get()
-                ->map(fn (Product $p) => ['id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->member_price, 'pv' => $p->pv, 'image' => $p->imageUrl()]),
+                ->map(fn (Product $p) => ['id' => $p->id, 'name' => $p->name, 'description' => $p->description, 'price' => $p->member_price, 'pv' => $p->pv, 'image' => $p->imageUrl(), 'category_id' => $p->category_id]),
+            'categories' => ProductCategory::forShop(),
             'wallets' => ['main' => $balances['main'], 'product' => $balances['product']],
             'canBuy' => $request->user()->isActivated(),
         ]);
