@@ -47,6 +47,39 @@ php artisan test   # tests
 npm run typecheck  # TypeScript
 ```
 
+## Going live: email (Zoho ZeptoMail)
+
+Wiifarm sends member emails through Zoho ZeptoMail (owner, 20 November
+2026). Bonuses are never emailed; they show on the member's dashboard.
+
+1. Sign up at zoho.com/zeptomail and add Wiifarm's domain. ZeptoMail shows
+   a few DNS records (SPF, DKIM); add them where the domain is managed and
+   wait until ZeptoMail marks the domain verified.
+2. Create a Mail Agent, then open **Setup Info > SMTP** and copy the
+   **Send Mail token**.
+3. In the live server's settings (its `.env`, or the hosting panel's
+   variables), set:
+
+   ```
+   MAIL_MAILER=smtp
+   MAIL_HOST=smtp.zeptomail.com
+   MAIL_PORT=587
+   MAIL_ENCRYPTION=tls
+   MAIL_USERNAME=emailapikey
+   MAIL_PASSWORD=<the Send Mail token>
+   MAIL_FROM_ADDRESS=<for example noreply@ the verified domain>
+   MAIL_FROM_NAME="Wiifarm Cooperative"
+   ```
+
+   If ZeptoMail's SMTP page shows a different host for your region (for
+   example `smtp.zeptomail.eu`), use that one.
+4. Make sure the server runs the scheduler every minute
+   (`* * * * * php artisan schedule:run`). It also sends the emails waiting
+   in the background; no other program is needed.
+5. Check: sign up a test member, then look at **Admin > Messages**. The
+   welcome message should show **Sent**. A **Failed** one means the token or
+   the address is wrong.
+
 ## Reference
 
 The old system's state when this rebuild began is commit

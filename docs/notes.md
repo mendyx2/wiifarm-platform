@@ -2106,3 +2106,22 @@ bonuses should be a notification on the member's dashboard.
   and the autoship reminders go to every member on the same day, which can
   pass 300. Amazon SES is cheaper per email but harder to set up.
   Recommended: ZeptoMail.
+
+## Step 44: Email through Zoho ZeptoMail
+
+The owner chose Zoho ZeptoMail for member emails (20 November 2026), so
+decision 37 is settled. No code changes were needed: the platform already
+sends email through a standard mail connection (SMTP), and ZeptoMail offers
+one.
+
+- **The README has a new section, "Going live: email",** with the steps:
+  verify the domain in ZeptoMail, copy the "Send Mail" token, put seven
+  settings on the live server, make sure the scheduler runs every minute,
+  and check that the first welcome message shows "Sent" on the admin
+  Messages page.
+- **The settings** (from ZeptoMail's own SMTP help pages): host
+  smtp.zeptomail.com, port 587 with TLS, user name "emailapikey", and the
+  Send Mail token as the password. The token is a secret: it goes only into
+  the server's settings, never into this repository.
+- **`.env.example`** describes the same settings, with no secret in it.
+- **Locally nothing changes:** emails are still written to the log file.
