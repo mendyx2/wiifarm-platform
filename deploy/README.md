@@ -53,6 +53,9 @@ only: no real members, no real money.
 - **Paystack:** to try paying online, add Paystack's **test** secret key as
   `PAYSTACK_SECRET_KEY` (from the Paystack dashboard, test mode). Without
   it, online payment shows an error; e-pins and Add Distributor still work.
+- **USDT:** to try USDT deposits, set `USDT_TRON_NETWORK=nile` (Tron's
+  test network) and a free TronGrid key as `TRONGRID_API_KEY`, then enter a
+  Nile address and a rate on **Admin > Deposits > USDT deposits**.
 - **Email:** without mail settings, emails are written to the server's log
   (Railway's **Deploy Logs**); members still see everything on their
   dashboard. The ZeptoMail settings are in the main README.

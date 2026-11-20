@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockistController;
 use App\Http\Controllers\Admin\UnclaimedBonusController;
+use App\Http\Controllers\Admin\UsdtController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
@@ -80,6 +81,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('deposits/methods', [DepositController::class, 'methods'])->middleware('admin.can:deposits.methods')->name('deposits.methods');
         Route::post('deposits/methods', [DepositController::class, 'saveMethod'])->middleware('admin.can:deposits.methods')->name('deposits.methods.store');
         Route::put('deposits/methods/{method}', [DepositController::class, 'saveMethod'])->middleware('admin.can:deposits.methods')->name('deposits.methods.update');
+        Route::get('usdt', [UsdtController::class, 'index'])->middleware('admin.can:deposits.view')->name('usdt.index');
+        Route::put('usdt/settings', [UsdtController::class, 'settings'])->middleware('admin.can:deposits.methods')->name('usdt.settings');
+        Route::post('usdt/{deposit}/approve', [UsdtController::class, 'approve'])->middleware('admin.can:deposits.decide')->name('usdt.approve');
+        Route::post('usdt/{deposit}/reject', [UsdtController::class, 'reject'])->middleware('admin.can:deposits.decide')->name('usdt.reject');
         Route::get('deposits/{deposit}', [DepositController::class, 'show'])->middleware('admin.can:deposits.view')->name('deposits.show');
         Route::get('deposits/{deposit}/proof', [DepositController::class, 'proof'])->middleware('admin.can:deposits.view')->name('deposits.proof');
         Route::post('deposits/{deposit}/approve', [DepositController::class, 'approve'])->middleware('admin.can:deposits.decide')->name('deposits.approve');

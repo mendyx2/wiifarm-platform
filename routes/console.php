@@ -38,3 +38,6 @@ Schedule::command('wiifarm:autoship-reminders')->dailyAt('09:20')->timezone('Afr
 // Every minute: send what is waiting in the background (member messages), then stop.
 // This needs only the scheduler's cron line, not a separate worker process.
 Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')->everyMinute()->withoutOverlapping();
+
+// Every minute: USDT payments nobody reported, and deposits whose hour has passed (section 6).
+Schedule::command('wiifarm:usdt-scan')->everyMinute()->withoutOverlapping();

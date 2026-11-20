@@ -8,6 +8,7 @@ use App\Models\Compensation\Award;
 use App\Models\KycSubmission;
 use App\Models\Payments\ManualDeposit;
 use App\Models\Payments\OnlinePayment;
+use App\Models\Payments\UsdtDeposit;
 use App\Models\Payments\Withdrawal;
 use App\Models\Pools\HeldPayout;
 use App\Models\Shop\Order;
@@ -42,6 +43,7 @@ class DashboardController extends Controller
         $todo = array_values(array_filter([
             $can('kyc.view') ? ['label' => 'Identity checks to review', 'count' => KycSubmission::where('status', KycSubmission::PENDING)->count(), 'amount' => null, 'href' => route('admin.kyc.index')] : null,
             $can('deposits.view') ? ['label' => 'Bank-transfer deposits to check', 'count' => ManualDeposit::where('status', ManualDeposit::PENDING)->count(), 'amount' => (int) ManualDeposit::where('status', ManualDeposit::PENDING)->sum('amount'), 'href' => route('admin.deposits.index')] : null,
+            $can('deposits.view') ? ['label' => 'USDT payments to check', 'count' => UsdtDeposit::where('status', UsdtDeposit::REVIEW)->count() + DB::table('usdt_transfers')->where('status', 'unmatched')->count(), 'amount' => null, 'href' => route('admin.usdt.index')] : null,
             $can('withdrawals.view') ? ['label' => 'Withdrawals to pay or refuse', 'count' => Withdrawal::where('status', Withdrawal::PENDING)->count(), 'amount' => (int) Withdrawal::where('status', Withdrawal::PENDING)->sum('payable'), 'href' => route('admin.withdrawals.index')] : null,
             $can('awards.view') ? ['label' => 'Awards to approve', 'count' => Award::where('status', Award::PENDING)->count(), 'amount' => null, 'href' => route('admin.awards.index')] : null,
             $can('awards.view') ? ['label' => 'Gifts to deliver', 'count' => Award::where('status', Award::GIFT)->count(), 'amount' => null, 'href' => route('admin.awards.index')] : null,

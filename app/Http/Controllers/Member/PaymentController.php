@@ -7,12 +7,14 @@ use App\Models\Package;
 use App\Models\Payments\DepositMethod;
 use App\Models\Payments\ManualDeposit;
 use App\Models\Payments\OnlinePayment;
+use App\Models\Payments\UsdtDeposit;
 use App\Services\Network\PlacementException;
 use App\Services\Payments\EPins;
 use App\Services\Payments\ManualDeposits;
 use App\Services\Payments\OnlinePayments;
 use App\Services\Payments\PaymentException;
 use App\Services\Payments\Paystack;
+use App\Services\Usdt\UsdtDeposits;
 use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -81,6 +83,15 @@ class PaymentController extends Controller
             'min' => config('payments.deposit_min'),
             'max' => config('payments.deposit_max'),
             'payments' => $this->recent($request->user()->id, [OnlinePayment::DEPOSIT]),
+            // USDT (TRC20) to Wiifarm's address (section 6).
+            'usdt' => UsdtDeposits::ready() ? [
+                'open' => ($d = UsdtDeposit::where('user_id', $request->user()->id)->where('status', UsdtDeposit::WAITING)->where('expires_at', '>', now())->latest('id')->first())
+                    ? ['id' => $d->id, 'amount' => $d->amount, 'usdt' => UsdtDeposit::usdt($d->units), 'address' => $d->address, 'expires_at' => $d->expires_at->toIso8601String()] : null,
+                'rate' => UsdtDeposits::rateKobo(),
+                'network' => config('usdt.network'),
+            ] : null,
+            'usdtDeposits' => UsdtDeposit::where('user_id', $request->user()->id)->latest('id')->limit(10)->get()
+                ->map(fn (UsdtDeposit $d) => ['id' => $d->id, 'amount' => $d->amount, 'usdt' => UsdtDeposit::usdt($d->units), 'status' => $d->status, 'note' => $d->note, 'at' => $d->created_at->toDateTimeString()]),
             // Bank transfer and other manual methods (section 6).
             'methods' => DepositMethod::where('is_active', true)->orderBy('name')->get()
                 ->map(fn (DepositMethod $m) => ['id' => $m->id, 'name' => $m->name, 'instructions' => $m->instructions, 'min' => $m->min_amount, 'max' => $m->max_amount]),

@@ -6,6 +6,7 @@ import { DataTable } from '@/components/wf/data-table';
 import { DepositStatus } from '@/components/wf/deposit-status';
 import { FormField, selectClass } from '@/components/wf/form-field';
 import { OfflineNotice, PaymentHistory, type PaymentRow } from '@/components/wf/payment-history';
+import { UsdtDeposit, UsdtStatus, type UsdtInfo, type UsdtRow } from '@/components/wf/usdt-deposit';
 import AppLayout from '@/layouts/app-layout';
 import { formatKobo } from '@/lib/money';
 import { type BreadcrumbItem } from '@/types';
@@ -103,6 +104,8 @@ export default function Deposit({
     payments,
     methods,
     manual,
+    usdt,
+    usdtDeposits,
 }: {
     online: boolean;
     min: number;
@@ -110,6 +113,8 @@ export default function Deposit({
     payments: PaymentRow[];
     methods: Method[];
     manual: Manual[];
+    usdt: UsdtInfo | null;
+    usdtDeposits: UsdtRow[];
 }) {
     const form = useForm({ amount: '' });
     const submit: FormEventHandler = (e) => {
@@ -147,6 +152,37 @@ export default function Deposit({
                     <h2 className="font-medium">Your deposits</h2>
                     <PaymentHistory rows={payments} />
                 </section>
+
+                {usdt && (
+                    <section className="space-y-3">
+                        <h2 className="font-medium">Or pay with USDT (TRC20)</h2>
+                        <UsdtDeposit usdt={usdt} />
+                    </section>
+                )}
+                {usdtDeposits.length > 0 && (
+                    <section className="space-y-2">
+                        <h2 className="font-medium">Your USDT deposits</h2>
+                        <DataTable
+                            rows={usdtDeposits}
+                            rowKey={(d) => d.id}
+                            columns={[
+                                { key: 'at', header: 'Started', cell: (d) => d.at, className: 'whitespace-nowrap' },
+                                { key: 'usdt', header: 'USDT', cell: (d) => d.usdt },
+                                {
+                                    key: 'status',
+                                    header: 'Status',
+                                    cell: (d) => (
+                                        <>
+                                            <UsdtStatus status={d.status} />
+                                            {d.note && <span className="text-muted-foreground block text-xs">{d.note}</span>}
+                                        </>
+                                    ),
+                                },
+                                { key: 'amount', header: 'Amount', align: 'right', cell: (d) => formatKobo(d.amount) },
+                            ]}
+                        />
+                    </section>
+                )}
 
                 {methods.length > 0 && (
                     <section className="space-y-3">

@@ -9,6 +9,7 @@ use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\StoreController;
 use App\Http\Controllers\Member\TeamController;
+use App\Http\Controllers\Member\UsdtController;
 use App\Http\Controllers\Member\WalletController;
 use App\Http\Controllers\Member\WithdrawController;
 use App\Http\Controllers\PaystackWebhookController;
@@ -44,6 +45,8 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('team/add', [KeyInController::class, 'create'])->name('team.add');
     Route::post('team/add', [KeyInController::class, 'store'])->middleware('throttle:10,1')->name('team.add.store');
     Route::get('deposit', [PaymentController::class, 'deposit'])->name('deposit');
+    Route::post('deposit/usdt', [UsdtController::class, 'start'])->middleware('throttle:10,1')->name('deposit.usdt');
+    Route::post('deposit/usdt/claim', [UsdtController::class, 'claim'])->middleware('throttle:20,1')->name('deposit.usdt.claim');
     Route::post('deposit/manual', [PaymentController::class, 'depositManual'])->middleware('throttle:10,1')->name('deposit.manual');
     Route::post('deposit', [PaymentController::class, 'payDeposit'])->middleware('throttle:10,1')->name('deposit.pay');
     Route::get('payments/return', [PaymentController::class, 'return'])->name('payments.return');

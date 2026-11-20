@@ -34,6 +34,12 @@ return [
         // switched off on its own, on the admin Messages page.
         'messages.email' => true,
 
+        // USDT (TRC20) deposits (section 6): off until an admin sets
+        // Wiifarm's address and the naira paid for 1 USDT.
+        'usdt.enabled' => false,
+        'usdt.address' => '',
+        'usdt.naira_per_usdt' => 0,
+
         // The monthly purchase that keeps a member active, in PV (Revised
         // Baseline Rules, 19 November 2026: 10.5 PV, ₦10,500).
         'activity.monthly_pv' => 10.5,

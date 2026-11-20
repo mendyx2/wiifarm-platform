@@ -2232,3 +2232,55 @@ manual methods such as a bank transfer, checked by an admin.
 - **Tests:** four new tests (send and approve once, with permissions;
   refuse with a reason; limits, file type, the same form twice and the
   on/off switch; setting up the bank details). All 306 tests pass.
+
+## Step 48: Deposits in USDT (TRC20)
+
+The second item on the owner's list. Specification section 6 asks for USDT
+deposits to Wiifarm's one address, checked on the Tron network, never
+credited twice. The owner had already settled how this should work for the
+current system (its notes, step 122); I rebuilt that design here from the
+description, with new code.
+
+- **The problem it solves.** Everyone can see every payment to a public
+  address. If members only pasted a transaction ID, a member could paste
+  someone else's payment. So each deposit asks for an amount no other open
+  deposit asks for.
+- **For the member** (Deposit page, "Or pay with USDT"):
+  1. they enter the naira amount, for example ₦16,000;
+  2. they are shown the exact USDT to send (at an admin rate of ₦1,600 =
+     1 USDT, 10 USDT plus 0.01 to 0.99, e.g. 10.37 USDT) and Wiifarm's
+     address, each with a Copy button, and have one hour;
+  3. the payment is found by itself within a minute or two, or when they
+     press "Check my payment", or paste the transaction ID;
+  4. the naira amount goes to their main balance (ledger entry from
+     outside, as for other deposits), and they get the "deposit received"
+     notice.
+- **What is checked before anything is added:** the payment is final
+  (TronGrid's "solidity" node only answers for confirmed blocks), it is
+  Tether's official USDT (not a look-alike token), it went to Wiifarm's
+  address, it is exactly the amount asked, and it was sent inside that
+  deposit's hour. Each transaction ID is recorded once; the database
+  refuses a second record.
+- **When it does not fit exactly:**
+  - pasted by someone else: credited to the deposit it fits, never to them;
+  - the member's own payment with the wrong amount or after the hour: goes
+    to an admin, who adds the naira amount they decide (the page suggests
+    the received USDT at the deposit's rate) or refuses with a reason;
+  - a payment no one claims: listed for admins as "fits no deposit"; its
+    sender can still claim it with the transaction ID.
+- **For the admin** (Deposits > USDT deposits, and the dashboard): the
+  settings (address, rate, on/off; a wrong address is refused because Tron
+  addresses carry a checksum), the deposits to check, and the payments that
+  fit no deposit, with links to each transaction on Tronscan.
+- **Settings on the server:** `TRONGRID_API_KEY` (a free TronGrid key; a
+  secret, never in the code) and `USDT_TRON_NETWORK` ("nile" is Tron's test
+  network, with free test USDT, for trying it first).
+- **Tests:** seven new tests against a simulated TronGrid: unique amounts,
+  credited once, someone else's payment, the scan, wrong amounts approved
+  or refused, fake tokens, unfinished payments and the network being
+  unreachable (nothing is decided), and the settings. All 313 tests pass.
+- **Before switching it on for real money:** I could not reach TronGrid's
+  documentation or the network from this work environment, so the replies
+  are simulated from TronGrid's documented formats. It must be tried once on
+  the Nile test network (on the preview site) before real money. USDT
+  deposits start switched off.

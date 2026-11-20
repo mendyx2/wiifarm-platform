@@ -60,11 +60,16 @@ export default function AdminDeposits({ deposits, status }: { deposits: Paginate
                             </Link>
                         ))}
                     </nav>
-                    {can('deposits.methods') && (
+                    <div className="flex flex-wrap gap-2">
                         <Button asChild variant="secondary" size="sm">
-                            <Link href={route('admin.deposits.methods')}>Deposit methods</Link>
+                            <Link href={route('admin.usdt.index')}>USDT deposits</Link>
                         </Button>
-                    )}
+                        {can('deposits.methods') && (
+                            <Button asChild variant="secondary" size="sm">
+                                <Link href={route('admin.deposits.methods')}>Deposit methods</Link>
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 <DataTable
                     rows={deposits.data}
