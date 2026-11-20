@@ -19,6 +19,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     Award,
     Banknote,
+    BarChart3,
     Boxes,
     Combine,
     CreditCard,
@@ -66,6 +67,7 @@ const navItems: AdminNavItem[] = [
     { title: 'Matching', url: '/admin/matching', icon: Combine, permission: 'matching.view' },
     { title: 'Leadership', url: '/admin/leadership', icon: Crown, permission: 'matching.view' },
     { title: 'Packages', url: '/admin/packages', icon: Boxes, permission: 'settings.view' },
+    { title: 'Reports', url: '/admin/reports/financial', icon: BarChart3, permission: 'reports.view' },
     { title: 'Support', url: '/admin/support', icon: LifeBuoy, permission: 'support.view' },
     { title: 'Website', url: '/admin/website', icon: Globe, permission: 'content.manage' },
     { title: 'Announcements', url: '/admin/announcements', icon: Megaphone, permission: 'content.manage' },

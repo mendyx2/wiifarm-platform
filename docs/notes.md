@@ -2381,3 +2381,29 @@ tickets with private attachments; reply, close").
 - **Permissions:** see support (and attachments); reply and close.
 - **Tests:** two new tests (the whole conversation with permissions,
   attachment and notice; members seeing only their own). All 322 tests pass.
+
+## Step 52: Reports
+
+Part of the last item on the owner's list (specification section 11:
+"transactions, PV log, login history, financial report (income, payouts and
+pools by period), admin action log"). The PV log, the admin action log and
+the pools by period already existed; this adds the rest, under a new
+"Reports" menu item (Reports permission).
+
+- **Financial report**, for today, this month, last month, this quarter,
+  this year, or any two dates (Lagos time):
+  - money in, by way of paying: Paystack (packages, upgrades, deposits,
+    public shop), bank transfers and USDT, with how many and how much;
+  - withdrawals sent (and how many);
+  - bonuses paid to members, by kind;
+  - the cooperative's own income from charges (withdrawals, transfers);
+  - new members.
+- **Transactions:** every ledger transaction, newest first, with each line
+  in words ("@ada: Main balance +₦9,000.00", "Pool A: direct −₦9,000.00"),
+  filtered by kind, member and dates. Each one adds up to zero.
+- **Login history:** every sign-in by members, admins and affiliates, with
+  the time, internet address and device, filtered by who. Sign-ins are
+  recorded from now on.
+- **Tests:** three new tests (the report adds up a period and an empty one;
+  transactions by member and kind add up to zero; sign-ins are recorded).
+  All 325 tests pass.

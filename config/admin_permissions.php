@@ -54,6 +54,9 @@ return [
             'messages.view' => 'See the member messages and which were sent',
             'messages.edit' => 'Change the text of member messages and switch them on or off',
         ],
+        'Reports' => [
+            'reports.view' => 'See the financial report, every ledger transaction and the login history',
+        ],
         'Support' => [
             'support.view' => 'See support tickets and their attachments',
             'support.reply' => 'Reply to and close support tickets',

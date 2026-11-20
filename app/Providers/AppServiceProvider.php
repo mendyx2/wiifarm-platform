@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Contracts\SmsSender;
 use App\Notifications\MemberMessage;
 use App\Services\Sms\LogSmsSender;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Every sign-in, for the login history report (section 11).
+        Event::listen(Login::class, function (Login $e) {
+            DB::table('login_logs')->insert([
+                'guard' => $e->guard, 'account_id' => $e->user->getAuthIdentifier(),
+                'name' => (string) ($e->user->username ?? $e->user->code ?? $e->user->email ?? ''),
+                'ip' => request()->ip(), 'user_agent' => mb_substr((string) request()->userAgent(), 0, 255), 'created_at' => now(),
+            ]);
+        });
+
         // Each member message's log row says whether it went out (section 12).
         Event::listen(NotificationSent::class, function (NotificationSent $e) {
             if ($e->notification instanceof MemberMessage) {

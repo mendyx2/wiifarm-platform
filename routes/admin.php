@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\OnlinePaymentController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PoolsController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockistController;
@@ -149,6 +150,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('announcements', [ContentController::class, 'saveAnnouncement'])->name('announcements.store');
             Route::put('announcements/{announcement}', [ContentController::class, 'saveAnnouncement'])->name('announcements.update');
             Route::delete('announcements/{announcement}', [ContentController::class, 'deleteAnnouncement'])->name('announcements.destroy');
+        });
+
+        // Reports (section 11)
+        Route::middleware('admin.can:reports.view')->group(function () {
+            Route::get('reports/financial', [ReportController::class, 'financial'])->name('reports.financial');
+            Route::get('reports/transactions', [ReportController::class, 'transactions'])->name('reports.transactions');
+            Route::get('reports/logins', [ReportController::class, 'logins'])->name('reports.logins');
         });
 
         // Support tickets (section 11)
