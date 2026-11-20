@@ -43,6 +43,14 @@ return [
             'body' => "We could not approve your deposit of {{amount}}.\n\nThe reason: {{reason}}\n\nIf you did pay, please send it again with the right proof or reference.",
             'action' => ['label' => 'Go to deposits', 'route' => 'deposit'],
         ],
+        'transfer.received' => [
+            'name' => 'Money received from a member',
+            'who' => 'The member who receives a balance transfer',
+            'placeholders' => ['name', 'amount', 'sender'],
+            'subject' => 'You received {{amount}} from {{sender}}',
+            'body' => '{{sender}} sent you {{amount}}. It is in your main balance.',
+            'action' => ['label' => 'See my wallet', 'route' => 'wallet'],
+        ],
         'withdrawal.paid' => [
             'name' => 'Withdrawal paid',
             'who' => 'Whoever asked: the member, the store owner (stockist) or the affiliate',

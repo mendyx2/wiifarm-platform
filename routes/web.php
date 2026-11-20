@@ -51,6 +51,8 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::post('deposit', [PaymentController::class, 'payDeposit'])->middleware('throttle:10,1')->name('deposit.pay');
     Route::get('payments/return', [PaymentController::class, 'return'])->name('payments.return');
     Route::post('wallet/transfer', [WithdrawController::class, 'bonusTransfer'])->name('wallet.transfer');
+    Route::post('wallet/send', [WithdrawController::class, 'balanceTransfer'])->middleware('throttle:10,1')->name('wallet.send');
+    Route::get('wallet/recipient', [WithdrawController::class, 'recipient'])->middleware('throttle:30,1')->name('wallet.recipient');
     Route::get('withdraw', [WithdrawController::class, 'index'])->name('withdraw');
     Route::post('withdraw', [WithdrawController::class, 'store'])->middleware('throttle:6,1')->name('withdraw.store');
     Route::get('shop', [ShopController::class, 'index'])->name('shop');

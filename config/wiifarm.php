@@ -34,6 +34,14 @@ return [
         // switched off on its own, on the admin Messages page.
         'messages.email' => true,
 
+        // Balance transfers between members (section 6). Amounts in kobo; the
+        // charge comes out of the amount sent (decision 38).
+        'transfers.enabled' => true,
+        'transfers.min' => 10_000,            // ₦100
+        'transfers.max' => 100_000_000,       // ₦1,000,000
+        'transfers.fixed_charge' => 0,
+        'transfers.percent_charge' => '0',
+
         // USDT (TRC20) deposits (section 6): off until an admin sets
         // Wiifarm's address and the naira paid for 1 USDT.
         'usdt.enabled' => false,

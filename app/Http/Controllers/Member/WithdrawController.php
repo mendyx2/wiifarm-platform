@@ -11,10 +11,13 @@ use App\Models\User;
 use App\Services\Ledger\InsufficientFunds;
 use App\Services\Ledger\Ledger;
 use App\Services\Ledger\LedgerException;
+use App\Services\Messages\Messages;
+use App\Services\Payments\BalanceTransfers;
 use App\Services\Payments\BonusTransfer;
 use App\Services\Payments\Withdrawals;
 use App\Support\Money;
 use App\Support\Settings;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -78,6 +81,40 @@ class WithdrawController extends Controller
     }
 
     /** Move money from a bonus wallet to the main balance. */
+    /** Sends money from the main balance to another member's (section 6). Needs the member's password. */
+    public function balanceTransfer(Request $request, BalanceTransfers $transfers): RedirectResponse
+    {
+        $data = $request->validate([
+            'username' => ['required', 'string', 'max:40'],
+            'amount' => ['required', 'string', 'max:20'],
+            'password' => ['required', 'current_password'],
+            'form_id' => ['required', 'uuid'],
+        ], ['password.current_password' => 'The password is not right.']);
+
+        try {
+            $sent = $transfers->send($request->user(), $data['username'], Money::parseNaira($data['amount']), $data['form_id']);
+        } catch (InsufficientFunds) {
+            return back()->withErrors(['send' => 'There is not that much in your main balance.']);
+        } catch (LedgerException|InvalidArgumentException $e) {
+            return back()->withErrors(['send' => $e->getMessage()]);
+        }
+
+        return back()->with('status', 'Sent: @'.$sent['to']->username.' received '.Messages::naira($sent['receives']).'.');
+    }
+
+    /** Who a username belongs to, so the member can check before sending. */
+    public function recipient(Request $request): JsonResponse
+    {
+        $username = (string) $request->validate(['username' => ['required', 'string', 'max:40']])['username'];
+        try {
+            $to = BalanceTransfers::recipient($request->user(), $username);
+        } catch (InvalidArgumentException $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+
+        return response()->json(['name' => $to->first_name.' '.mb_substr((string) $to->last_name, 0, 1).'.', 'username' => $to->username]);
+    }
+
     public function bonusTransfer(Request $request, BonusTransfer $transfer): RedirectResponse
     {
         $data = $request->validate(['wallet' => ['required', 'string'], 'amount' => ['required', 'string', 'max:20'], 'form_id' => ['required', 'uuid']]);

@@ -113,14 +113,65 @@ function MonthlyPurchase({ value, editable }: { value: number; editable: boolean
     );
 }
 
+type Transfers = { enabled: boolean; min: string; max: string; fixed_charge: string; percent_charge: string };
+
+function BalanceTransfers({ value, editable }: { value: Transfers; editable: boolean }) {
+    const form = useForm(value);
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        form.put(route('admin.settings.transfers'), { preserveScroll: true, onSuccess: () => form.setDefaults() });
+    };
+    const field = (k: 'min' | 'max' | 'fixed_charge' | 'percent_charge', label: string) => (
+        <FormField id={`t-${k}`} label={label} error={form.errors[k]}>
+            <Input id={`t-${k}`} inputMode="decimal" disabled={!editable} value={form.data[k]} onChange={(e) => form.setData(k, e.target.value)} />
+        </FormField>
+    );
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-base">Balance transfers between members</CardTitle>
+                <CardDescription>
+                    A member sends money from their main balance to another member's. The charge comes out of the amount sent and goes to the
+                    cooperative, as for withdrawals. Changes are saved in the audit log.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={submit} className="grid gap-3 sm:grid-cols-4">
+                    {field('min', 'Minimum (₦)')}
+                    {field('max', 'Maximum (₦)')}
+                    {field('fixed_charge', 'Fixed charge (₦)')}
+                    {field('percent_charge', 'Percentage charge (%)')}
+                    <div className="flex items-center gap-2 sm:col-span-4">
+                        <Checkbox
+                            id="t-on"
+                            disabled={!editable}
+                            checked={form.data.enabled}
+                            onCheckedChange={(v) => form.setData('enabled', v === true)}
+                        />
+                        <Label htmlFor="t-on">Members can send money to each other</Label>
+                    </div>
+                    {editable && (
+                        <Button className="w-fit" disabled={form.processing || !form.isDirty}>
+                            Save
+                        </Button>
+                    )}
+                </form>
+            </CardContent>
+        </Card>
+    );
+}
+
 export default function AdminSettings({
     switches,
     leadership,
     monthlyPv,
+    transfers,
 }: {
     switches: Switch[];
     leadership: { team: string; levels: number };
     monthlyPv: number;
+    transfers: Transfers;
 }) {
     const can = useAdminCan();
     const editable = can('settings.edit');
@@ -170,6 +221,7 @@ export default function AdminSettings({
                     </CardContent>
                 </Card>
                 <MonthlyPurchase value={monthlyPv} editable={editable} />
+                <BalanceTransfers value={transfers} editable={editable} />
                 <LeadershipTeam value={leadership} editable={editable} />
             </div>
         </AdminLayout>

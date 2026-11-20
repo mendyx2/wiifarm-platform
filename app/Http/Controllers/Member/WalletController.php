@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Services\Ledger\Ledger;
 use App\Services\Ledger\Statement;
+use App\Support\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -23,6 +24,11 @@ class WalletController extends Controller
             'labels' => config('ledger.member_wallets'),
             'wallet' => $wallet,
             'entries' => $statement->for($ledger->memberAccount($member, $wallet)),
+            // Sending to another member (section 6).
+            'transfers' => Settings::get('transfers.enabled') ? [
+                'min' => (int) Settings::get('transfers.min'), 'max' => (int) Settings::get('transfers.max'),
+                'fixed' => (int) Settings::get('transfers.fixed_charge'), 'percent' => (string) Settings::get('transfers.percent_charge'),
+            ] : null,
         ]);
     }
 }

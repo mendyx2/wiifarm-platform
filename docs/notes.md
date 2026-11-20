@@ -2284,3 +2284,33 @@ description, with new code.
   are simulated from TronGrid's documented formats. It must be tried once on
   the Nile test network (on the preview site) before real money. USDT
   deposits start switched off.
+
+## Step 49: Sending money to another member
+
+The third item on the owner's list. Specification section 6: "Balance
+transfer moves money between members, with a fixed and a percentage charge
+set by the admin."
+
+- **For the member** (Wallet page, "Send money to another member"):
+  - they type the other member's username; the name appears (for example
+    "Bola A.") so they can check it is the right person;
+  - they type the amount; the page shows what the other member receives
+    after the charge;
+  - they confirm with their password.
+  The money moves from their main balance to the other member's in one
+  ledger entry, the charge to the cooperative's "balance transfer charges"
+  account. Sending the same form twice moves it once. The other member
+  gets a "You received ₦… from @…" notice.
+- **Refused:** a wrong password, more than the main balance, sending to
+  oneself, an unknown username, the company account, a banned member, below
+  the minimum or above the maximum, a member whose withdrawals are blocked
+  (otherwise transfers would get around the block), or when transfers are
+  switched off.
+- **For the super-admin** (Settings, "Balance transfers between members"):
+  on/off, the minimum, maximum, fixed charge and percentage charge, saved in
+  the audit log.
+- **For the board (decision 38):** built with no charge, ₦100 to
+  ₦1,000,000, the charge taken out of the amount (as for withdrawals). What
+  charge, charge on top instead, KYC needed to send, a daily limit?
+- **Tests:** three new tests (moved once with the charge, everything that is
+  refused, the settings and who may change them).

@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Services\Admin\Audit;
+use App\Support\Money;
 use App\Support\Settings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use InvalidArgumentException;
 
 /**
  * System settings (specification section 11). For now, the verification
@@ -38,7 +41,43 @@ class SettingsController extends Controller
             ])->values(),
             'leadership' => ['team' => Settings::get('leadership.team'), 'levels' => (int) Settings::get('leadership.levels')],
             'monthlyPv' => (float) Settings::get('activity.monthly_pv'),
+            'transfers' => [
+                'enabled' => (bool) Settings::get('transfers.enabled'),
+                'min' => number_format(Settings::get('transfers.min') / 100, 2, '.', ''), 'max' => number_format(Settings::get('transfers.max') / 100, 2, '.', ''),
+                'fixed_charge' => number_format(Settings::get('transfers.fixed_charge') / 100, 2, '.', ''), 'percent_charge' => (string) Settings::get('transfers.percent_charge'),
+            ],
         ]);
+    }
+
+    /** Balance transfers between members: on or off, limits and charges (section 6). */
+    public function updateTransfers(Request $request, Audit $audit): RedirectResponse
+    {
+        $data = $request->validate([
+            'enabled' => ['boolean'], 'min' => ['required', 'string'], 'max' => ['required', 'string'], 'fixed_charge' => ['required', 'string'],
+            'percent_charge' => ['required', 'numeric', 'min:0', 'max:50'],
+        ]);
+        $new = ['transfers.enabled' => $request->boolean('enabled'), 'transfers.percent_charge' => number_format((float) $data['percent_charge'], 2, '.', '')];
+        foreach (['min', 'max', 'fixed_charge'] as $field) {
+            try {
+                $new['transfers.'.$field] = Money::parseNaira($data[$field]);
+            } catch (InvalidArgumentException) {
+                throw ValidationException::withMessages([$field => 'Enter an amount in naira, e.g. 1000']);
+            }
+        }
+        if ($new['transfers.min'] <= 0 || $new['transfers.min'] > $new['transfers.max']) {
+            throw ValidationException::withMessages(['max' => 'The maximum must be at least the minimum, and the minimum more than zero.']);
+        }
+        /** @var Admin $admin */
+        $admin = $request->user('admin');
+        $old = array_map(fn ($k) => Settings::get($k), array_combine(array_keys($new), array_keys($new)));
+        DB::transaction(function () use ($new, $old, $admin, $audit) {
+            foreach ($new as $key => $value) {
+                Settings::set($key, $value, $admin->id);
+            }
+            $audit->record($admin, 'settings.edit', null, $old, $new, 'Balance transfers');
+        });
+
+        return back()->with('status', 'Balance transfer settings saved.');
     }
 
     /** The monthly purchase that keeps a member active (Revised Baseline Rules: 10.5 PV). */

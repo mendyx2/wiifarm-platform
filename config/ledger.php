@@ -74,6 +74,7 @@ return [
      */
     'cooperative_accounts' => [
         'withdrawal_charges' => 'Withdrawal charges',
+        'transfer_charges' => 'Balance transfer charges',
         // A recognition award taken as a gift: its cash value, set aside to buy the gift.
         'award_gifts' => 'Award gifts to buy',
     ],
