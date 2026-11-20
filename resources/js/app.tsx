@@ -13,10 +13,12 @@ declare global {
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    // The site name from Settings when the page has it; the build-time name otherwise.
+    title: (title) => `${title} - ${(window as { __siteName?: string }).__siteName ?? appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
+        (window as { __siteName?: string }).__siteName = (props.initialPage.props.name as string | undefined) ?? undefined;
 
         root.render(<App {...props} />);
     },

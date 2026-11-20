@@ -83,7 +83,7 @@ class WebsiteTest extends NetworkTestCase
         $admin = Admin::factory()->super()->create();
         $this->actingAs($admin, 'admin')->get('/')->assertOk();                               // admins can still check the site
         $this->put('/admin/settings', ['verification_email_required' => false, 'verification_mobile_required' => false, 'withdrawals_kyc_required' => true,
-            'matching_autoship_hold' => true, 'messages_email' => true, 'site_maintenance' => false])->assertSessionHasNoErrors();
+            'matching_autoship_hold' => true, 'messages_email' => true, 'site_maintenance' => false, 'site_registration_open' => true])->assertSessionHasNoErrors();
         auth('admin')->logout();
         $this->get('/')->assertOk();
     }

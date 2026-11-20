@@ -2407,3 +2407,26 @@ the pools by period already existed; this adds the rest, under a new
 - **Tests:** three new tests (the report adds up a period and an empty one;
   transactions by member and kind add up to zero; sign-ins are recorded).
   All 325 tests pass.
+
+## Step 53: Sign-ups on/off, the site name and the daily backup
+
+The rest of the last item on the owner's list.
+
+- **Sign-ups on/off** (Settings, super-admins): when switched off, the
+  sign-up page says "Sign-ups are closed for now" and a sign-up sent anyway
+  is refused. Members can still sign in, and members can still add people
+  with Add Distributor.
+- **The site name** is now a setting ("Wiifarm Cooperative"), shared with
+  every page for the browser tab. A screen to change it is not built yet;
+  it is rarely changed.
+- **The daily backup** (`wiifarm:backup`, every night at 03:00 Lagos time,
+  as specification section 12 asks):
+  - a full copy of the database, taken safely while the site is in use,
+    compressed, and kept in the server's private storage;
+  - copies older than 30 days are deleted;
+  - it works with SQLite (the preview site) and with MySQL or PostgreSQL
+    (the live site).
+  A backup kept on the same server does not survive the server being lost,
+  so copying the backups to a second place is set up with the live hosting.
+- **Tests:** three new tests (sign-ups closed, the site name, a backup made
+  and old ones removed).

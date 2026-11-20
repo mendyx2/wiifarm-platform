@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Admin;
 use App\Models\Stockists\Store;
+use App\Support\Settings;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,7 @@ class HandleInertiaRequests extends Middleware
 
         return array_merge(parent::share($request), [
             ...parent::share($request),
-            'name' => config('app.name'),
+            'name' => fn () => rescue(fn () => (string) Settings::get('site.name'), config('app.name'), false),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 // Always the member (the web guard). On admin pages the admin

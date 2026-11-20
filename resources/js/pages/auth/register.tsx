@@ -30,6 +30,7 @@ type RegisterForm = {
 interface RegisterProps {
     defaults: { dial_code: string; country: string };
     sponsor: string | null;
+    closed: boolean;
 }
 
 function Field({ id, label, error, hint, children }: { id: string; label: string; error?: string; hint?: string; children: ReactNode }) {
@@ -43,7 +44,7 @@ function Field({ id, label, error, hint, children }: { id: string; label: string
     );
 }
 
-export default function Register({ defaults, sponsor }: RegisterProps) {
+export default function Register({ defaults, sponsor, closed }: RegisterProps) {
     const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({
         first_name: '',
         last_name: '',
@@ -71,6 +72,17 @@ export default function Register({ defaults, sponsor }: RegisterProps) {
         const match = countries.find(([c]) => c === code);
         setData((d) => ({ ...d, country: code, dial_code: match ? match[2] : d.dial_code }));
     };
+
+    if (closed) {
+        return (
+            <AuthLayout title="Sign-ups are closed for now" description="Please try again later. Members can still sign in.">
+                <Head title="Join Wiifarm" />
+                <TextLink href={route('login')} className="text-center text-sm">
+                    Sign in
+                </TextLink>
+            </AuthLayout>
+        );
+    }
 
     return (
         <AuthLayout title="Join Wiifarm" description="Create your account. You become a member when your package is paid.">

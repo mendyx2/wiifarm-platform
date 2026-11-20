@@ -36,6 +36,11 @@ return [
 
         // Maintenance mode (section 12): only Wiifarm's admins switch it.
         'site.maintenance' => false,
+        // New sign-ups (section 11): off closes the sign-up page; members, e-pins
+        // and Add Distributor by members are not affected.
+        'site.registration_open' => true,
+        // The name shown in the browser tab and the emails (section 11).
+        'site.name' => 'Wiifarm Cooperative',
         'site.maintenance_message' => 'We are improving the site and will be back shortly. Thank you for your patience.',
 
         // Balance transfers between members (section 6). Amounts in kobo; the

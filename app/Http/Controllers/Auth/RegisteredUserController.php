@@ -28,6 +28,7 @@ class RegisteredUserController extends Controller
             ],
             // A referral link (?ref=username) fills in the sponsor.
             'sponsor' => request()->string('ref')->toString() ?: null,
+            'closed' => ! Settings::get('site.registration_open'),
         ]);
     }
 
@@ -41,6 +42,9 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        if (! Settings::get('site.registration_open')) {
+            throw ValidationException::withMessages(['username' => 'Sign-ups are closed for now. Please try again later.']);
+        }
         SignUpChecks::tidy($request);
 
         $request->validate(SignUpChecks::rules() + ['terms' => ['accepted']], SignUpChecks::messages());

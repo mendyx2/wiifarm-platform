@@ -525,7 +525,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Content | Website pages and sections, SEO, cookie notice, languages, notices and announcements to members. *Built (November 2026): the pages and SEO, the cookie notice, and announcements (title, message, information or important, from and until dates, on/off) shown at the top of every member's dashboard while they run. Languages: not yet.* |
 | Support | Support tickets with private attachments; reply, close. *Built (November 2026): members open a ticket (subject, message, optional photo or PDF) from "Support" in their menu and follow the conversation there; admins with the Support permissions reply (optionally closing it) or close it; the member is told on their dashboard (and by email). A member closing it, or writing again to reopen it, is allowed. Attachments are private: only the member and admins allowed to see support can open them.* |
 | Reports | Transactions, PV log, login history, financial report (income, payouts and pools by period), admin action log. *Built (November 2026): the financial report for today, this or last month, this quarter or year, or any dates (money in by way of paying, withdrawals sent, bonuses by kind, the cooperative's charges, new members); every ledger transaction with its lines, filtered by kind, member and dates; the login history of members, admins and affiliates (when, internet address, device). The pools by period are on the Pools page; the PV log and admin action log were already built.* |
-| Settings | Site name and currency, registration on/off, verification switches, charges, maintenance mode, message templates |
+| Settings | Site name and currency, registration on/off, verification switches, charges, maintenance mode, message templates. *Built (November 2026): sign-ups on/off, maintenance mode, verification switches, the withdrawal and balance-transfer charges, the monthly purchase, the leadership team, and the message templates (Messages). The site name is a setting shown in the browser tab; changing it on a screen, and the currency (naira only), are not built. The withdrawal and deposit methods have their own pages.* |
 
 **Audit log:** every admin action that changes data records the admin, the action, the record it changed, the old and new values, the time and the IP address. The log cannot be edited or deleted from the panel.
 
@@ -564,7 +564,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Daily 01:30 | Matching bonus run (5.5) |
 | Daily 02:30, acts once a month | Leadership bonus for the month just ended (5.7) |
 | Daily 02:00 | Record members newly qualified for a recognition or repurchase award (5.8, 5.11) |
-| Daily 03:00 | Full database backup, kept 30 days |
+| Daily 03:00 | Full database backup, kept 30 days. *Built (November 2026): `wiifarm:backup`, compressed, in the server's private storage; copying backups to a second place is set up with the live hosting.* |
 | Daily | Expire unpaid or uncollected public orders (8). This is not scheduled in the current system, and should be |
 | Daily 03:10 | Autoship: release held matching where an autoship is made; flush it after 3 missed months in a row (5.6) |
 | Daily 09:20, from the 22nd to the 7th | Autoship reminder emails, once per stage (5.6) |

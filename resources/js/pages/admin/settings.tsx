@@ -25,6 +25,7 @@ const titles: Record<string, string> = {
     'matching.autoship_hold': 'Autoship hold on matching bonuses',
     'messages.email': 'Email messages to members',
     'site.maintenance': 'Maintenance mode',
+    'site.registration_open': 'Sign-ups open',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */

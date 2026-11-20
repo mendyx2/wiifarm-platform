@@ -41,3 +41,6 @@ Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')->every
 
 // Every minute: USDT payments nobody reported, and deposits whose hour has passed (section 6).
 Schedule::command('wiifarm:usdt-scan')->everyMinute()->withoutOverlapping();
+
+// Every night: a full database backup, kept 30 days (section 12).
+Schedule::command('wiifarm:backup')->dailyAt('03:00')->timezone('Africa/Lagos')->withoutOverlapping();
