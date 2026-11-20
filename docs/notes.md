@@ -2072,3 +2072,37 @@ member something, which an admin can edit and switch off.
   orders tell the member; a public buyer gets their pickup code with a link
   that opens their order. The deposit and award tests check one message each.
   All 299 tests pass.
+
+## Step 43: Notices on the member's dashboard
+
+The owner's answer (20 November 2026): no SMS, and no email for bonuses;
+bonuses should be a notification on the member's dashboard.
+
+- **A bell in the member's header**, on every member page, with the number
+  of notices not yet read. It opens the new **Notices** page, which lists
+  them all, newest first. Opening the page marks them read.
+- **A "Notices" list on the dashboard** shows the latest five.
+- **What appears there:**
+  - **Every bonus paid** into a member's bonus wallets: direct, indirect,
+    key-in, upgrade, matching, unilevel, leadership, awards and the others,
+    with the amount and what it was for. This includes a bonus that was
+    held and is paid later when its pool refills, and matching released
+    after an autoship. A bonus is never told twice, and never by email.
+  - **A copy of every member message** (step 42) that is switched on, so a
+    member sees "Your identity check is approved" on the dashboard even
+    while email is switched off or not yet set up.
+- **Saved with the change itself:** a notice is written in the same step
+  as the payment, so it can never appear for a payment that did not
+  happen.
+- **Tests.** A new test: a sponsor sees the direct bonus (₦9,000 for a
+  Builder sign-up) and the "new member" message on the dashboard, the bell
+  counts them, no bonus email is sent, and opening the Notices page reads
+  them. The "email switched off" test now also checks that the dashboard
+  notice still appears. All 300 tests pass.
+- **The email service (still to choose).** I compared prices (November
+  2026): Zoho ZeptoMail is pay as you go, about $2.50 (around ₦4,000) for
+  10,000 emails, with the first 10,000 free and no monthly fee; credits last
+  6 months. Brevo is free up to 300 emails a day but adds its own branding,
+  and the autoship reminders go to every member on the same day, which can
+  pass 300. Amazon SES is cheaper per email but harder to set up.
+  Recommended: ZeptoMail.

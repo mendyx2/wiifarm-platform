@@ -5,6 +5,7 @@ namespace App\Services\Compensation;
 use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
+use App\Services\Messages\Notices;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
@@ -197,6 +198,9 @@ class Autoship
 
             $tx = $this->ledger->transfer($from, $to, $amount, 'autoship.'.$outcome, "autoship:{$member->id}:{$month}:".($before + $amount), $memo, $member);
             if (! $tx->wasAlreadyPosted) {
+                if ($outcome === 'released') {
+                    Notices::bonus($to, $amount, $memo);
+                }
                 DB::table('autoship_settlements')->insert([
                     'user_id' => $member->id, 'month' => $month, 'amount' => $amount, 'outcome' => $outcome,
                     'transaction_id' => $tx->id, 'created_at' => now(), 'updated_at' => now(),

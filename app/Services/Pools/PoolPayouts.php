@@ -9,6 +9,7 @@ use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
 use App\Services\Ledger\LedgerException;
+use App\Services\Messages\Notices;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -182,6 +183,11 @@ class PoolPayouts
         }
         $lines[] = [$to, $amount];
 
-        return $this->ledger->post('payout.'.$type, 'payout:'.$key, $lines, $memo, $subject);
+        $tx = $this->ledger->post('payout.'.$type, 'payout:'.$key, $lines, $memo, $subject);
+        if (! $tx->wasAlreadyPosted) {
+            Notices::bonus($to, $amount, $memo);   // on the member's dashboard, not by email (owner, 20 November 2026)
+        }
+
+        return $tx;
     }
 }

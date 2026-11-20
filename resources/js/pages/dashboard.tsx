@@ -1,11 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { NoticeList, type Notice } from '@/components/wf/notice-list';
 import { PvSummary } from '@/components/wf/pv-summary';
 import { StatCard } from '@/components/wf/stat-card';
 import AppLayout from '@/layouts/app-layout';
 import { formatKobo } from '@/lib/money';
-import { type PvTotals, pv } from '@/lib/network';
+import { pv, type PvTotals } from '@/lib/network';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Banknote, Gift, PiggyBank, ShoppingBasket, TrendingUp } from 'lucide-react';
@@ -35,6 +36,7 @@ type Props = {
     leadership?: { pv: number; needed: number; last: { month: string; amount: number; status: string } | null };
     toCollect?: number;
     recent?: { id: number; at: string; amount: number; wallet: string; memo: string | null }[];
+    notices?: Notice[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
@@ -71,7 +73,18 @@ function ReferralLink({ link }: { link: string }) {
     );
 }
 
-export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch, autoship, leadership, toCollect = 0, recent = [] }: Props) {
+export default function Dashboard({
+    member,
+    money,
+    pv: pvTotals,
+    team,
+    lastMatch,
+    autoship,
+    leadership,
+    toCollect = 0,
+    recent = [],
+    notices = [],
+}: Props) {
     if (!member || !money || !team) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -168,6 +181,18 @@ export default function Dashboard({ member, money, pv: pvTotals, team, lastMatch
                         />
                     )}
                 </div>
+
+                {notices.length > 0 && (
+                    <section className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <h2 className="font-medium">Notices</h2>
+                            <Link href={route('notices')} className="text-primary text-sm font-medium underline-offset-4 hover:underline">
+                                See all
+                            </Link>
+                        </div>
+                        <NoticeList notices={notices} />
+                    </section>
+                )}
 
                 <section className="space-y-2">
                     <h2 className="font-medium">Your PV</h2>

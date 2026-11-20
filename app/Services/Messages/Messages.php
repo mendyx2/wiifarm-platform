@@ -4,6 +4,7 @@ namespace App\Services\Messages;
 
 use App\Models\Messages\MessageTemplate;
 use App\Models\User;
+use App\Notifications\InAppNotice;
 use App\Notifications\MemberMessage;
 use App\Support\Settings;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,9 @@ use Throwable;
 /**
  * Sends member messages by email (specification section 12).
  *
- * A message goes out only when email is switched on for the site and for
- * that message, and the person has an email address. It is sent in the
+ * A message switched on is shown on the member's dashboard (the bell). It
+ * also goes out by email when email is switched on for the site and the
+ * person has an email address. It is sent in the
  * background, after the change it reports is saved, and every message is
  * logged (queued, then sent or failed). Sending a message never stops the
  * action that caused it.
@@ -60,7 +62,7 @@ class Messages
     {
         try {
             $template = $this->template($event);
-            if ($email === null || trim($email) === '' || ! Settings::get('messages.email') || ! $template['enabled']) {
+            if (! $template['enabled']) {
                 return false;
             }
 
@@ -68,6 +70,13 @@ class Messages
             $body = self::fill($template['body'], $data);
             $action = (config('messages.events')[$event]['action'] ?? null);
             $button = $action ? ['label' => $action['label'], 'url' => $url ?? route($action['route'])] : null;
+
+            // A member also sees it on their dashboard, even while email is off.
+            $user?->notify(new InAppNotice('message', $subject, $body, null, $button['url'] ?? null));
+
+            if ($email === null || trim($email) === '' || ! Settings::get('messages.email')) {
+                return false;
+            }
 
             $logId = DB::table('message_log')->insertGetId([
                 'event' => $event, 'user_id' => $user?->id, 'email' => $email, 'subject' => $subject,

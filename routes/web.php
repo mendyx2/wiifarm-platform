@@ -4,6 +4,7 @@ use App\Http\Controllers\Member\AwardsController;
 use App\Http\Controllers\Member\DashboardController;
 use App\Http\Controllers\Member\EPinController;
 use App\Http\Controllers\Member\KeyInController;
+use App\Http\Controllers\Member\NoticeController;
 use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ShopController;
 use App\Http\Controllers\Member\StoreController;
@@ -32,6 +33,7 @@ Route::middleware(['auth', 'member.verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('wallet', WalletController::class)->name('wallet');
+    Route::get('notices', [NoticeController::class, 'index'])->name('notices');
     Route::get('package', [PaymentController::class, 'package'])->name('package');
     Route::post('package', [PaymentController::class, 'payPackage'])->middleware('throttle:10,1')->name('package.pay');
     Route::post('package/epin', [PaymentController::class, 'redeemPin'])->middleware('throttle:10,1')->name('package.epin');

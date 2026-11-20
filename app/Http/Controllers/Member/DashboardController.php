@@ -83,6 +83,8 @@ class DashboardController extends Controller
                     ? ['month' => $l->run->month, 'amount' => $l->amount, 'status' => $l->currentStatus()] : null,
             ],
             'toCollect' => Order::where('user_id', $member->id)->where('status', Order::PAID)->count(),
+            // The latest notices (bonuses and messages), also behind the bell in the header (section 12).
+            'notices' => NoticeController::newestFirst($member)->limit(5)->get()->map(fn ($n) => NoticeController::row($n)),
             'recent' => Entry::with('transaction:id,memo,created_at', 'account:id,kind')
                 ->whereIn('account_id', $bonusAccounts)->where('amount', '>', 0)->latest('id')->limit(6)->get()
                 ->map(fn (Entry $e) => [

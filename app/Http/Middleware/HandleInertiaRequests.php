@@ -54,6 +54,9 @@ class HandleInertiaRequests extends Middleware
             // so the panel only shows what they may use.
             // Named so no page's own "admin" prop (e.g. the admin being edited) can hide it.
             'signedInAdmin' => fn () => $this->admin($request),
+            // The member's unread notices, for the bell in the header (section 12).
+            'unreadNotices' => fn () => ! $request->is('admin', 'admin/*', 'affiliate', 'affiliate/*') && ($u = Auth::guard('web')->user())
+                ? $u->unreadNotifications()->count() : 0,
             // Whether the signed-in member runs a store, for the "My store" menu item.
             'signedInAffiliate' => fn () => $request->is('affiliate', 'affiliate/*') && ($a = Auth::guard('affiliate')->user())
                 ? ['name' => $a->name(), 'code' => $a->code] : null,

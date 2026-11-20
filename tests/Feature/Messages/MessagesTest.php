@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Payments\WithdrawalMethod;
 use App\Models\Shop\Product;
 use App\Models\User;
+use App\Notifications\InAppNotice;
 use App\Notifications\MemberMessage;
 use App\Services\Ledger\Ledger;
 use App\Services\Members\Kyc;
@@ -94,9 +95,10 @@ class MessagesTest extends NetworkTestCase
     {
         Notification::fake();
         Settings::set('messages.email', false);
-        $this->join('quiet_one');
+        $quiet = $this->join('quiet_one');
 
-        Notification::assertNothingSent();
+        Notification::assertNotSentTo($quiet, MemberMessage::class);
+        Notification::assertSentTo($quiet, InAppNotice::class, fn ($n) => $n->title === 'Welcome to Wiifarm Cooperative');   // still on the dashboard
         $this->assertSame(0, DB::table('message_log')->count());
         $this->actingAs(Admin::factory()->withPermissions(['messages.view'])->create(), 'admin')->get('/admin/messages')
             ->assertInertia(fn ($page) => $page->where('emailOn', false));
@@ -150,5 +152,27 @@ class MessagesTest extends NetworkTestCase
         $this->assertSame('Kemi Ade', $message->name);
         $this->assertStringContainsString($order->fresh()->pickup_code, $message->body);
         $this->get($message->button['url'])->assertOk();
+    }
+
+    public function test_bonuses_and_messages_appear_on_the_member_s_dashboard_and_the_bell()
+    {
+        $sponsor = $this->join('sponsor_one');
+        $this->join('newbie_one', $sponsor, 'Builder');
+        $sponsor->notifications()->update(['read_at' => now()]);   // their own welcome, already seen
+        $this->join('newbie_two', $sponsor, 'Builder');
+
+        $this->actingAs($sponsor)->get('/dashboard')->assertInertia(fn ($page) => $page
+            ->where('unreadNotices', 2)
+            ->has('notices', 5));
+        $notices = collect($this->get('/dashboard')->viewData('page')['props']['notices']);
+        $bonus = $notices->firstWhere('kind', 'bonus');
+        $this->assertSame('Direct referral bonus', $bonus['title']);
+        $this->assertSame(900_000, $bonus['amount']);                // 25% of Builder's 60 PV × ₦600
+        $this->assertNotNull($notices->firstWhere('title', 'A new member joined your team'));
+        $this->assertSame(0, DB::table('message_log')->where('subject', 'like', '%bonus%')->count());   // no bonus email
+
+        $this->get('/notices')->assertInertia(fn ($page) => $page->component('notices')->has('notices.data', 5));
+        $this->assertSame(0, $sponsor->unreadNotifications()->count());
+        $this->get('/dashboard')->assertInertia(fn ($page) => $page->where('unreadNotices', 0));   // opening the page read them
     }
 }
