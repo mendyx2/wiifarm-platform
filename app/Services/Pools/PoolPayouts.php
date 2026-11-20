@@ -5,6 +5,8 @@ namespace App\Services\Pools;
 use App\Models\Ledger\Account;
 use App\Models\Ledger\Transaction;
 use App\Models\Pools\HeldPayout;
+use App\Models\Pools\UnclaimedBonus;
+use App\Models\User;
 use App\Services\Ledger\Ledger;
 use App\Services\Ledger\LedgerException;
 use Illuminate\Database\Eloquent\Model;
@@ -57,8 +59,42 @@ class PoolPayouts
     }
 
     /**
-     * A share with nobody to receive it stays with the cooperative, in that
-     * pool's contingency fund. Only what the line holds can move: a line can
+     * A bonus share nobody can receive goes to that pool's Unclaimed Bonus
+     * Reserve, with a record of where it came from (the owner, 19 November
+     * 2026). Only what the line holds can move. Returns null when nothing
+     * moved.
+     *
+     * @param  array{bonus: string, generation?: ?int, reason: string, beneficiary?: ?User, source?: ?User}  $origin
+     */
+    public function toUnclaimed(string $pool, string $line, int $amount, string $key, array $origin, ?string $memo = null, ?Model $subject = null): ?Transaction
+    {
+        return DB::transaction(function () use ($pool, $line, $amount, $key, $origin, $memo, $subject) {
+            if ($done = Transaction::where('idempotency_key', 'unclaimed:'.$key)->first()) {
+                return $done;
+            }
+            $lineAccount = $this->ledger->poolAccount($pool, $line);
+            Account::whereKey($lineAccount->id)->lockForUpdate()->first();
+            $move = min($amount, $this->ledger->balance($lineAccount));
+            if ($move <= 0) {
+                return null;
+            }
+
+            $tx = $this->ledger->transfer($lineAccount, $this->ledger->poolAccount($pool, Ledger::UNCLAIMED), $move, 'unclaimed_share', 'unclaimed:'.$key, $memo, $subject);
+            UnclaimedBonus::create([
+                'pool' => $pool, 'line' => $line, 'bonus' => $origin['bonus'], 'generation' => $origin['generation'] ?? null,
+                'reason' => $origin['reason'], 'beneficiary_user_id' => ($origin['beneficiary'] ?? null)?->id,
+                'source_user_id' => ($origin['source'] ?? null)?->id,
+                'subject_type' => $subject ? class_basename($subject) : null, 'subject_id' => $subject?->getKey(),
+                'amount' => $move, 'transaction_id' => $tx->id, 'memo' => $memo === null ? null : mb_substr($memo, 0, 250),
+            ]);
+
+            return $tx;
+        });
+    }
+
+    /**
+     * A designed leftover (for example a Sub store's unused rebate) stays with
+     * the cooperative, in that pool's contingency fund. Only what the line holds can move: a line can
      * hold slightly less than its shares (Pool A's indirect line is 17.99% of
      * the net, ₦116.98 a piece, against shares of up to ₦117.00), and what it
      * lacks was never there. Returns null when the line is empty.

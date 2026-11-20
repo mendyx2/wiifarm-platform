@@ -119,7 +119,7 @@ The unilevel generations follow the plan's unilevel table, up to the 15th (owner
 
 ## 5. Compensation
 
-The plan lists thirteen ways of earning. They are retail profit, the key-in, direct, indirect, matching and upgrade bonuses, binary awards, UCB, the leadership bonus, the unilevel bonus, repurchase awards, the stockist bonus and the stockist rebate. Autoship comes from the blueprint and the current system. There is no Global Share Pool (board, November 2026). Each payout goes into its own bonus wallet (section 6) and is charged to its budget line (section 7). **Every bonus is only paid to active members.** A banned member's share is not paid, it does not pass to anyone else, and the generation still counts.
+The plan lists thirteen ways of earning. They are retail profit, the key-in, direct, indirect, matching and upgrade bonuses, binary awards, UCB, the leadership bonus, the unilevel bonus, repurchase awards, the stockist bonus and the stockist rebate. Autoship comes from the blueprint and the current system. There is no Global Share Pool (board, November 2026). Each payout goes into its own bonus wallet (section 6) and is charged to its budget line (section 7). **Every bonus is only paid to active members.** A banned member's share is not paid, it does not pass to anyone else, and the generation still counts. Every share that is not paid, for whatever reason, goes to that ledger's **Unclaimed Bonus Reserve** with a record of where it came from (section 7).
 
 ### 5.1 Direct bonus
 
@@ -224,7 +224,7 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 
 - **When:** a member's recognition award (5.8) is approved. The Revised Baseline Rules tie it to the recognition award only, not to repurchase awards.
 - **Who and how much:** the first upline (sponsor) gets 5% of the award's cash value, the second 2%, and the third 1%, from the Strategic Reserve's UCB line (30% of Pool B). It is paid whether the member takes the cash or the gift.
-- **Not paid** to a banned member, a member whose package is not paid or the company account; their share stays in Pool B's contingency fund.
+- **Not paid** to a banned member, a member whose package is not paid or the company account; their share goes to Pool B's Unclaimed Bonus Reserve (section 7).
 
 ### 5.10 Unilevel bonus (15 generations)
 
@@ -242,7 +242,7 @@ This is the ladder the current system already holds, so the other ladder in Wiif
 - **Example:** one 1st-generation member's 10 PV authorship (₦6,000) pays ₦420 (7%); the plan's own table shows 3 members' 10 PV paying ₦1,260.
 - **How it is run** (built November 2026):
   - The moment a member's repurchase is paid, each of the 15 generations above them is paid their share of its PV value into their unilevel wallet, once per order.
-  - A share is not paid to a banned member, a member whose package is not paid, the company account or a member whose package does not reach that generation. Such a share is not passed on, and the generation still counts.
+  - A share is not paid to a banned member, a member whose package is not paid, the company account or a member whose package does not reach that generation. Such a share is not passed on, and the generation still counts; it goes to Pool C's Unclaimed Bonus Reserve (section 7).
   - An upline does not need to have made their own monthly purchase to earn unilevel: the monthly purchase decides the autoship hold on matching (5.6), and the baseline bases unilevel on "the upline's active package" (decision 4).
   - When the line and the contingency fund are short, a share is held until they refill (section 7).
 - **Replaced:** the current system uses different rates (6%, 5%, 4%, 3%, 2%, then 1% and 0.5%) and different package depths. Both are replaced by the plan's.
@@ -337,7 +337,8 @@ The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xls
 | **Stockist activation (Pool D)** | A store's activation deposit | | Sub store (₦3M): 8% = ₦240,000. Mega store (₦10M): 6.5% = ₦650,000. Paid to 10 sponsor generations (section 9). |
 | **Strategic Reserve (Pool B)** | 1% of Pools A and E | | Recognition (rank) awards 70% (₦5.25 a unit), Upline Celebrated Bonus 30% (₦2.25 a unit) |
 | **Executive Leaders** | 10% of Pools A and E | | Held until the board sets its payout rules |
-| **Contingency fund** | 2.3% of Pool A, plus every reserve and leftover of each ledger | | Kept per ledger; covers only that ledger's shortfalls (rules below) |
+| **Contingency fund** | 2.3% of Pool A, plus every reserve and designed leftover of each ledger | | Kept per ledger; covers only that ledger's shortfalls (rules below) |
+| **Unclaimed Bonus Reserve** | Every bonus share that could not be paid | | Kept per ledger, apart from the contingency fund, with the origin of every inflow (rules below) |
 | **Sub-leaders** | 10% of Pool C | | Held and paid in batches to qualified Sub-leaders; ranks and targets to be set |
 
 **Rules:**
@@ -347,7 +348,14 @@ The board's **Allocation Blueprint V3** (`docs/board/allocation-blueprint-v3.xls
 - **Contingency fund** (board, November 2026): every reserve and every leftover goes into a contingency fund, which is the safety net. That covers the 2.3% Contingency Reserve, each ledger's unassigned share (repurchase 15%, upgrade ₦317.06 a unit), what a line holds above what the plan pays (for example ₦0.12 a unit on the direct line), and a Sub store's ₦30 below the ₦120 rebate line. It is kept and reported **per ledger**, so it is always clear where each naira came from.
 - **Self-sufficient ledgers:** no ledger ever pays for another ledger's bonuses. When a line in a ledger runs short, it is covered first from **that ledger's own** contingency fund.
 - **Shortfalls: hold until it refills** (board, November 2026). A shortfall is never hidden. Each use of a contingency fund is recorded against the line it covered. If a line and its ledger's contingency fund cannot cover a payout, the payout is **held**: the member sees it as pending, nothing is paid in part, and it is paid as soon as the money arrives. Held payouts are paid oldest first. A payout is never cancelled because a line ran short.
-- **Unpaid shares** (board, November 2026): a share with no one to receive it stays with **the cooperative**, never the manufacturing company. This covers a missing generation, a banned upline, a company-sponsored member and a key-in by an admin. It goes into that ledger's contingency fund.
+- **Unpaid shares** (board, November 2026): a share with no one to receive it stays with **the cooperative**, never the manufacturing company.
+- **Unclaimed Bonus Reserve** (owner, 20 November 2026): unpaid shares are **not** mixed with the contingency fund. Each ledger has its own Unclaimed Bonus Reserve, and every share a bonus could not pay goes there. For example, when a sign-up's sponsor chain is only 5 generations deep, the indirect bonus for generations 6 to 10 (5% of the package's PV value) goes to Pool A's reserve. It covers:
+  - a generation beyond the top of the tree (no upline);
+  - the company account, a banned member or a member whose package is not paid;
+  - a generation the upline's package does not reach (unilevel);
+  - a key-in with no one to pay (a self sign-up or an admin registration).
+
+  It applies to the direct, indirect, key-in, upgrade, unilevel, stockist sponsor and UCB bonuses, and to the autoship hold that is flushed (5.6). Every inflow is recorded with the bonus, the generation, the reason, the member who would have received it and the member whose sign-up, upgrade, purchase, store or award it came from. The admin report "Unclaimed bonuses" shows the totals by ledger, bonus and reason, and every inflow. The reserve does not cover shortfalls: only the line and the contingency fund do (decision 35).
 - **Reporting:** the admin dashboard and the financial report show each ledger and line (what came in, what was paid, what is left) by day, month and quarter.
 
 **What the blueprint replaces:** the earlier 30 / 10 / 5 / 55 split and its 22% / 24.75% / 8.25% pools are replaced by the separate ledgers above. **There is no Global Share Pool** (board, November 2026).
@@ -579,7 +587,7 @@ The specification can be signed off once the board settles the points below.
 
 - [x] **17. Recognition awards.** Settled: the Strategic Reserve is 1%, so recognition awards receive ₦5.25 a unit (section 7). Awards the pool cannot cover yet are held until it refills, oldest first. At that rate an ₦80,000 Emerald award needs the reserve from about 15,200 registration units, so awards will often wait.
 - [x] **18. When a line runs short.** Settled: covered from the same ledger's contingency fund; if that is empty too, held until it refills, oldest first (section 7).
-- [x] **19. Contingency Reserve and safety nets.** Settled: every reserve and leftover goes into a contingency fund kept per ledger, used only for that ledger's shortfalls; unpaid shares stay with the cooperative, in that fund (section 7).
+- [x] **19. Contingency Reserve and safety nets.** Settled: every reserve and leftover goes into a contingency fund kept per ledger, used only for that ledger's shortfalls; unpaid shares stay with the cooperative, in that ledger's Unclaimed Bonus Reserve, kept apart from the contingency fund (owner, 20 November 2026; section 7).
 - [x] **20. Unilevel depth.** Settled: 15 generations at the plan's rates (owner, 19 November 2026; sections 4 and 5.10). This replaces the earlier "10 generations, never 15"; the indirect referral bonus stays at 10 generations.
 - [x] **21. Repurchase award schedule.** Settled by the Revised Baseline Rules (19 November 2026): 5,000 PV for ₦250,000 up to 100,000 PV for ₦5,000,000, paid incrementally (5.11).
 - [ ] **22. Upgrade ledger.** Pool A has a 2.3% Contingency Reserve, Pool E does not. Intended?
@@ -595,3 +603,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **32. E-pin rules.** (a) A pin worth more than the package chosen pays it, and the rest goes to the new member's main balance. Should the rest go back to the buyer instead, or should a pin only pay the package it was bought for? (b) A pin an admin creates is paid for by the cooperative: its value comes from the platform's adjustment account, and once used, it is split like any registration and pays the usual bonuses. Who may create them, and is there a limit? (c) Should members be able to cancel their own unused pins?
 - [ ] **33. Public shop details.** (a) The affiliate link is remembered for 30 days and an unpaid order waits 3 days: right? (Both are settings for now, not yet on an admin screen.) (b) Buyers must give an email, because Paystack needs one: is that acceptable, or should a placeholder be used for buyers without email? (c) Prices per state (section 8) are not built: the public price is the same everywhere. Are per-state prices still wanted?
 - [ ] **34. Paying awards.** (a) When a member takes the gift instead of the cash, the system sets the cash value aside from the recognition line to buy the gift. Is that right, or does the gift cost something else? (b) Repurchase awards wait for an admin's approval like recognition awards. Should they be paid automatically instead? (c) Recognition awards are far larger than Pool B receives (₦5.25 a piece for recognition), so most will be held for a long time (decision 17).
+- [ ] **35. Using the Unclaimed Bonus Reserve.** Unclaimed shares are kept per ledger and reported (section 7), but nothing spends them yet. (a) Should the reserve also help cover a shortfall in its own ledger after the contingency fund, before a payout is held? (b) Or is it kept for another use the board decides, for example a transfer to the company? Until the board says, it is only kept and reported.

@@ -5,6 +5,7 @@ namespace Tests\Feature\Pools;
 use App\Models\Admin;
 use App\Models\Pools\HeldPayout;
 use App\Models\Pools\Manufacturer;
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
 use App\Services\Pools\PaymentSplit;
@@ -162,5 +163,40 @@ class PoolPayoutsTest extends TestCase
                 ->where('pools.0.code', 'A')
                 ->where('pools.0.balance', 667_500)          // ₦6,502.47 to lines + ₦172.53 contingency
                 ->where('held.0.amount', 50_000));
+    }
+
+    public function test_an_unclaimed_share_moves_to_its_pools_reserve_once_with_its_origin_and_is_reported(): void
+    {
+        app(PaymentSplit::class)->registration(1_500_000, Manufacturer::firstOrFail(), 'reg:1');
+        $buyer = User::factory()->create(['username' => 'buyer_one']);
+        $upline = User::factory()->create(['username' => 'upline_one']);
+        $line = $this->ledger->poolAccount('A', 'indirect');
+        $lineBefore = $this->ledger->balance($line);
+        $origin = ['bonus' => 'indirect', 'generation' => 6, 'reason' => 'no_upline', 'source' => $buyer];
+
+        $this->payouts->toUnclaimed('A', 'indirect', 9_000, 'test:gen6', $origin, 'Indirect bonus, generation 6');
+        $this->payouts->toUnclaimed('A', 'indirect', 9_000, 'test:gen6', $origin); // the same share again: nothing moves
+        $this->payouts->toUnclaimed('A', 'indirect', 3_000, 'test:gen2', ['bonus' => 'indirect', 'generation' => 2, 'reason' => 'banned', 'beneficiary' => $upline, 'source' => $buyer]);
+
+        $this->assertSame($lineBefore - 12_000, $this->ledger->balance($line));
+        $this->assertSame(12_000, $this->ledger->balance($this->ledger->poolAccount('A', Ledger::UNCLAIMED)));
+        $this->assertSame(2, UnclaimedBonus::count());
+        $this->assertDatabaseHas('unclaimed_bonuses', ['pool' => 'A', 'bonus' => 'indirect', 'generation' => 6, 'reason' => 'no_upline', 'source_user_id' => $buyer->id, 'amount' => 9_000]);
+
+        $this->actingAs(Admin::factory()->withPermissions(['members.view'])->create(), 'admin')->get('/admin/unclaimed')->assertForbidden();
+
+        $viewer = Admin::factory()->withPermissions(['pools.view'])->create();
+        $this->actingAs($viewer, 'admin')->get('/admin/unclaimed')
+            ->assertInertia(fn ($page) => $page
+                ->component('admin/unclaimed')
+                ->where('total', 12_000)
+                ->where('byReason.0.key', 'no_upline')
+                ->where('inflows.data.0.beneficiary', 'upline_one')
+                ->where('inflows.data.1.source', 'buyer_one')
+                ->where('inflows.data.1.generation', 6));
+
+        $this->actingAs($viewer, 'admin')->get('/admin/unclaimed?reason=banned')
+            ->assertInertia(fn ($page) => $page->where('total', 3_000)->has('inflows.data', 1));
+        $this->actingAs($viewer, 'admin')->get('/admin/unclaimed?reason=nonsense')->assertSessionHasErrors('reason');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Stockists;
 
 use App\Models\Admin;
 use App\Models\Pools\Manufacturer;
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\Stockists\Store;
 use App\Models\User;
 use App\Services\Admin\Audit;
@@ -23,8 +24,8 @@ use InvalidArgumentException;
  *    8% (Sub) or 6.5% (Mega) of the deposit for the stockist sponsor bonus,
  *    and the rest to Pool D's contingency fund;
  *  - the stockist sponsor bonus goes to 10 generations, starting with the
- *    store's sponsor. A share with nobody to receive it stays in Pool D's
- *    contingency fund;
+ *    store's sponsor. A share with nobody to receive it goes to Pool D's
+ *    Unclaimed Bonus Reserve;
  *  - the store PV (3,000 or 10,000) goes 10 levels up the stockist's binary
  *    tree as lifetime PV, and 10 generations up their referral chain. It
  *    counts for awards only, never for matching.
@@ -73,7 +74,10 @@ class StoreActivation
                 if ($this->canReceive($recipient)) {
                     $this->payouts->pay('D', 'sponsor_bonus', $this->ledger->memberAccount($recipient, 'bonus.stockist_sponsor'), $amount, 'stockist_sponsor', $key, $memo, $store);
                 } else {
-                    $this->payouts->toContingency('D', 'sponsor_bonus', $amount, $key, $memo.': nobody to receive it', $store);
+                    $this->payouts->toUnclaimed('D', 'sponsor_bonus', $amount, $key, [
+                        'bonus' => 'stockist_sponsor', 'generation' => $generation, 'reason' => UnclaimedBonus::reasonFor($recipient) ?? 'no_upline',
+                        'beneficiary' => $recipient, 'source' => $store->owner,
+                    ], $memo.': nobody to receive it', $store);
                 }
                 $recipient = $recipient?->sponsor;
             }

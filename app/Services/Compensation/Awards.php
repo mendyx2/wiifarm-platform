@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Compensation\Award;
 use App\Models\Package;
 use App\Models\Pools\HeldPayout;
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Admin\Audit;
 use App\Services\Ledger\Ledger;
@@ -252,7 +253,10 @@ class Awards
             if ($this->eligible($upline)) {
                 $this->payouts->pay('B', 'ucb', $this->ledger->memberAccount($upline, 'bonus.acb'), $share, 'ucb', $key, $memo, $award);
             } else {
-                $this->payouts->toContingency('B', 'ucb', $share, $key, $memo.': nobody to receive it', $award);
+                $this->payouts->toUnclaimed('B', 'ucb', $share, $key, [
+                    'bonus' => 'ucb', 'generation' => $generation, 'reason' => UnclaimedBonus::reasonFor($upline) ?? 'no_upline',
+                    'beneficiary' => $upline, 'source' => $award->user,
+                ], $memo.': nobody to receive it', $award);
             }
             $upline = $upline?->sponsor;
         }

@@ -44,6 +44,9 @@ class Ledger
     /** The name of every pool's contingency fund account. */
     public const CONTINGENCY = 'contingency';
 
+    /** Each pool's Unclaimed Bonus Reserve. */
+    public const UNCLAIMED = 'unclaimed';
+
     /**
      * @param  list<array{0: Account, 1: int}>  $lines  each [account, amount]: positive into the account, negative out
      *
@@ -137,7 +140,7 @@ class Ledger
     public function poolAccount(string $pool, string $line): Account
     {
         $lines = config("pools.pools.{$pool}.lines");
-        if ($lines === null || ($line !== self::CONTINGENCY && ! array_key_exists($line, $lines))) {
+        if ($lines === null || (! in_array($line, [self::CONTINGENCY, self::UNCLAIMED], true) && ! array_key_exists($line, $lines))) {
             throw new LedgerException("Unknown pool line [{$pool}.{$line}].");
         }
 

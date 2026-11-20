@@ -3,6 +3,7 @@
 namespace App\Services\Compensation;
 
 use App\Models\Package;
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\Shop\Order;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
@@ -21,8 +22,8 @@ use App\Support\Money;
  *
  * A share nobody can receive (a missing generation, a package that does not
  * reach it, a banned or unpaid member, the company account) is not passed on:
- * it stays with the cooperative in the repurchase ledger's (Pool C's)
- * contingency fund, and the generation still counts. Shares come from Pool
+ * it goes to the repurchase ledger's (Pool C's) Unclaimed Bonus Reserve,
+ * with where it came from, and the generation still counts. Shares come from Pool
  * C's unilevel line; when it and its contingency fund are short, a share is
  * held until they refill (section 7). Each order pays once.
  */
@@ -35,7 +36,6 @@ class Unilevel
     public function forOrder(Order $order, User $buyer): void
     {
         $value = intdiv($order->pv * Package::PV_VALUE_KOBO, 100);   // PV is in hundredths
-        $company = User::company();
         $upline = $buyer->sponsor;
 
         foreach (config('compensation.unilevel') as $i => $rate) {
@@ -45,12 +45,13 @@ class Unilevel
             $memo = "Unilevel bonus, generation {$generation}: order {$order->number} by @{$buyer->username}";
 
             if ($share > 0) {
-                $eligible = $upline !== null && ! $upline->is($company) && $upline->isActivated() && ! $upline->isBanned()
-                    && ($upline->package?->unilevel_generations ?? 0) >= $generation;
-                if ($eligible) {
+                $reason = UnclaimedBonus::reasonFor($upline, ($upline?->package?->unilevel_generations ?? 0) >= $generation);
+                if ($reason === null) {
                     $this->payouts->pay('C', 'unilevel', $this->ledger->memberAccount($upline, 'bonus.unilevel'), $share, 'unilevel', $key, $memo, $order);
                 } else {
-                    $this->payouts->toContingency('C', 'unilevel', $share, $key, $memo.': nobody to receive it', $order);
+                    $this->payouts->toUnclaimed('C', 'unilevel', $share, $key, [
+                        'bonus' => 'unilevel', 'generation' => $generation, 'reason' => $reason, 'beneficiary' => $upline, 'source' => $buyer,
+                    ], $memo.': nobody to receive it', $order);
                 }
             }
             $upline = $upline?->sponsor;

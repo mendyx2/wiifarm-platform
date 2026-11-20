@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Compensation;
 
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\Shop\Product;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
@@ -79,13 +80,20 @@ class UnilevelTest extends NetworkTestCase
         $gens[4]->forceFill(['package_id' => $this->package('Pre Starter')->id])->save();   // generation 5 on a package that reaches 4
         $before = $this->ledger->balance($this->ledger->poolAccount('C', 'contingency'));
 
-        $this->buys($this->join('the_buyer', sponsor: $gens[0]));
+        $buyer = $this->join('the_buyer', sponsor: $gens[0]);
+        $this->buys($buyer);
 
         $this->assertSame(0, $this->wallet($gens[4]));
         $this->assertSame(self::SHARES[5], $this->wallet($gens[5]));   // generation 6 is still paid the 6th rate
-        // Generation 5, and 7 to 15 (missing), stay with the cooperative, beside the 15% Pool C keeps anyway (₦787.50).
+        // Generation 5, and 7 to 15 (missing), go to Pool C's Unclaimed Bonus Reserve, each with where it came from;
+        // the contingency fund only gets the 15% Pool C keeps anyway (₦787.50).
         $unpaid = 18_900 + 18_900 + 12_600 * 3 + 6_300 * 5;
-        $this->assertSame($unpaid + 78_750, $this->ledger->balance($this->ledger->poolAccount('C', 'contingency')) - $before);
+        $this->assertSame($unpaid, $this->ledger->balance($this->ledger->poolAccount('C', 'unclaimed')));
+        $this->assertSame(78_750, $this->ledger->balance($this->ledger->poolAccount('C', 'contingency')) - $before);
+        $five = UnclaimedBonus::where(['bonus' => 'unilevel', 'generation' => 5])->sole();
+        $this->assertSame(['package_depth', $gens[4]->id, $buyer->id, 18_900], [$five->reason, $five->beneficiary_user_id, $five->source_user_id, $five->amount]);
+        $this->assertSame(8, UnclaimedBonus::where(['bonus' => 'unilevel', 'reason' => 'no_upline'])->count());   // generation 7 is the company; 8 to 15 do not exist
+        $this->assertSame(1, UnclaimedBonus::where(['bonus' => 'unilevel', 'reason' => 'company'])->count());
     }
 
     public function test_an_upline_does_not_need_their_own_monthly_purchase()

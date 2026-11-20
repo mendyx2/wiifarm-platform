@@ -4,6 +4,7 @@ namespace Tests\Feature\Compensation;
 
 use App\Models\Admin;
 use App\Models\Compensation\Award;
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Compensation\Awards;
 use App\Services\Ledger\Ledger;
@@ -103,8 +104,10 @@ class AwardsTest extends NetworkTestCase
 
         $this->assertSame(8_000_000, $this->ledger->balances($member)['bonus.awards']);
         $this->assertSame(400_000, $this->ledger->balances($sponsor)['bonus.acb']);      // 5% of ₦80,000
-        // Generations 2 and 3 are the company account and nobody: their 2% and 1% stay in Pool B's contingency fund.
-        $this->assertSame(240_000, $this->ledger->balance($this->ledger->poolAccount('B', 'contingency')) - $contingency);
+        // Generations 2 and 3 are the company account and nobody: their 2% and 1% go to Pool B's Unclaimed Bonus Reserve.
+        $this->assertSame(0, $this->ledger->balance($this->ledger->poolAccount('B', 'contingency')) - $contingency);
+        $this->assertSame(240_000, $this->ledger->balance($this->ledger->poolAccount('B', 'unclaimed')));
+        $this->assertSame([2 => 'company', 3 => 'no_upline'], UnclaimedBonus::where('bonus', 'ucb')->orderBy('generation')->pluck('reason', 'generation')->all());
         $this->assertSame(Award::PAID, $award->fresh()->status);
         $this->post("/admin/awards/{$award->id}/approve")->assertSessionHasErrors('award');   // decided once
         $this->assertDatabaseHas('audit_logs', ['action' => 'awards.approve']);

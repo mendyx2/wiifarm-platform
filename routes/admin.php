@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockistController;
+use App\Http\Controllers\Admin\UnclaimedBonusController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
@@ -96,6 +97,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Pool ledgers, contingency funds and held payouts
         Route::get('pools', PoolsController::class)->middleware('admin.can:pools.view')->name('pools');
+        Route::get('unclaimed', [UnclaimedBonusController::class, 'index'])->middleware('admin.can:pools.view')->name('unclaimed.index');
         Route::get('awards', [AwardController::class, 'index'])->middleware('admin.can:awards.view')->name('awards.index');
         Route::middleware('admin.can:awards.decide')->group(function () {
             Route::post('awards/{award}/approve', [AwardController::class, 'approve'])->name('awards.approve');

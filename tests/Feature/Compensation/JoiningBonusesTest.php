@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Compensation;
 
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\Registration;
@@ -63,14 +64,23 @@ class JoiningBonusesTest extends NetworkTestCase
     {
         $sponsor = $this->join('the_sponsor');                       // sponsored by the company
         $contingencyBefore = $this->pool('A', 'contingency');
+        $unclaimedBefore = $this->pool('A', 'unclaimed');
+        $rowsBefore = UnclaimedBonus::max('id') ?? 0;
 
         $this->join('new_member', sponsor: $sponsor);                 // ₦9,000 of PV value
 
         $this->assertSame(225_000, $this->wallet($sponsor, 'bonus.direct'));     // 25%: ₦2,250
         // Indirect generation 1 is the company account and 2 to 10 do not exist; a self sign-up has no key-in.
-        // What the indirect line holds (₦1,169.79 of the ₦1,170) and the ₦180 key-in stay in Pool A's contingency fund,
-        // beside the 2.3% (₦172.50), the 0.01% of the net (65 kobo) and 4 kobo of rounding.
-        $this->assertSame(116_979 + 18_000 + 17_250 + 65 + 4, $this->pool('A', 'contingency') - $contingencyBefore);
+        // What the indirect line holds (₦1,169.79 of the ₦1,170) and the ₦180 key-in go to Pool A's Unclaimed Bonus Reserve;
+        // the contingency fund keeps only the 2.3% (₦172.50), the 0.01% of the net (65 kobo) and 4 kobo of rounding.
+        $this->assertSame(116_979 + 18_000, $this->pool('A', 'unclaimed') - $unclaimedBefore);
+        $this->assertSame(17_250 + 65 + 4, $this->pool('A', 'contingency') - $contingencyBefore);
+        // Each inflow says where it came from.
+        $this->assertSame(['company', 'no_upline'], UnclaimedBonus::where('id', '>', $rowsBefore)->where('bonus', 'indirect')->distinct()->orderBy('reason')->pluck('reason')->all());
+        $this->assertSame('company', UnclaimedBonus::where('id', '>', $rowsBefore)->where(['bonus' => 'indirect', 'generation' => 1])->value('reason'));   // generation 1 is the company account
+        $this->assertSame(9, UnclaimedBonus::where('id', '>', $rowsBefore)->where(['bonus' => 'indirect', 'reason' => 'no_upline'])->count());   // generations 2 to 10 do not exist
+        $keyIn = UnclaimedBonus::where('id', '>', $rowsBefore)->where('bonus', 'keyin')->sole();
+        $this->assertSame(['no_key_in', 18_000, 'new_member'], [$keyIn->reason, $keyIn->amount, $keyIn->source->username]);
     }
 
     public function test_the_member_who_keys_someone_in_earns_the_key_in_bonus()

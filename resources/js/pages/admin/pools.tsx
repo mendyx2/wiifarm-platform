@@ -8,7 +8,17 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Factory, ShieldCheck } from 'lucide-react';
 
-type Line = { key: string; label: string; contingency: boolean; balance: number; in: number; out: number; held_count: number; held_amount: number };
+type Line = {
+    key: string;
+    label: string;
+    contingency: boolean;
+    unclaimed: boolean;
+    balance: number;
+    in: number;
+    out: number;
+    held_count: number;
+    held_amount: number;
+};
 type Pool = { code: string; name: string; lines: Line[]; balance: number; in: number; out: number };
 type Manufacturer = { id: number; name: string; balance: number; in: number; out: number };
 type Held = { id: number; pool: string; line: string; to: string; amount: number; memo: string | null; since: string };
@@ -63,10 +73,19 @@ function PoolCard({ pool, periodLabel }: { pool: Pool; periodLabel: string }) {
                     </thead>
                     <tbody>
                         {pool.lines.map((l) => (
-                            <tr key={l.key} className={cn('border-t', l.contingency && 'bg-muted/50 font-medium')}>
+                            <tr key={l.key} className={cn('border-t', (l.contingency || l.unclaimed) && 'bg-muted/50 font-medium')}>
                                 <td className="py-2 pr-3">
                                     {l.contingency && <ShieldCheck className="text-success mr-1 inline size-3.5" aria-hidden />}
-                                    {l.label}
+                                    {l.unclaimed ? (
+                                        <Link
+                                            href={route('admin.unclaimed.index', { pool: pool.code })}
+                                            className="underline-offset-4 hover:underline"
+                                        >
+                                            {l.label}
+                                        </Link>
+                                    ) : (
+                                        l.label
+                                    )}
                                     {l.held_count > 0 && (
                                         <span className="text-warning block text-xs">
                                             {l.held_count} held · {formatKobo(l.held_amount)}

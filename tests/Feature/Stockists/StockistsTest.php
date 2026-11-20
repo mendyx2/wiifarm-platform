@@ -5,6 +5,7 @@ namespace Tests\Feature\Stockists;
 use App\Models\Admin;
 use App\Models\AuditLog;
 use App\Models\Pools\Manufacturer;
+use App\Models\Pools\UnclaimedBonus;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use App\Models\Stockists\Store;
@@ -82,9 +83,11 @@ class StockistsTest extends NetworkTestCase
         $this->assertSame(500_000_000, $this->ledger->balance($this->ledger->manufacturerAccount(Manufacturer::firstOrFail())) - $makerBefore);
         $this->assertSame(15_000_000, $this->ledger->balances($s1)['bonus.stockist_sponsor']);  // ₦150,000
         $this->assertSame(10_000_000, $this->ledger->balances($s2)['bonus.stockist_sponsor']);  // ₦100,000
-        // The rest of the cooperative's half (₦5M − ₦650,000 = ₦4,350,000) stays in Pool D's contingency fund, and so does
-        // the ₦400,000 nobody could receive (generation 3 is the company account; 4 to 10 do not exist).
-        $this->assertSame(435_000_000 + 40_000_000, $this->pool('D', 'contingency'));
+        // The rest of the cooperative's half (₦5M − ₦650,000 = ₦4,350,000) stays in Pool D's contingency fund; the ₦400,000
+        // nobody could receive (generation 3 is the company account; 4 to 10 do not exist) goes to its Unclaimed Bonus Reserve.
+        $this->assertSame(435_000_000, $this->pool('D', 'contingency'));
+        $this->assertSame(40_000_000, $this->pool('D', 'unclaimed'));
+        $this->assertSame(8, UnclaimedBonus::where(['bonus' => 'stockist_sponsor', 'source_user_id' => $owner->id])->count());
         $this->assertSame(0, $this->pool('D', 'sponsor_bonus'));
         $this->assertDatabaseHas('audit_logs', ['action' => 'stockists.activate', 'subject_id' => $store->id]);
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();

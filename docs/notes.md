@@ -1923,3 +1923,48 @@ does, and it passes every check.
     - package depth;
     - an upline without a monthly purchase still being paid;
     - banned and company uplines.
+
+## Step 40: The Unclaimed Bonus Reserve
+
+The owner asked (20 November 2026) that money a bonus cannot pay out is no
+longer mixed with the contingency fund, but kept in its own reserve, the
+"Unclaimed Bonus Reserve", with a report of where each naira came from.
+
+- **A new reserve in each ledger.** Every pool (A, B, C, D, E and the others)
+  now has an "Unclaimed Bonus Reserve" account beside its contingency fund.
+  It stays inside its own pool, so the rule "no pool pays for another" still
+  holds.
+- **What goes into it.** Every share that a bonus could not pay:
+  - indirect and upgrade bonuses for generations above the top of the tree
+    (for example, a chain only 5 generations deep sends generations 6 to 10
+    to Pool A's reserve);
+  - a share for the company account, a banned member or a member whose
+    package is not paid;
+  - a direct or key-in bonus with nobody to receive it (a key-in on a self
+    sign-up or an admin registration);
+  - a unilevel generation the upline's package does not reach;
+  - a stockist sponsor bonus with no eligible sponsor, and a UCB share with
+    no eligible upline.
+- **The record of each inflow.** For every share, a row in a new table
+  (`unclaimed_bonuses`) says which pool and line it came from, the bonus,
+  the generation, the reason, who would have received it, whose sign-up,
+  upgrade, purchase, store or award it came from, the amount and the ledger
+  entry. The money itself moves by a ledger entry, once only (the same share
+  can never be moved twice).
+- **What still goes to the contingency fund.** Only the designed leftovers:
+  the 2.3% reserve, each ledger's unassigned share, rounding, and a Sub
+  store's ₦30 below the rebate line.
+- **The report.** A new admin page, "Unclaimed bonuses" (for admins who can
+  see the pools), shows the total, the totals by pool, by bonus and by
+  reason (click one to filter), and every inflow with its date, bonus and
+  generation, why it was not paid, who would have received it and where it
+  came from. On the Pools page, each pool's reserve line links to it.
+- **Tests.** The existing tests for joining, upgrade, unilevel, awards and
+  stores now check that the reserve receives the unpaid shares with the right
+  reasons. A new test checks a share is moved once, recorded with its origin,
+  shown on the report, filtered, and hidden from admins without permission.
+  All 290 tests pass.
+- **For the board (decision 35).** The reserve is only kept and reported.
+  It does not cover shortfalls (the line and the contingency fund still do).
+  Should it also help cover a shortfall in its own pool, or be kept for
+  another use?

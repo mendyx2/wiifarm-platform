@@ -42,9 +42,9 @@ class PoolReport
         $pools = [];
         foreach (config('pools.pools') as $code => $pool) {
             $lines = [];
-            foreach ($pool['lines'] + [Ledger::CONTINGENCY => config('pools.contingency')] as $line => $label) {
+            foreach ($pool['lines'] + [Ledger::CONTINGENCY => config('pools.contingency'), Ledger::UNCLAIMED => config('pools.unclaimed')] as $line => $label) {
                 $h = $held[$code.'|'.$line] ?? null;
-                $lines[] = ['key' => $line, 'label' => $label, 'contingency' => $line === Ledger::CONTINGENCY]
+                $lines[] = ['key' => $line, 'label' => $label, 'contingency' => $line === Ledger::CONTINGENCY, 'unclaimed' => $line === Ledger::UNCLAIMED]
                     + $figures('pool:'.$code, $line)
                     + ['held_count' => (int) ($h->count ?? 0), 'held_amount' => (int) ($h->amount ?? 0)];
             }

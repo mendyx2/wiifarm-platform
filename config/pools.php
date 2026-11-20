@@ -71,8 +71,12 @@ return [
         ],
     ],
 
-    // Every pool also has this account.
+    // Every pool also has these two accounts: its contingency fund (the
+    // safety net for its shortfalls, and its designed leftovers) and its
+    // Unclaimed Bonus Reserve (every bonus share nobody could receive, with
+    // where it came from; the owner, 19 November 2026).
     'contingency' => 'Contingency fund',
+    'unclaimed' => 'Unclaimed Bonus Reserve',
 
     'schedule' => [
         // Every member purchase: manufacturing company and cooperative.
