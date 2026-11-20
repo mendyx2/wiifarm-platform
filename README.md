@@ -48,6 +48,11 @@ php artisan test   # tests
 npm run typecheck  # TypeScript
 ```
 
+## A preview site to try it
+
+`deploy/README.md` explains how to put a preview copy, with sample members,
+on Railway, to see and test the whole site and the admin panel.
+
 ## Going live: email (Zoho ZeptoMail)
 
 Wiifarm sends member emails through Zoho ZeptoMail (owner, 20 November

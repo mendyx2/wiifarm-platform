@@ -18,19 +18,29 @@ use Illuminate\Validation\Rules\Password;
  */
 class CreateAdmin extends Command
 {
-    protected $signature = 'wiifarm:create-admin';
+    protected $signature = 'wiifarm:create-admin {--from-env : Take the details from ADMIN_NAME, ADMIN_USERNAME, ADMIN_EMAIL and ADMIN_PASSWORD (for a preview site); does nothing if that admin exists}';
 
     protected $description = 'Create a super-admin account (asks for the details; there is no default password)';
 
     public function handle(Audit $audit): int
     {
-        $data = [
-            'name' => $this->ask('Full name'),
-            'username' => $this->ask('Username (letters, digits, underscores)'),
-            'email' => $this->ask('Email address'),
-            'password' => $this->secret('Password (at least 12 characters)'),
-        ];
-        $data['password_confirmation'] = $this->secret('Type the password again');
+        if ($this->option('from-env')) {
+            $data = ['name' => env('ADMIN_NAME', 'Preview admin'), 'username' => env('ADMIN_USERNAME'), 'email' => env('ADMIN_EMAIL'), 'password' => env('ADMIN_PASSWORD')];
+            $data['password_confirmation'] = $data['password'];
+            if ($data['username'] && Admin::where('username', $data['username'])->exists()) {
+                $this->info("Admin {$data['username']} already exists.");
+
+                return self::SUCCESS;
+            }
+        } else {
+            $data = [
+                'name' => $this->ask('Full name'),
+                'username' => $this->ask('Username (letters, digits, underscores)'),
+                'email' => $this->ask('Email address'),
+                'password' => $this->secret('Password (at least 12 characters)'),
+            ];
+            $data['password_confirmation'] = $this->secret('Type the password again');
+        }
 
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:120'],

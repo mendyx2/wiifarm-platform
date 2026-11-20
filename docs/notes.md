@@ -2158,3 +2158,40 @@ built now, so it shows them.
   pools; an admin with only the identity-check permission sees nothing
   else. All 302 tests pass.
 - The README's status section is brought up to date.
+
+## Step 46: A preview site on Railway
+
+The owner wants to see and test the whole site and the admin panel before
+the old data is moved (20 November 2026). A link needs the site running
+somewhere public; this work happens in a temporary container that cannot
+be reached from outside, so the project is now ready to run as a preview
+site on Railway (where the old system's demo was hosted).
+
+- **`Dockerfile`:** builds the site in one container: the screens
+  (`npm run build`), the PHP packages, and the official PHP image, which
+  already has every extension the platform uses, so nothing else is
+  installed.
+- **`deploy/start.sh`:** on every start it prepares the database on the
+  volume (`/data`), adds the admin from the settings (once), adds the ten
+  sample members when `APP_DEMO=true`, then runs the nightly jobs and the
+  website. It makes the site's secret key on the first start and keeps it
+  on the volume, so nobody has to create one by hand.
+- **`railway.json`:** tells Railway to use the Dockerfile and to check
+  `/up` to know the site is running.
+- **Two small code changes:**
+  - `wiifarm:create-admin --from-env` makes the admin from settings
+    (`ADMIN_USERNAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`) instead of asking
+    questions, and does nothing if that admin exists.
+  - `TRUSTED_PROXIES=*` (set in the Dockerfile) lets the site know it is
+    reached over https through Railway. Without the setting, nothing
+    changes.
+- **`deploy/README.md`:** the steps on Railway, the sign-ins, and the
+  optional Paystack test key and email settings.
+- **How it was checked:** the full container build could not run here (the
+  work environment blocks Debian's and GitHub's download servers for
+  containers, and its disk ran short), so I ran `deploy/start.sh` itself
+  in production mode on an empty data folder: the database, admin and ten
+  members were created; the public pages, a member's pages and the admin
+  pages all opened with no errors; a restart kept everything without
+  doubling; and the secret key was kept between starts. The image build
+  itself is first proven on Railway.

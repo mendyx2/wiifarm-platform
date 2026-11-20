@@ -23,6 +23,12 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Behind a host's HTTPS proxy (for example the preview site on
+        // Railway), TRUSTED_PROXIES=* makes links and secure cookies use https.
+        if ($proxies = env('TRUSTED_PROXIES')) {
+            $middleware->trustProxies(at: $proxies === '*' ? '*' : explode(',', $proxies));
+        }
+
         $middleware->alias([
             'member.verified' => RequireVerification::class,
             'admin.active' => AdminIsActive::class,
