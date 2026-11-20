@@ -37,6 +37,7 @@ type Props = {
     toCollect?: number;
     recent?: { id: number; at: string; amount: number; wallet: string; memo: string | null }[];
     notices?: Notice[];
+    announcements?: { id: number; title: string; body: string; tone: string }[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
@@ -84,6 +85,7 @@ export default function Dashboard({
     toCollect = 0,
     recent = [],
     notices = [],
+    announcements = [],
 }: Props) {
     if (!member || !money || !team) {
         return (
@@ -118,6 +120,16 @@ export default function Dashboard({
                 </div>
 
                 <div className="space-y-3">
+                    {announcements.map((a) => (
+                        <div
+                            key={a.id}
+                            role="note"
+                            className={a.tone === 'important' ? 'bg-warning-soft rounded-xl p-4 text-sm' : 'bg-info-soft rounded-xl p-4 text-sm'}
+                        >
+                            <p className="font-medium">{a.title}</p>
+                            <p className="mt-1 whitespace-pre-line">{a.body}</p>
+                        </div>
+                    ))}
                     {toCollect > 0 && (
                         <Notice href={route('orders.index')} action="See my codes">
                             You have {toCollect} {toCollect === 1 ? 'order' : 'orders'} to collect from a stockist with a pickup code.

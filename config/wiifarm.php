@@ -34,6 +34,10 @@ return [
         // switched off on its own, on the admin Messages page.
         'messages.email' => true,
 
+        // Maintenance mode (section 12): only Wiifarm's admins switch it.
+        'site.maintenance' => false,
+        'site.maintenance_message' => 'We are improving the site and will be back shortly. Thank you for your patience.',
+
         // Balance transfers between members (section 6). Amounts in kobo; the
         // charge comes out of the amount sent (decision 38).
         'transfers.enabled' => true,

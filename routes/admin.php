@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\AdminSessionController;
 use App\Http\Controllers\Admin\AwardController;
+use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\EPinController;
@@ -137,6 +138,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Packages (read only for now; changing a package is a plan setting)
         Route::get('packages', [NetworkController::class, 'packages'])->middleware('admin.can:settings.view')->name('packages');
+
+        // The website's pages and announcements to members (sections 11 and 12)
+        Route::middleware('admin.can:content.manage')->group(function () {
+            Route::get('website', [ContentController::class, 'pages'])->name('content.pages');
+            Route::get('website/{page:slug}', [ContentController::class, 'edit'])->name('content.edit');
+            Route::post('website/{page:slug}', [ContentController::class, 'update'])->name('content.update');
+            Route::get('announcements', [ContentController::class, 'announcements'])->name('announcements.index');
+            Route::post('announcements', [ContentController::class, 'saveAnnouncement'])->name('announcements.store');
+            Route::put('announcements/{announcement}', [ContentController::class, 'saveAnnouncement'])->name('announcements.update');
+            Route::delete('announcements/{announcement}', [ContentController::class, 'deleteAnnouncement'])->name('announcements.destroy');
+        });
 
         // Member messages (section 12)
         Route::get('messages', [MessageController::class, 'index'])->middleware('admin.can:messages.view')->name('messages.index');

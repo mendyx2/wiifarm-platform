@@ -54,6 +54,9 @@ return [
             'messages.view' => 'See the member messages and which were sent',
             'messages.edit' => 'Change the text of member messages and switch them on or off',
         ],
+        'Content' => [
+            'content.manage' => 'Edit the website pages and announcements to members',
+        ],
         'Settings' => [
             'settings.view' => 'See the settings',
             'settings.edit' => 'Change the settings',

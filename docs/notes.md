@@ -2314,3 +2314,42 @@ set by the admin."
   charge, charge on top instead, KYC needed to send, a daily limit?
 - **Tests:** three new tests (moved once with the charge, everything that is
   refused, the settings and who may change them).
+
+## Step 50: The public website, announcements and maintenance mode
+
+The fourth item on the owner's list (specification sections 11 and 12).
+
+- **The public website.** The temporary welcome page is replaced by:
+  - a **home page**: a title, a short line, a picture (the VitaActive range
+    to start), "Join Wiifarm" and "Shop" buttons, the text below, and three
+    products from the shop;
+  - **About**, **Contact**, **Privacy policy** and **Terms of use** pages;
+  - one header with the menu (Shop, About, Contact, Sign in, Join, or "My
+    dashboard" when signed in) and a footer with the policy links, also on
+    the public shop.
+- **Admins edit every page** (new menu item "Website", Content permission):
+  title, short line, text, picture (upload or remove), and the title and
+  description search engines and link previews show. A preview beside the
+  form shows the result. The text is plain, with three simple rules: a
+  blank line starts a paragraph, "## " a heading, "- " a list item. No HTML
+  can be typed in, so a page can never break the site. Every change is in
+  the audit log.
+- **Search engines and link previews.** Each page's title, description
+  and picture are written into the page itself, so Google, WhatsApp and
+  Facebook see them without running the page's scripts.
+- **Cookie notice** on the public pages, with a link to the privacy policy,
+  until the visitor presses OK.
+- **Announcements** (new menu item, Content permission): a title, a
+  message, "information" or "important", optional from and until dates, and
+  on/off. While one runs it shows at the top of every member's dashboard.
+- **Maintenance mode** (Settings, super-admins only): the public site and
+  members' pages show "Back shortly" (with the right "temporarily
+  unavailable" code for search engines). The admin panel, Paystack's payment
+  confirmations and the health check keep working, and a signed-in admin
+  still sees the whole site to check it before switching it off.
+- **For Wiifarm (decision 39):** the privacy and terms pages start with
+  placeholder text; Wiifarm's own reviewed texts, contact details and About
+  page must be entered before go-live. Other languages are not built yet.
+- **Tests:** four new tests (pages and their search details, editing with
+  a picture, announcements by date and on/off, maintenance mode). All 320
+  tests pass.

@@ -522,7 +522,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Plan | Packages, awards (approve and pay), unilevel levels, repurchase awards, leadership settings, pool ledgers and their contingency funds, held payouts |
 | Commerce | Products, categories, state prices, orders, stockists and their requests, the Ad Center, affiliate settings, Welcome Back Packages |
 | Finance | Investment plans and dividend batches, farm cycles, savings and loan products, loan approvals |
-| Content | Website pages and sections, SEO, cookie notice, languages, notices and announcements to members |
+| Content | Website pages and sections, SEO, cookie notice, languages, notices and announcements to members. *Built (November 2026): the pages and SEO, the cookie notice, and announcements (title, message, information or important, from and until dates, on/off) shown at the top of every member's dashboard while they run. Languages: not yet.* |
 | Support | Support tickets with private attachments; reply, close |
 | Reports | Transactions, PV log, login history, financial report (income, payouts and pools by period), admin action log |
 | Settings | Site name and currency, registration on/off, verification switches, charges, maintenance mode, message templates |
@@ -537,6 +537,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 - **Content:** admins edit the text, images and SEO details (title, description, sharing image) of each page, without a developer.
 - **Languages:** English first. More languages can be added, with every on-screen word translatable.
 - **Maintenance mode:** only Wiifarm's own admin can switch it on. No outside party can.
+- *Built (November 2026):* a home page (title, short line, picture, text, and three products from the shop), About, Contact, Privacy and Terms pages, each edited by admins with the Content permission (title, short line, text with simple headings and lists, picture, and the title and description for search engines and link previews, which are written into the page itself so Google and WhatsApp see them). A cookie notice links to the privacy policy. Maintenance mode is a Settings switch for super-admins: the public site and members' pages show "Back shortly" while the admin panel, payment confirmations and signed-in admins carry on. The privacy and terms pages start with placeholder text that Wiifarm must replace with its own, reviewed text (decision 39). More languages are not built yet: English only.
 
 **Messages:**
 
@@ -626,4 +627,5 @@ The specification can be signed off once the board settles the points below.
 - [ ] **35. Using the Unclaimed Bonus Reserve.** Unclaimed shares are kept per ledger and reported (section 7), but nothing spends them yet. (a) Should the reserve also help cover a shortfall in its own ledger after the contingency fund, before a payout is held? (b) Or is it kept for another use the board decides, for example a transfer to the company? Until the board says, it is only kept and reported.
 - [ ] **36. Autoship details** (built as below until the board says otherwise). (a) A missed month's hold is released when the member makes **any later** month's autoship, if 3 in a row have not been missed yet. Or should a missed month's hold only be flushed or kept, never released? (b) After 3 missed months, a 4th missed month in the same run is flushed as soon as its first week passes (the count does not start again at 0). Right? (c) Reminder emails go three times: the 22nd, the 1st and the 7th. Should they go every day of the window instead? (d) "The company reserves" is read as Pool A's Unclaimed Bonus Reserve, not the contingency fund. Right?
 - [ ] **38. Balance transfers.** Built with no charge, from ₦100 to ₦1,000,000 per transfer, the charge taken out of the amount sent (as for withdrawals). (a) What charge, if any? (b) Should the sender pay the charge on top instead? (c) Should a member need a verified identity (KYC) to send, as for withdrawals? (d) Is there a daily limit?
+- [ ] **39. Website texts.** The privacy policy and terms of use start with placeholder text. Wiifarm needs its own, reviewed by its legal adviser, entered under Admin > Website before go-live; likewise the contact details and the About page.
 - [x] **37. Messages.** Settled (owner, 20 November 2026): no SMS; no email for bonuses, which are shown on the member's dashboard instead; emails are sent through Zoho ZeptoMail (section 12; the steps are in the README). The sending address is chosen when the domain is set up in ZeptoMail.

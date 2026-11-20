@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Compensation\LeadershipPayout;
 use App\Models\Compensation\MemberMatch;
+use App\Models\Content\Announcement;
 use App\Models\Ledger\Entry;
 use App\Models\Shop\Order;
 use App\Models\User;
@@ -82,6 +83,8 @@ class DashboardController extends Controller
                 'last' => ($l = LeadershipPayout::with('run:id,month')->where('user_id', $member->id)->latest('id')->first())
                     ? ['month' => $l->run->month, 'amount' => $l->amount, 'status' => $l->currentStatus()] : null,
             ],
+            // Notices from Wiifarm to all members, while they run (section 11).
+            'announcements' => Announcement::showing()->latest('id')->limit(3)->get(['id', 'title', 'body', 'tone']),
             'toCollect' => Order::where('user_id', $member->id)->where('status', Order::PAID)->count(),
             // The latest notices (bonuses and messages), also behind the bell in the header (section 12).
             'notices' => NoticeController::newestFirst($member)->limit(5)->get()->map(fn ($n) => NoticeController::row($n)),

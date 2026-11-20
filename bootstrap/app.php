@@ -5,6 +5,7 @@ use App\Http\Middleware\AdminIsActive;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireVerification;
 use App\Http\Middleware\SignOutBannedMembers;
+use App\Http\Middleware\SiteMaintenance;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -53,6 +54,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: ['webhooks/paystack']);
 
         $middleware->web(append: [
+            SiteMaintenance::class,
             SignOutBannedMembers::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

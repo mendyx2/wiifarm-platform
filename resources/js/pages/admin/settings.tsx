@@ -24,6 +24,7 @@ const titles: Record<string, string> = {
     'withdrawals.kyc_required': 'Identity check (KYC) before withdrawing',
     'matching.autoship_hold': 'Autoship hold on matching bonuses',
     'messages.email': 'Email messages to members',
+    'site.maintenance': 'Maintenance mode',
 };
 
 /** Form field names cannot hold dots, so "verification.email_required" travels as "verification_email_required". */

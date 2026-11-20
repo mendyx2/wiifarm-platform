@@ -14,12 +14,16 @@ use App\Http\Controllers\Member\WalletController;
 use App\Http\Controllers\Member\WithdrawController;
 use App\Http\Controllers\PaystackWebhookController;
 use App\Http\Controllers\PublicShop\PublicShopController;
+use App\Http\Controllers\PublicSite\PageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+// The public website (specification section 12): pages the admins edit.
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('about', [PageController::class, 'show'])->defaults('slug', 'about')->name('page.about');
+Route::get('contact', [PageController::class, 'show'])->defaults('slug', 'contact')->name('page.contact');
+Route::get('privacy', [PageController::class, 'show'])->defaults('slug', 'privacy')->name('page.privacy');
+Route::get('terms', [PageController::class, 'show'])->defaults('slug', 'terms')->name('page.terms');
 
 // The public shop (specification section 8): no account needed.
 Route::get('products', [PublicShopController::class, 'index'])->name('public.shop');
