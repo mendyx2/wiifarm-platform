@@ -540,6 +540,13 @@ Admins run the platform from one panel. What each admin can see and do is set by
 - Each event that tells a member something has its own template for email, SMS and push. Examples: a deposit or withdrawal approved or rejected, a bonus paid, KYC reviewed, a password reset code, a new sign-up in your team.
 - Each channel can be switched on or off for the whole site and per template. Templates use placeholders such as `{{amount}}`.
 - The email and SMS providers are settings, not code.
+- **Built (November 2026), email first:**
+  - Ten messages: welcome (package paid), a new member in your team (to the sponsor, not the company account), deposit received, withdrawal paid, withdrawal refused (to the member, the store owner or the affiliate who asked), identity check approved, identity check not approved, award approved, order paid with its pickup code (to a member, or to a public buyer with a link to their order), and the autoship reminder (5.6).
+  - Admins with the Messages permissions change each message's subject and text, switch it off, and set it back to the original; every change is in the audit log. A preview shows the message with sample details. Email to members is switched on or off for the whole site under Settings.
+  - Every message is logged (waiting, sent or failed) and listed on the admin Messages page.
+  - A message is sent in the background, only once the change it reports is saved; a message that cannot be sent never stops that change. The background work runs every minute from the scheduler, so the server needs only its one scheduler entry, no extra process.
+  - The email service (for example an SMTP account) is set in the server's settings at go-live; until then, emails are written to the log file.
+  - SMS and push are not built: they need a provider (decision 37). A password reset email is sent by the sign-in system itself, as before.
 
 **Scheduled jobs (times are Lagos time):**
 
@@ -555,6 +562,7 @@ Admins run the platform from one panel. What each admin can see and do is set by
 | Daily | Expire unpaid or uncollected public orders (8). This is not scheduled in the current system, and should be |
 | Daily 03:10 | Autoship: release held matching where an autoship is made; flush it after 3 missed months in a row (5.6) |
 | Daily 09:20, from the 22nd to the 7th | Autoship reminder emails, once per stage (5.6) |
+| Every minute | Send member messages waiting in the background (12) |
 
 Every job can run again safely: a second run never pays twice. Each run is logged with what it did.
 
@@ -612,3 +620,4 @@ The specification can be signed off once the board settles the points below.
 - [ ] **34. Paying awards.** (a) When a member takes the gift instead of the cash, the system sets the cash value aside from the recognition line to buy the gift. Is that right, or does the gift cost something else? (b) Repurchase awards wait for an admin's approval like recognition awards. Should they be paid automatically instead? (c) Recognition awards are far larger than Pool B receives (₦5.25 a piece for recognition), so most will be held for a long time (decision 17).
 - [ ] **35. Using the Unclaimed Bonus Reserve.** Unclaimed shares are kept per ledger and reported (section 7), but nothing spends them yet. (a) Should the reserve also help cover a shortfall in its own ledger after the contingency fund, before a payout is held? (b) Or is it kept for another use the board decides, for example a transfer to the company? Until the board says, it is only kept and reported.
 - [ ] **36. Autoship details** (built as below until the board says otherwise). (a) A missed month's hold is released when the member makes **any later** month's autoship, if 3 in a row have not been missed yet. Or should a missed month's hold only be flushed or kept, never released? (b) After 3 missed months, a 4th missed month in the same run is flushed as soon as its first week passes (the count does not start again at 0). Right? (c) Reminder emails go three times: the 22nd, the 1st and the 7th. Should they go every day of the window instead? (d) "The company reserves" is read as Pool A's Unclaimed Bonus Reserve, not the contingency fund. Right?
+- [ ] **37. Messages.** (a) Which email service will send the emails (for example Zoho, Gmail for business, Brevo or Mailgun), and from which address? (b) Should members also get SMS? That needs an SMS provider (for example Termii) and costs per message. (c) Should a message go out for each bonus paid? Matching is paid every night, so it would be one email a night per earning member; it is not sent for now.

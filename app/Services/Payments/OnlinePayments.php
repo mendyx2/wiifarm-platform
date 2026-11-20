@@ -7,6 +7,7 @@ use App\Models\Payments\OnlinePayment;
 use App\Models\Shop\Order;
 use App\Models\User;
 use App\Services\Ledger\Ledger;
+use App\Services\Messages\Messages;
 use App\Services\Network\PlacementException;
 use App\Services\Network\Registration;
 use App\Services\Network\Upgrade;
@@ -186,6 +187,7 @@ class OnlinePayments
 
         if ($payment->purpose === OnlinePayment::DEPOSIT) {
             $this->toMainBalance($payment, $key);
+            app(Messages::class)->send($member, 'deposit.received', ['amount' => Messages::naira($payment->amount)]);
 
             return null;
         }

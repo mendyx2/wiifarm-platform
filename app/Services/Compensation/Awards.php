@@ -10,6 +10,7 @@ use App\Models\Pools\UnclaimedBonus;
 use App\Models\User;
 use App\Services\Admin\Audit;
 use App\Services\Ledger\Ledger;
+use App\Services\Messages\Messages;
 use App\Services\Payments\PaymentException;
 use App\Services\Pools\PoolPayouts;
 use App\Support\Money;
@@ -82,6 +83,7 @@ class Awards
 
             $award->forceFill(['status' => $status, 'decided_by_admin_id' => $admin->id, 'decided_at' => now()])->save();
             $this->audit->record($admin, 'awards.approve', $award, ['status' => Award::PENDING], ['status' => $status, 'choice' => $award->choice, 'amount' => $award->amount]);
+            app(Messages::class)->send($award->user, 'award.approved', ['award' => $award->name, 'amount' => Messages::naira($award->amount)]);
 
             return $award;
         });

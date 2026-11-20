@@ -2018,3 +2018,57 @@ reserve.
   (b) a 4th missed month in the same run is flushed too; (c) three
   reminder emails, not one every day; (d) "company reserves" means Pool A's
   Unclaimed Bonus Reserve.
+
+## Step 42: Member messages by email
+
+The owner chose member messages as the next piece (20 November 2026).
+Specification section 12 asks for a message for each event that tells a
+member something, which an admin can edit and switch off.
+
+- **Ten messages**, each with a default subject and text:
+  - **Welcome:** when a member's package is paid, with their username and
+    a pointer to their pickup code.
+  - **A new member in your team:** to the sponsor (not to the company
+    account).
+  - **Deposit received**, **withdrawal paid** (with the amount sent and the
+    reference) and **withdrawal refused** (with the reason). A withdrawal
+    message goes to whoever asked: the member, the stockist store's owner or
+    the affiliate.
+  - **Identity check approved** and **not approved** (with the reason).
+  - **Award approved.**
+  - **Order paid, with the pickup code:** to a member for a shop order, and
+    to a buyer in the public shop, with a link to their own order page.
+  - **The autoship reminder** (step 41), which now uses the same system, so
+    its text can be edited too.
+- **The admin Messages page** (new permissions: "messages.view" to see,
+  "messages.edit" to change). It lists the ten messages, whether each is on
+  or off, whether its text was changed, and how many went out in the last 30
+  days, then every message sent with its status (waiting, sent, failed).
+  Clicking a message opens its form: switch it on or off, change the
+  subject and the text, and see a preview with sample details. Placeholders
+  such as {{amount}} are listed under the form. "Back to the original text"
+  undoes the changes. Every change is in the audit log.
+- **One switch for the whole site:** "Email messages to members", under
+  Settings.
+- **How a message is sent:**
+  - Only after the change it reports is saved, so nobody is told about
+    something that did not happen.
+  - A message that cannot be sent is logged as failed and never stops the
+    payment, withdrawal or approval itself.
+  - Sending happens in the background. To keep the server simple, the
+    scheduler (which the server already runs every minute) sends what is
+    waiting; there is no extra program to keep running.
+  - I checked this locally: a message was "waiting", the scheduler's
+    command sent it, and it became "sent".
+- **What the server needs at go-live:** the details of an email service
+  (decision 37). Until then the emails are written to the log file.
+- **Not built:** SMS and push messages (they need a provider), and a
+  message for every bonus paid (matching is paid every night, which would
+  mean an email every night). Both are in decision 37.
+- **Tests.** A new set of six tests: joining sends the welcome and the
+  sponsor's message and logs them as sent; placeholders are filled in; an
+  admin edits, switches off and resets a message, with permissions; nothing
+  is sent when the site switch is off; withdrawals, identity checks and shop
+  orders tell the member; a public buyer gets their pickup code with a link
+  that opens their order. The deposit and award tests check one message each.
+  All 299 tests pass.

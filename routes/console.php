@@ -34,3 +34,7 @@ Schedule::command('wiifarm:autoship')->dailyAt('03:10')->timezone('Africa/Lagos'
 
 // Every morning from the 22nd to the 7th: remind members who have not made the month's autoship (5.6).
 Schedule::command('wiifarm:autoship-reminders')->dailyAt('09:20')->timezone('Africa/Lagos')->withoutOverlapping();
+
+// Every minute: send what is waiting in the background (member messages), then stop.
+// This needs only the scheduler's cron line, not a separate worker process.
+Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')->everyMinute()->withoutOverlapping();

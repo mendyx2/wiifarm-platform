@@ -8,6 +8,7 @@ use App\Models\Pools\Manufacturer;
 use App\Models\TreePosition;
 use App\Models\User;
 use App\Services\Compensation\JoiningBonuses;
+use App\Services\Messages\Messages;
 use App\Services\Pools\PaymentSplit;
 use App\Services\Shop\Orders;
 use Illuminate\Support\Facades\DB;
@@ -87,6 +88,13 @@ class Registration
 
             // The bonuses paid at once: direct, indirect and key-in (section 5).
             $this->bonuses->forJoining($change->setRelation('user', $member), $keyedInBy);
+
+            // Messages, sent once this is saved (section 12).
+            $messages = app(Messages::class);
+            $messages->send($member, 'welcome', ['username' => $member->username, 'package' => $package->name]);
+            if (! $sponsor->is(User::company())) {
+                $messages->send($sponsor, 'team.new_member', ['member' => '@'.$member->username, 'package' => $package->name]);
+            }
 
             return $change;
         });

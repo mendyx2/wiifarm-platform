@@ -4,6 +4,7 @@ namespace App\Services\Members;
 
 use App\Models\KycSubmission;
 use App\Models\User;
+use App\Services\Messages\Messages;
 use App\Support\Settings;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -128,6 +129,7 @@ class Kyc
             ])->save();
 
             $locked->user->forceFill(['kyc_status' => $userStatus])->save();
+            app(Messages::class)->send($locked->user, $status === KycSubmission::APPROVED ? 'kyc.approved' : 'kyc.rejected', ['reason' => $reason]);
         });
     }
 }

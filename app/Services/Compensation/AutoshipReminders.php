@@ -3,7 +3,7 @@
 namespace App\Services\Compensation;
 
 use App\Models\User;
-use App\Notifications\AutoshipReminder;
+use App\Services\Messages\Messages;
 use App\Support\Settings;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -76,10 +76,13 @@ class AutoshipReminders
             } catch (UniqueConstraintViolationException) {
                 return;   // already reminded at this stage
             }
-            $member->notify(new AutoshipReminder(
-                $window['month'], $window['stage'], $window['deadline'],
-                $this->activity->creditFor($member, $window['month']), MonthlyActivity::requiredPv(),
-            ));
+            $pv = fn (int $hundredths) => rtrim(rtrim(number_format($hundredths / 100, 2), '0'), '.');
+            app(Messages::class)->send($member, 'autoship.reminder', [
+                'month' => CarbonImmutable::createFromFormat('Y-m-d', $window['month'].'-01')->format('F Y'),
+                'deadline' => $window['deadline']->format('j F'),
+                'bought' => $pv($this->activity->creditFor($member, $window['month'])),
+                'needed' => $pv(MonthlyActivity::requiredPv()),
+            ]);
             $sent++;
         });
 

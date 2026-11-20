@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Ledger\Ledger;
 use App\Services\Payments\OnlinePayments;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Tests\Feature\Network\NetworkTestCase;
 
@@ -146,6 +147,7 @@ class OnlinePaymentsTest extends NetworkTestCase
         $this->get('/payments/return?reference='.$payment->reference)->assertRedirect('/deposit');
 
         $this->assertSame(2_500_000, $this->main($member));
+        $this->assertSame(1, DB::table('message_log')->where(['event' => 'deposit.received', 'user_id' => $member->id, 'subject' => 'Your deposit of ₦25,000.00 is in'])->count());   // told once
         $this->get('/deposit')->assertInertia(fn ($page) => $page->where('payments.0.status', 'paid')->where('online', true));
     }
 

@@ -3,12 +3,16 @@
 namespace App\Services\Payments;
 
 use App\Models\Admin;
+use App\Models\Affiliate;
 use App\Models\Ledger\Account;
 use App\Models\Payments\Withdrawal;
 use App\Models\Payments\WithdrawalMethod;
+use App\Models\Stockists\Store;
+use App\Models\User;
 use App\Services\Admin\Audit;
 use App\Services\Ledger\Ledger;
 use App\Services\Ledger\LedgerException;
+use App\Services\Messages\Messages;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -90,6 +94,7 @@ class Withdrawals
 
             $withdrawal->forceFill(['status' => Withdrawal::PAID, 'reference' => $reference, 'decided_by_admin_id' => $admin->id, 'decided_at' => now()])->save();
             $this->audit->record($admin, 'withdrawals.approve', $withdrawal, ['status' => Withdrawal::PENDING], ['status' => Withdrawal::PAID, 'payable' => $withdrawal->payable], 'Reference: '.$reference);
+            $this->tell($withdrawal, 'withdrawal.paid', ['payable' => Messages::naira($withdrawal->payable), 'reference' => $reference]);
 
             return $withdrawal;
         });
@@ -110,9 +115,23 @@ class Withdrawals
 
             $withdrawal->forceFill(['status' => Withdrawal::REJECTED, 'reject_reason' => mb_substr($reason, 0, 250), 'decided_by_admin_id' => $admin->id, 'decided_at' => now()])->save();
             $this->audit->record($admin, 'withdrawals.reject', $withdrawal, ['status' => Withdrawal::PENDING], ['status' => Withdrawal::REJECTED], $reason);
+            $this->tell($withdrawal, 'withdrawal.rejected', ['reason' => $reason]);
 
             return $withdrawal;
         });
+    }
+
+    /** Tells the person who asked: the member, the store's owner, or the affiliate (section 12). */
+    private function tell(Withdrawal $withdrawal, string $event, array $data): void
+    {
+        $data['amount'] = Messages::naira($withdrawal->amount);
+        $messages = app(Messages::class);
+        match ($withdrawal->holder_type) {
+            Withdrawal::MEMBER => ($user = User::find($withdrawal->holder_id)) && $messages->send($user, $event, $data),
+            Withdrawal::STORE => ($user = Store::find($withdrawal->holder_id)?->owner) && $messages->send($user, $event, $data),
+            Withdrawal::AFFILIATE => ($affiliate = Affiliate::find($withdrawal->holder_id)) && $messages->sendTo($affiliate->email, null, $event, ['name' => $affiliate->first_name] + $data),
+            default => null,
+        };
     }
 
     private function pending(Withdrawal $withdrawal): Withdrawal

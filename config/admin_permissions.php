@@ -47,6 +47,10 @@ return [
             'awards.decide' => 'Approve and refuse awards, and mark gifts delivered',
             'matching.view' => 'See the matching and leadership runs, and what each member earned',
         ],
+        'Messages' => [
+            'messages.view' => 'See the member messages and which were sent',
+            'messages.edit' => 'Change the text of member messages and switch them on or off',
+        ],
         'Settings' => [
             'settings.view' => 'See the settings',
             'settings.edit' => 'Change the settings',

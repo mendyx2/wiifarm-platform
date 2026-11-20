@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\LeadershipController;
 use App\Http\Controllers\Admin\MatchingController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberWalletController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\NetworkController;
 use App\Http\Controllers\Admin\OnlinePaymentController;
 use App\Http\Controllers\Admin\OrderController;
@@ -122,6 +123,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Packages (read only for now; changing a package is a plan setting)
         Route::get('packages', [NetworkController::class, 'packages'])->middleware('admin.can:settings.view')->name('packages');
+
+        // Member messages (section 12)
+        Route::get('messages', [MessageController::class, 'index'])->middleware('admin.can:messages.view')->name('messages.index');
+        Route::get('messages/{event}', [MessageController::class, 'edit'])->middleware('admin.can:messages.view')->name('messages.edit');
+        Route::put('messages/{event}', [MessageController::class, 'update'])->middleware('admin.can:messages.edit')->name('messages.update');
+        Route::delete('messages/{event}', [MessageController::class, 'reset'])->middleware('admin.can:messages.edit')->name('messages.reset');
 
         // Settings
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('admin.can:settings.view')->name('settings.edit');

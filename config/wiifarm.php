@@ -30,6 +30,10 @@ return [
         // open decision 7 asks whether this hold stays).
         'matching.autoship_hold' => true,
 
+        // Member messages by email (section 12). Each message can also be
+        // switched off on its own, on the admin Messages page.
+        'messages.email' => true,
+
         // The monthly purchase that keeps a member active, in PV (Revised
         // Baseline Rules, 19 November 2026: 10.5 PV, ₦10,500).
         'activity.monthly_pv' => 10.5,

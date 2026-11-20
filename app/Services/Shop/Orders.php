@@ -11,10 +11,12 @@ use App\Models\Shop\Product;
 use App\Models\User;
 use App\Services\Compensation\Unilevel;
 use App\Services\Ledger\Ledger;
+use App\Services\Messages\Messages;
 use App\Services\Network\PvClimb;
 use App\Services\Pools\PaymentSplit;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use InvalidArgumentException;
 
 /**
@@ -261,6 +263,15 @@ class Orders
             'pickup_code_hash' => PickupCode::hash($code),
             'pickup_code_hint' => substr(PickupCode::normalize($code), -4),
         ])->save();
+
+        // The pickup code by email (section 12). A registration's code is on the Orders page the welcome message points to.
+        $data = ['order' => $order->number ?? '#'.$order->id, 'code' => $code];
+        if ($order->kind === Order::REPURCHASE && $order->user) {
+            app(Messages::class)->send($order->user, 'order.paid', $data);
+        } elseif ($order->kind === Order::PUBLIC) {
+            app(Messages::class)->sendTo($order->buyer_email, null, 'order.paid', ['name' => $order->buyer_name] + $data,
+                url(URL::signedRoute('public.order', ['order' => $order->id], absolute: false)));   // the route checks a relative signature
+        }
 
         return $order;
     }

@@ -4,7 +4,7 @@ namespace Tests\Feature\Compensation;
 
 use App\Models\Shop\Product;
 use App\Models\User;
-use App\Notifications\AutoshipReminder;
+use App\Notifications\MemberMessage;
 use App\Services\Compensation\Autoship;
 use App\Services\Compensation\Matching;
 use App\Services\Compensation\MonthlyActivity;
@@ -189,7 +189,7 @@ class AutoshipTest extends NetworkTestCase
         $this->artisan('wiifarm:autoship-reminders')->assertSuccessful();
         $this->at('2026-10-29 09:20');                                     // same stage: not again
         $this->artisan('wiifarm:autoship-reminders')->expectsOutputToContain('0 autoship')->assertSuccessful();
-        Notification::assertSentTo($member, AutoshipReminder::class, fn ($n) => $n->month === '2026-10' && $n->stage === 'week4');
+        Notification::assertSentTo($member, MemberMessage::class, fn ($n) => $n->event === 'autoship.reminder' && $n->subject === 'Your autoship for October 2026' && str_contains($n->body, 'You have until 7 November'));
         $this->assertSame(1 + $others->count(), DB::table('autoship_reminders')->where('stage', 'week4')->count());
 
         $this->at('2026-10-25 10:00');                                     // the dashboard shows it too

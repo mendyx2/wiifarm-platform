@@ -25,6 +25,7 @@ class SettingsController extends Controller
         'verification.mobile_required' => 'Members must confirm their phone number with an SMS code before they can use their dashboard.',
         'withdrawals.kyc_required' => 'Members must have their identity verified (KYC) before they can withdraw.',
         'matching.autoship_hold' => 'Until a member makes their monthly purchase, 20% of each matching bonus goes to their autoship wallet.',
+        'messages.email' => 'Members receive messages by email (welcome, payments, withdrawals, identity checks, awards, orders, autoship reminders). Each message can also be switched off on the Messages page.',
     ];
 
     public function edit(): Response

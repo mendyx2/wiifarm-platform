@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Compensation\Awards;
 use App\Services\Ledger\Ledger;
 use App\Services\Network\PvClimb;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tests\Feature\Network\NetworkTestCase;
 
@@ -111,6 +112,7 @@ class AwardsTest extends NetworkTestCase
         $this->assertSame(Award::PAID, $award->fresh()->status);
         $this->post("/admin/awards/{$award->id}/approve")->assertSessionHasErrors('award');   // decided once
         $this->assertDatabaseHas('audit_logs', ['action' => 'awards.approve']);
+        $this->assertSame(1, DB::table('message_log')->where(['event' => 'award.approved', 'subject' => 'Congratulations on your Emerald award'])->count());
         $this->artisan('wiifarm:ledger-check')->assertSuccessful();
     }
 
